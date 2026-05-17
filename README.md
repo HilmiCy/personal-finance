@@ -195,7 +195,10 @@ GitHub: `@hilmicy`
 
 ## License
 
-This project is created for educational and portfolio purposes.
+This project is licensed under the MIT License.  
+You are free to use, modify, and distribute this software in accordance with the license terms.
+
+See the [License.md](License.md) file for more information.
 
 ---
 
