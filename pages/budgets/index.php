@@ -53,6 +53,7 @@ include '../../includes/sidebar.php';
         overflow-x: hidden !important;
         width: 100% !important;
         position: relative;
+        background: #f0f2f5;
     }
     
     .wrapper {
@@ -78,36 +79,15 @@ include '../../includes/sidebar.php';
         transition: all 0.3s;
         overflow-x: hidden !important;
         flex: 1 !important;
-        background: #f8f9fa;
+        background: #f0f2f5;
     }
     
     .container-fluid {
         width: 100% !important;
         max-width: 100% !important;
-        padding: 20px !important;
+        padding: 24px !important;
         margin: 0 !important;
         overflow-x: hidden !important;
-    }
-    
-    @media (max-width: 768px) {
-        #sidebar {
-            margin-left: -250px !important;
-            position: fixed !important;
-            z-index: 1000 !important;
-            height: 100vh !important;
-        }
-        
-        #sidebar.active {
-            margin-left: 0 !important;
-        }
-        
-        #content, .main-content {
-            width: 100% !important;
-        }
-        
-        .container-fluid {
-            padding: 15px !important;
-        }
     }
     
     /* ========== CARD STYLES ========== */
@@ -123,41 +103,35 @@ include '../../includes/sidebar.php';
     
     /* ========== WELCOME CARD ========== */
     .welcome-card {
-    background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
-    border-radius: 20px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 24px;
+        margin-bottom: 24px;
+        color: #1f2937;
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
     
     .welcome-title {
-        font-size: 1.5rem;
-        font-weight: 600;
+        font-size: 1.6rem;
+        font-weight: 700;
         margin: 0;
+        color: #1f2937;
     }
     
     .welcome-subtitle {
         margin: 8px 0 0 0;
-        opacity: 0.9;
-        font-size: 0.9rem;
+        color: #6b7280;
+        font-size: 0.95rem;
     }
     
     /* Button Styles */
-    .btn {
-        border-radius: 12px !important;
-        padding: 10px 20px !important;
-        font-weight: 500 !important;
-        transition: all 0.2s !important;
-    }
-    
     .btn-primary-custom {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+        color: white !important;
         border: none;
         padding: 10px 24px;
         border-radius: 12px;
@@ -172,8 +146,6 @@ include '../../includes/sidebar.php';
     .btn-primary-custom:hover {
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        color: white;
-        text-decoration: none;
     }
     
     .btn-secondary {
@@ -191,191 +163,128 @@ include '../../includes/sidebar.php';
         color: #4b5563;
     }
     
-    .btn-add-budget {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        padding: 10px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-    
-    .btn-add-budget:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        color: white;
-    }
-    
-    .btn-edit-budget {
-        background: #e0e7ff;
-        color: #4f46e5;
-        border: none;
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-    
-    .btn-edit-budget:hover {
-        background: #4f46e5;
-        color: white;
-        transform: translateY(-2px);
-    }
-    
-    .btn-delete-budget {
-        background: #fee2e2;
-        color: #dc2626;
-        border: none;
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-    
-    .btn-delete-budget:hover {
-        background: #dc2626;
-        color: white;
-        transform: translateY(-2px);
-    }
-    
     .btn-month {
-        background: #f3f4f6;
-        border: none;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
         padding: 8px 20px;
         border-radius: 10px;
-        font-weight: 500;
+        font-weight: 600;
         transition: all 0.3s ease;
         text-decoration: none;
-        color: #1f2937;
+        color: #4b5563;
         display: inline-block;
     }
     
     .btn-month:hover {
-        background: #e5e7eb;
-        transform: translateY(-2px);
+        background: #f9fafb;
+        transform: translateY(-1px);
         color: #1f2937;
-        text-decoration: none;
     }
     
     /* Budget Card */
     .budget-card {
         background: white;
         border-radius: 20px;
-        padding: 20px;
-        margin-bottom: 0;
-        transition: all 0.3s ease;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        padding: 24px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         height: 100%;
+        position: relative;
+        border: 1px solid #f3f4f6;
     }
     
     .budget-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        border-color: #667eea;
     }
     
     .budget-header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
+        align-items: flex-start;
+        margin-bottom: 20px;
     }
     
     .budget-category {
-        font-size: 18px;
+        font-size: 1.1rem;
         font-weight: 700;
         color: #1f2937;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
     }
     
     .budget-category i {
         color: #667eea;
+        font-size: 1rem;
+    }
+
+    .dropdown-minimal .btn-link {
+        color: #9ca3af;
+        padding: 0;
+        font-size: 18px;
+        transition: color 0.2s;
+        text-decoration: none;
+    }
+
+    .dropdown-minimal .btn-link:hover {
+        color: #4b5563;
     }
     
     .budget-amounts {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
     
     .budget-amount {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
     }
     
     .budget-label {
         font-size: 13px;
         color: #6b7280;
+        font-weight: 500;
     }
     
     .budget-value {
-        font-weight: 600;
+        font-weight: 700;
+        color: #1f2937;
     }
     
-    .budget-value.primary {
-        color: #667eea;
-    }
-    
-    .budget-value.danger {
-        color: #ef4444;
-    }
-    
-    .budget-value.success {
-        color: #10b981;
-    }
+    .budget-value.success { color: #10b981; }
+    .budget-value.danger { color: #ef4444; }
     
     .progress {
-        height: 8px;
+        height: 10px;
         border-radius: 10px;
-        background: #e5e7eb;
-        margin-bottom: 12px;
+        background: #f3f4f6;
+        margin-bottom: 15px;
+        overflow: hidden;
     }
     
     .progress-bar {
         border-radius: 10px;
-        transition: width 0.3s ease;
+        transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
-    .progress-bar.safe {
-        background: linear-gradient(90deg, #10b981, #34d399);
-    }
+    .progress-bar.bg-safe { background: linear-gradient(90deg, #10b981, #34d399); }
+    .progress-bar.bg-warning { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .progress-bar.bg-danger { background: linear-gradient(90deg, #ef4444, #f87171); }
     
-    .progress-bar.warning {
-        background: linear-gradient(90deg, #f59e0b, #fbbf24);
-    }
-    
-    .progress-bar.danger {
-        background: linear-gradient(90deg, #ef4444, #f87171);
-    }
-    
-    .budget-status {
-        display: inline-block;
+    .budget-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
         padding: 4px 12px;
         border-radius: 20px;
         font-size: 12px;
         font-weight: 600;
     }
     
-    .status-safe {
-        background: #d1fae5;
-        color: #059669;
-    }
-    
-    .status-warning {
-        background: #fed7aa;
-        color: #c2410c;
-    }
-    
-    .status-danger {
-        background: #fee2e2;
-        color: #dc2626;
-    }
+    .status-safe { background: #d1fae5; color: #059669; }
+    .status-warning { background: #fed7aa; color: #c2410c; }
+    .status-danger { background: #fee2e2; color: #dc2626; }
     
     /* Summary Stats */
     .summary-stats {
@@ -383,323 +292,120 @@ include '../../includes/sidebar.php';
         border-radius: 20px;
         padding: 24px;
         text-align: center;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        border: 1px solid #e5e7eb;
         transition: all 0.3s ease;
-        height: 100%;
     }
     
     .summary-stats:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
     }
     
-    .stat-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 15px;
+    .stat-icon-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 15px;
+        font-size: 20px;
     }
     
     .stat-title {
-        font-size: 14px;
+        font-size: 12px;
         color: #6b7280;
         margin-bottom: 8px;
         text-transform: uppercase;
-        font-weight: 600;
-        letter-spacing: 0.5px;
+        font-weight: 700;
+        letter-spacing: 1px;
     }
     
     .stat-number {
-        font-size: 28px;
+        font-size: 1.5rem;
         font-weight: 800;
-    }
-    
-    .text-success {
-        color: #10b981 !important;
-    }
-    
-    .text-danger {
-        color: #ef4444 !important;
+        color: #1f2937;
     }
     
     /* Month Navigation */
     .month-navigation {
         background: white;
         border-radius: 20px;
-        padding: 20px;
-        margin-bottom: 30px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        padding: 16px 24px;
+        margin-bottom: 24px;
+        border: 1px solid #e5e7eb;
     }
     
-    .current-month {
-        font-size: 20px;
+    .current-month-display {
+        font-size: 1.1rem;
         font-weight: 700;
         color: #1f2937;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
     }
     
-    .current-month i {
-        color: #667eea;
-        margin-right: 8px;
-    }
-    
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    
-    .empty-state i {
-        font-size: 64px;
-        color: #667eea;
-        margin-bottom: 20px;
-    }
-    
-    .empty-state p {
-        color: #6b7280;
-        font-size: 16px;
-        margin-bottom: 20px;
-    }
-    
-    /* Modal */
-    .modal-content-custom {
-        background: white;
-        border-radius: 20px;
-        border: none;
-    }
-    
-    .modal-header-custom {
-        border-bottom: 1px solid #e5e7eb;
-        padding: 20px 24px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-radius: 20px 20px 0 0;
-    }
-    
-    .modal-header-custom .btn-close {
-        filter: brightness(0) invert(1);
-    }
-    
-    .modal-body-custom {
-        padding: 24px;
-    }
-    
-    .modal-footer-custom {
-        border-top: 1px solid #e5e7eb;
-        padding: 20px 24px;
-        border-radius: 0 0 20px 20px;
-    }
-    
-    /* Form Controls */
-    .form-control, .form-select {
-        border-radius: 12px !important;
-        border: 1px solid #e0e0e0 !important;
-        padding: 12px 16px !important;
-        transition: all 0.2s !important;
-    }
-    
-    .form-control:focus, .form-select:focus {
-        border-color: #667eea !important;
-        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15) !important;
-    }
-    
-    .form-label {
-        font-weight: 600;
-        color: #4b5563;
-        margin-bottom: 8px;
-    }
-    
-    .form-text {
-        font-size: 12px;
-        color: #6b7280;
-        margin-top: 5px;
-    }
+    .current-month-display i { color: #667eea; }
     
     /* Animations */
     @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
     
-    @keyframes fadeInScale {
-        from {
-            opacity: 0;
-            transform: scale(0.95);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
+    .animated { animation: fadeInUp 0.5s ease-out forwards; }
     
-    @keyframes iconPop {
-        0% {
-            transform: scale(0);
-            opacity: 0;
-        }
-        80% {
-            transform: scale(1.1);
-        }
-        100% {
-            transform: scale(1);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-    
-    .animated {
-        animation: fadeInUp 0.5s ease-out forwards;
-    }
-    
-    /* SweetAlert2 Professional Style - Same as Emergency Fund */
+    /* SweetAlert2 Professional Style */
     .swal2-popup {
         background: rgba(255, 255, 255, 0.98) !important;
         backdrop-filter: blur(20px) !important;
         border-radius: 24px !important;
         padding: 2em !important;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2) !important;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
-        animation: fadeInScale 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
     
-    .swal2-title {
-        color: #1f2937 !important;
-        font-weight: 700 !important;
-        font-size: 1.5rem !important;
-    }
-    
-    .swal2-html-container {
-        color: #4b5563 !important;
-        font-size: 0.95rem !important;
-    }
-    
+    .swal2-title { color: #1f2937 !important; font-weight: 700 !important; }
     .swal2-confirm {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         border-radius: 12px !important;
         padding: 10px 24px !important;
         font-weight: 600 !important;
-        border: none !important;
-        transition: all 0.3s ease !important;
+        color: white !important;
     }
-    
-    .swal2-confirm:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
-    }
-    
-    .swal2-cancel {
-        border-radius: 12px !important;
-        padding: 10px 24px !important;
-        font-weight: 600 !important;
-        background: rgba(107, 114, 128, 0.1) !important;
-        color: #6b7280 !important;
-        border: 1px solid rgba(107, 114, 128, 0.2) !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    .swal2-cancel:hover {
-        background: rgba(107, 114, 128, 0.2) !important;
-        transform: translateY(-2px) !important;
-    }
-    
-    .swal2-icon {
-        animation: iconPop 0.5s ease !important;
-    }
-    
-    .swal2-icon.swal2-warning {
-        border-color: #f59e0b !important;
-        color: #f59e0b !important;
-    }
-    
-    .swal2-icon.swal2-success {
-        border-color: #10b981 !important;
-    }
-    
-    .swal2-icon.swal2-error {
-        border-color: #ef4444 !important;
-    }
-    
-    .swal2-icon.swal2-question {
-        border-color: #667eea !important;
-        color: #667eea !important;
-    }
-    
-    .swal2-loader {
-        border-color: #667eea !important;
-        border-top-color: transparent !important;
-        animation: spin 0.8s linear infinite !important;
-    }
-    
+
     /* Responsive */
     @media (max-width: 768px) {
-        .container-fluid {
-            padding: 15px !important;
+        #sidebar {
+            margin-left: -250px !important;
+            position: fixed !important;
+            z-index: 1000 !important;
+            height: 100vh !important;
         }
         
-        .welcome-title {
-            font-size: 1.2rem !important;
-        }
+        #sidebar.active { margin-left: 0 !important; }
+        #content, .main-content { width: 100% !important; }
+        .container-fluid { padding: 16px !important; }
         
-        .welcome-subtitle {
-            font-size: 0.8rem !important;
-        }
+        .welcome-title { font-size: 1.3rem; }
+        .stat-number { font-size: 1.2rem; }
+        .summary-stats { padding: 15px; }
         
-        .stat-number {
-            font-size: 24px !important;
-        }
-        
-        .current-month {
-            font-size: 16px !important;
-        }
-        
-        .budget-category {
-            font-size: 16px !important;
-        }
-        
-        .budget-actions {
+        .header-actions {
+            display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 10px;
+            margin-top: 15px;
         }
         
-        .btn-month {
-            padding: 6px 12px;
-            font-size: 12px;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .stat-icon {
-            width: 50px;
-            height: 50px;
+        .btn-primary-custom { width: 100%; justify-content: center; }
+        
+        .month-nav-row {
+            flex-direction: column;
+            gap: 15px;
         }
         
-        .stat-number {
-            font-size: 20px !important;
-        }
-        
-        .budget-card {
-            padding: 16px;
-        }
-        
-        .budget-amounts {
-            font-size: 12px;
-        }
+        .btn-month { width: 100%; text-align: center; }
     }
 </style>
 
@@ -708,12 +414,12 @@ include '../../includes/sidebar.php';
         <!-- Header -->
         <div class="welcome-card animated">
             <div class="row align-items-center">
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <h1 class="welcome-title">Manajemen Anggaran</h1>
-                    <p class="welcome-subtitle">Kelola anggaran bulanan untuk setiap kategori pengeluaran</p>
+                    <p class="welcome-subtitle">Pantau batasan pengeluaran bulanan Anda</p>
                 </div>
-                <div class="col-md-6 text-md-end mt-3 mt-md-0">
-                    <button class="btn-add-budget" data-bs-toggle="modal" data-bs-target="#addBudgetModal">
+                <div class="col-md-5 text-md-end header-actions">
+                    <button class="btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addBudgetModal">
                         <i class="fas fa-plus"></i> Tambah Anggaran
                     </button>
                 </div>
@@ -722,20 +428,21 @@ include '../../includes/sidebar.php';
 
         <!-- Month Navigation -->
         <div class="month-navigation animated" style="animation-delay: 0.1s">
-            <div class="row align-items-center">
-                <div class="col-md-4 text-md-start text-center mb-3 mb-md-0">
+            <div class="row align-items-center month-nav-row">
+                <div class="col-md-4 text-start">
                     <a href="?month=<?= $current_month == 1 ? 12 : $current_month - 1 ?>&year=<?= $current_month == 1 ? $current_year - 1 : $current_year ?>" class="btn-month">
-                        <i class="fas fa-chevron-left"></i> Bulan Sebelumnya
+                        <i class="fas fa-chevron-left me-2"></i> Sebelumnya
                     </a>
                 </div>
                 <div class="col-md-4 text-center">
-                    <span class="current-month">
-                        <i class="fas fa-calendar-alt"></i> <?= bulanIndonesia($current_month) ?> <?= $current_year ?>
-                    </span>
+                    <div class="current-month-display">
+                        <i class="fas fa-calendar-alt"></i> 
+                        <span><?= bulanIndonesia($current_month) ?> <?= $current_year ?></span>
+                    </div>
                 </div>
-                <div class="col-md-4 text-md-end text-center mt-3 mt-md-0">
+                <div class="col-md-4 text-end">
                     <a href="?month=<?= $current_month == 12 ? 1 : $current_month + 1 ?>&year=<?= $current_month == 12 ? $current_year + 1 : $current_year ?>" class="btn-month">
-                        Bulan Selanjutnya <i class="fas fa-chevron-right"></i>
+                        Selanjutnya <i class="fas fa-chevron-right ms-2"></i>
                     </a>
                 </div>
             </div>
@@ -743,31 +450,31 @@ include '../../includes/sidebar.php';
 
         <!-- Summary Stats -->
         <div class="row g-4 mb-4">
-            <div class="col-md-4">
+            <div class="col-6 col-md-4">
+                <div class="summary-stats animated" style="animation-delay: 0.15s">
+                    <div class="stat-icon-circle" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="stat-title">Total Target</div>
+                    <div class="stat-number"><?= formatRupiah($total_budget) ?></div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4">
                 <div class="summary-stats animated" style="animation-delay: 0.2s">
-                    <div class="stat-icon" style="background: #d1fae5;">
-                        <i class="fas fa-chart-line" style="color: #10b981; font-size: 28px;"></i>
+                    <div class="stat-icon-circle" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
+                        <i class="fas fa-shopping-bag"></i>
                     </div>
-                    <div class="stat-title">Total Anggaran</div>
-                    <div class="stat-number text-success" id="total-budget"><?= formatRupiah($total_budget) ?></div>
+                    <div class="stat-title">Terpakai</div>
+                    <div class="stat-number"><?= formatRupiah($total_spent) ?></div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-12 col-md-4">
                 <div class="summary-stats animated" style="animation-delay: 0.25s">
-                    <div class="stat-icon" style="background: #fee2e2;">
-                        <i class="fas fa-shopping-cart" style="color: #ef4444; font-size: 28px;"></i>
+                    <div class="stat-icon-circle" style="background: rgba(102, 126, 234, 0.1); color: #667eea;">
+                        <i class="fas fa-wallet"></i>
                     </div>
-                    <div class="stat-title">Total Pengeluaran</div>
-                    <div class="stat-number text-danger" id="total-spent"><?= formatRupiah($total_spent) ?></div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-stats animated" style="animation-delay: 0.3s">
-                    <div class="stat-icon" style="background: #e0e7ff;">
-                        <i class="fas fa-wallet" style="color: #667eea; font-size: 28px;"></i>
-                    </div>
-                    <div class="stat-title">Sisa Anggaran</div>
-                    <div class="stat-number <?= $remaining >= 0 ? 'text-success' : 'text-danger' ?>" id="total-remaining">
+                    <div class="stat-title">Sisa Saldo</div>
+                    <div class="stat-number <?= $remaining >= 0 ? 'text-success' : 'text-danger' ?>">
                         <?= formatRupiah($remaining) ?>
                     </div>
                 </div>
@@ -775,69 +482,74 @@ include '../../includes/sidebar.php';
         </div>
 
         <!-- Budget List -->
-        <div class="row g-4" id="budget-list">
+        <div class="row g-4">
             <?php if (count($budgets) > 0): ?>
-                <?php foreach ($budgets as $b): 
+                <?php foreach ($budgets as $index => $b): 
                     $percentage = $b['budget_amount'] > 0 ? ($b['spent_amount'] / $b['budget_amount']) * 100 : 0;
                     $statusClass = $percentage >= 100 ? 'danger' : ($percentage >= 80 ? 'warning' : 'safe');
-                    $statusText = $percentage >= 100 ? 'Over Budget' : ($percentage >= 80 ? 'Mendekati Limit' : 'Aman');
-                    $statusBadge = $percentage >= 100 ? 'danger' : ($percentage >= 80 ? 'warning' : 'safe');
+                    $statusText = $percentage >= 100 ? 'Over Budget' : ($percentage >= 80 ? 'Limit' : 'Aman');
                 ?>
-                <div class="col-md-6 col-lg-4 budget-item" data-id="<?= $b['id'] ?>" style="animation: fadeInUp 0.5s ease <?= ($key + 1) * 0.05 ?>s both;">
+                <div class="col-md-6 col-xl-4" style="animation: fadeInUp 0.5s ease <?= $index * 0.05 ?>s both;">
                     <div class="budget-card">
                         <div class="budget-header">
                             <div class="budget-category">
                                 <i class="fas fa-tag"></i> <?= htmlspecialchars($b['category_name']) ?>
                             </div>
-                            <div class="budget-actions">
-                                <button class="btn-edit-budget" onclick="editBudget(<?= $b['id'] ?>, <?= $b['category_id'] ?>, <?= $b['budget_amount'] ?>)">
-                                    <i class="fas fa-edit"></i> Edit
+                            <div class="dropdown dropdown-minimal">
+                                <button class="btn btn-link" data-bs-toggle="dropdown">
+                                    <i class="fas fa-ellipsis-h"></i>
                                 </button>
-                                <button class="btn-delete-budget" onclick="deleteBudget(<?= $b['id'] ?>, '<?= htmlspecialchars($b['category_name']) ?>')">
-                                    <i class="fas fa-trash"></i> Hapus
-                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                    <li>
+                                        <button class="dropdown-item" onclick="editBudget(<?= $b['id'] ?>, <?= $b['category_id'] ?>, <?= $b['budget_amount'] ?>)">
+                                            <i class="fas fa-pencil-alt me-2 text-primary"></i> Edit Anggaran
+                                        </button>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <button class="dropdown-item text-danger" onclick="deleteBudget(<?= $b['id'] ?>, '<?= htmlspecialchars($b['category_name']) ?>')">
+                                            <i class="fas fa-trash-alt me-2"></i> Hapus Anggaran
+                                        </button>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         
                         <div class="budget-amounts">
                             <div class="budget-amount">
-                                <span class="budget-label">Target Anggaran</span>
-                                <span class="budget-value primary budget-amount-value"><?= formatRupiah($b['budget_amount']) ?></span>
+                                <span class="budget-label">Target</span>
+                                <span class="budget-value"><?= formatRupiah($b['budget_amount']) ?></span>
                             </div>
                             <div class="budget-amount">
-                                <span class="budget-label">Pengeluaran Saat Ini</span>
-                                <span class="budget-value danger spent-amount-value"><?= formatRupiah($b['spent_amount']) ?></span>
-                            </div>
-                            <div class="budget-amount">
-                                <span class="budget-label">Sisa Anggaran</span>
-                                <span class="budget-value <?= ($b['budget_amount'] - $b['spent_amount']) >= 0 ? 'success' : 'danger' ?> remaining-amount-value">
-                                    <?= formatRupiah($b['budget_amount'] - $b['spent_amount']) ?>
-                                </span>
+                                <span class="budget-label">Terpakai</span>
+                                <span class="budget-value text-danger"><?= formatRupiah($b['spent_amount']) ?></span>
                             </div>
                         </div>
                         
                         <div class="progress">
-                            <div class="progress-bar <?= $statusClass ?>" style="width: <?= min($percentage, 100) ?>%"></div>
+                            <div class="progress-bar bg-<?= $statusClass ?>" style="width: <?= min($percentage, 100) ?>%"></div>
                         </div>
                         
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="budget-status status-<?= $statusBadge ?>">
+                            <span class="budget-status-pill status-<?= $statusClass ?>">
                                 <i class="fas fa-<?= $percentage >= 100 ? 'exclamation-triangle' : ($percentage >= 80 ? 'clock' : 'check-circle') ?>"></i>
                                 <?= $statusText ?>
                             </span>
-                            <span class="budget-label percentage-value"><?= round($percentage, 1) ?>%</span>
+                            <span class="budget-label"><?= round($percentage) ?>%</span>
                         </div>
                     </div>
                 </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <div class="col-12">
-                    <div class="empty-state animated" style="animation-delay: 0.2s">
-                        <i class="fas fa-chart-pie"></i>
-                        <p>Belum ada anggaran untuk bulan <?= bulanIndonesia($current_month) ?> <?= $current_year ?></p>
-                        <button class="btn-add-budget mt-3" data-bs-toggle="modal" data-bs-target="#addBudgetModal">
-                            <i class="fas fa-plus"></i> Buat Anggaran Sekarang
-                        </button>
+                <div class="col-12 text-center py-5">
+                    <div class="card p-5">
+                        <i class="fas fa-chart-pie fa-4x mb-3 opacity-20" style="color: #667eea;"></i>
+                        <p class="text-muted">Belum ada anggaran untuk bulan ini.</p>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addBudgetModal">
+                                Mulai Buat Anggaran
+                            </button>
+                        </div>
                     </div>
                 </div>
             <?php endif; ?>
@@ -850,45 +562,31 @@ include '../../includes/sidebar.php';
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-content-custom">
             <div class="modal-header modal-header-custom">
-                <h5 class="modal-title fw-bold">
-                    <i class="fas fa-plus-circle me-2"></i> Tambah Anggaran Baru
-                </h5>
+                <h5 class="modal-title fw-bold">Tambah Anggaran</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="addBudgetForm">
                 <div class="modal-body modal-body-custom">
                     <input type="hidden" name="month" value="<?= $current_month ?>">
                     <input type="hidden" name="year" value="<?= $current_year ?>">
-                    
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Kategori</label>
+                        <label class="form-label fw-bold">Kategori Pengeluaran</label>
                         <select name="category_id" id="budget_category_id" class="form-select" required>
                             <option value="">Pilih Kategori</option>
                             <?php foreach ($expense_categories as $cat): ?>
                             <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
                             <?php endforeach; ?>
                         </select>
-                        <?php if (count($expense_categories) == 0): ?>
-                            <div class="form-text text-danger">
-                                <i class="fas fa-exclamation-triangle"></i> 
-                                Belum ada kategori pengeluaran. <a href="../categories/index.php">Tambahkan kategori</a> terlebih dahulu.
-                            </div>
-                        <?php endif; ?>
                     </div>
-                    
                     <div class="mb-3">
                         <label class="form-label fw-bold">Jumlah Anggaran (Rp)</label>
-                        <input type="text" name="amount" id="budget_amount" class="form-control currency-input" placeholder="0" required>
-                        <div class="form-text">Masukkan target anggaran untuk kategori ini</div>
+                        <input type="text" id="budget_amount_display" class="form-control currency-input" placeholder="0" required>
+                        <input type="hidden" name="amount" id="budget_amount_hidden">
                     </div>
                 </div>
                 <div class="modal-footer modal-footer-custom">
-                    <button type="button" class="btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i> Batal
-                    </button>
-                    <button type="submit" class="btn-primary-custom">
-                        <i class="fas fa-save me-1"></i> Simpan Anggaran
-                    </button>
+                    <button type="button" class="btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn-primary-custom">Simpan Anggaran</button>
                 </div>
             </form>
         </div>
@@ -900,9 +598,7 @@ include '../../includes/sidebar.php';
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-content-custom">
             <div class="modal-header modal-header-custom">
-                <h5 class="modal-title fw-bold">
-                    <i class="fas fa-edit me-2"></i> Edit Anggaran
-                </h5>
+                <h5 class="modal-title fw-bold">Edit Anggaran</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="editBudgetForm">
@@ -911,26 +607,20 @@ include '../../includes/sidebar.php';
                     <div class="mb-3">
                         <label class="form-label fw-bold">Kategori</label>
                         <select name="category_id" id="edit_category_id" class="form-select" required>
-                            <option value="">Pilih Kategori</option>
                             <?php foreach ($expense_categories as $cat): ?>
                             <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    
                     <div class="mb-3">
                         <label class="form-label fw-bold">Jumlah Anggaran (Rp)</label>
-                        <input type="text" name="amount" id="edit_amount" class="form-control currency-input" placeholder="0" required>
-                        <div class="form-text">Masukkan target anggaran untuk kategori ini</div>
+                        <input type="text" id="edit_amount_display" class="form-control currency-input" required>
+                        <input type="hidden" name="amount" id="edit_amount_hidden">
                     </div>
                 </div>
                 <div class="modal-footer modal-footer-custom">
-                    <button type="button" class="btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i> Batal
-                    </button>
-                    <button type="submit" class="btn-primary-custom">
-                        <i class="fas fa-save me-1"></i> Update Anggaran
-                    </button>
+                    <button type="button" class="btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn-primary-custom">Update Anggaran</button>
                 </div>
             </form>
         </div>
@@ -938,392 +628,156 @@ include '../../includes/sidebar.php';
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // Format currency input
-    function formatNumber(number) {
-        return new Intl.NumberFormat('id-ID').format(number);
+document.addEventListener('DOMContentLoaded', function() {
+    var swalBaseConfig = {
+        customClass: {
+            popup: 'swal2-popup',
+            title: 'swal2-title',
+            confirmButton: 'swal2-confirm',
+            cancelButton: 'swal2-cancel'
+        },
+        buttonsStyling: false
+    };
+
+    function getSwalConfig(overrides) {
+        var config = {};
+        for (var key in swalBaseConfig) config[key] = swalBaseConfig[key];
+        if (overrides) for (var key in overrides) config[key] = overrides[key];
+        return config;
     }
-    
-    function parseNumber(str) {
-        return parseInt(str.replace(/[^0-9]/g, '')) || 0;
+
+    // Currency Formatting
+    var currencyInputs = document.querySelectorAll('.currency-input');
+    for (var i = 0; i < currencyInputs.length; i++) {
+        currencyInputs[i].addEventListener('input', function() {
+            var val = this.value.replace(/[^\d]/g, '');
+            var num = val ? parseInt(val, 10) : 0;
+            if (this.id === 'budget_amount_display') document.getElementById('budget_amount_hidden').value = num;
+            if (this.id === 'edit_amount_display') document.getElementById('edit_amount_hidden').value = num;
+            this.value = val ? num.toLocaleString('id-ID') : '0';
+        });
     }
-    
-    document.querySelectorAll('.currency-input').forEach(input => {
-        input.addEventListener('input', function(e) {
-            let value = this.value.replace(/[^0-9]/g, '');
-            if (value) {
-                this.value = parseInt(value).toLocaleString('id-ID');
-            } else {
-                this.value = '';
+
+    // Add Budget
+    var addForm = document.getElementById('addBudgetForm');
+    if (addForm) {
+        addForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var amount = document.getElementById('budget_amount_hidden').value;
+            if (!amount || amount <= 0) {
+                Swal.fire(getSwalConfig({ title: 'Oops!', text: 'Masukkan jumlah anggaran yang valid', icon: 'error' }));
+                return;
             }
-        });
-    });
-    
-    // Update totals after add/edit/delete
-    function updateTotals() {
-        let totalBudget = 0;
-        let totalSpent = 0;
-        
-        document.querySelectorAll('.budget-item').forEach(item => {
-            const budgetAmount = parseNumber(item.querySelector('.budget-amount-value').innerText);
-            const spentAmount = parseNumber(item.querySelector('.spent-amount-value').innerText);
-            totalBudget += budgetAmount;
-            totalSpent += spentAmount;
-        });
-        
-        const remaining = totalBudget - totalSpent;
-        
-        document.getElementById('total-budget').innerHTML = formatRupiah(totalBudget);
-        document.getElementById('total-spent').innerHTML = formatRupiah(totalSpent);
-        document.getElementById('total-remaining').innerHTML = formatRupiah(remaining);
-        
-        const remainingElement = document.getElementById('total-remaining');
-        if (remaining >= 0) {
-            remainingElement.className = 'stat-number text-success';
-        } else {
-            remainingElement.className = 'stat-number text-danger';
-        }
-    }
-    
-    // ADD Budget
-    document.getElementById('addBudgetForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        let categoryId = document.getElementById('budget_category_id').value;
-        let categoryName = document.getElementById('budget_category_id').options[document.getElementById('budget_category_id').selectedIndex]?.text;
-        let amountRaw = document.getElementById('budget_amount').value;
-        let amount = parseNumber(amountRaw);
-        let month = document.querySelector('input[name="month"]').value;
-        let year = document.querySelector('input[name="year"]').value;
-        
-        if (!categoryId) {
-            Swal.fire({
-                title: 'Oops!',
-                text: 'Pilih kategori terlebih dahulu',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
-        
-        if (amount <= 0) {
-            Swal.fire({
-                title: 'Oops!',
-                text: 'Jumlah anggaran harus lebih dari 0',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
-        
-        Swal.fire({
-            title: 'Tambah Anggaran?',
-            html: `
-                <div style="text-align: left; background: rgba(102, 126, 234, 0.1); padding: 15px; border-radius: 12px;">
-                    <p><strong><i class="fas fa-tag"></i> Kategori:</strong> ${escapeHtml(categoryName)}</p>
-                    <p><strong><i class="fas fa-money-bill-wave"></i> Jumlah:</strong> ${formatRupiah(amount)}</p>
-                    <p><strong><i class="fas fa-calendar"></i> Periode:</strong> ${bulanIndonesia(parseInt(month))} ${year}</p>
-                </div>
-                <small class="mt-2 d-block">Apakah data sudah benar?</small>
-            `,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#667eea',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: '<i class="fas fa-save"></i> Ya, Simpan!',
-            cancelButtonText: '<i class="fas fa-times"></i> Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Menyimpan...',
-                    text: 'Sedang menyimpan anggaran',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-                
-                $.ajax({
-                    url: 'add.php',
-                    type: 'POST',
-                    data: {
-                        category_id: categoryId,
-                        amount: amount,
-                        month: month,
-                        year: year
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            bootstrap.Modal.getInstance(document.getElementById('addBudgetModal')).hide();
-                            document.getElementById('addBudgetForm').reset();
-                            
-                            Swal.fire({
-                                title: 'Berhasil!',
-                                text: response.message,
-                                icon: 'success',
-                                confirmButtonText: 'OK',
-                                timer: 2000,
-                                timerProgressBar: true,
-                                didOpen: () => {
-                                    canvasConfetti({
-                                        particleCount: 100,
-                                        spread: 70,
-                                        origin: { y: 0.6 }
-                                    });
-                                }
-                            }).then(() => {
-                                window.location.reload();
-                            });
+            
+            Swal.fire(getSwalConfig({ title: 'Simpan Anggaran?', icon: 'question', showCancelButton: true, confirmButtonText: 'Ya, Simpan!' }))
+            .then(function(res) {
+                if (result.isConfirmed) {
+                    Swal.fire(getSwalConfig({ title: 'Memproses...', didOpen: function() { Swal.showLoading(); } }));
+                    var formData = new FormData(addForm);
+                    fetch('add.php', { method: 'POST', body: formData })
+                    .then(function(r) { return r.json(); })
+                    .then(function(d) {
+                        if (d.success) {
+                            Swal.fire(getSwalConfig({ title: 'Berhasil!', text: d.message, icon: 'success' })).then(function() { window.location.reload(); });
                         } else {
-                            Swal.fire({
-                                title: 'Gagal!',
-                                text: response.message,
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
+                            Swal.fire(getSwalConfig({ title: 'Gagal!', text: d.message, icon: 'error' }));
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            title: 'Error!',
-                            text: 'Terjadi kesalahan saat menyimpan data',
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-                });
-            }
+                    })
+                    .catch(function() { Swal.fire(getSwalConfig({ title: 'Error!', text: 'Terjadi kesalahan sistem', icon: 'error' })); });
+                }
+            });
         });
-    });
-    
-    // EDIT Budget
-    document.getElementById('editBudgetForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        let id = document.getElementById('edit_budget_id').value;
-        let categoryId = document.getElementById('edit_category_id').value;
-        let categoryName = document.getElementById('edit_category_id').options[document.getElementById('edit_category_id').selectedIndex]?.text;
-        let amountRaw = document.getElementById('edit_amount').value;
-        let amount = parseNumber(amountRaw);
-        
-        if (!categoryId) {
-            Swal.fire({
-                title: 'Oops!',
-                text: 'Pilih kategori terlebih dahulu',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
-        
-        if (amount <= 0) {
-            Swal.fire({
-                title: 'Oops!',
-                text: 'Jumlah anggaran harus lebih dari 0',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
-        
-        Swal.fire({
-            title: 'Update Anggaran?',
-            html: `
-                <div style="text-align: left; background: rgba(102, 126, 234, 0.1); padding: 15px; border-radius: 12px;">
-                    <p><strong><i class="fas fa-tag"></i> Kategori:</strong> ${escapeHtml(categoryName)}</p>
-                    <p><strong><i class="fas fa-money-bill-wave"></i> Jumlah Baru:</strong> ${formatRupiah(amount)}</p>
-                </div>
-                <small class="mt-2 d-block">Apakah Anda yakin ingin mengupdate anggaran ini?</small>
-            `,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#667eea',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: '<i class="fas fa-save"></i> Ya, Update!',
-            cancelButtonText: '<i class="fas fa-times"></i> Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Mengupdate...',
-                    text: 'Sedang mengupdate anggaran',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-                
-                $.ajax({
-                    url: 'edit.php',
-                    type: 'POST',
-                    data: {
-                        id: id,
-                        category_id: categoryId,
-                        amount: amount
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            bootstrap.Modal.getInstance(document.getElementById('editBudgetModal')).hide();
-                            
-                            Swal.fire({
-                                title: 'Berhasil!',
-                                text: response.message,
-                                icon: 'success',
-                                confirmButtonText: 'OK',
-                                timer: 2000,
-                                timerProgressBar: true,
-                                didOpen: () => {
-                                    canvasConfetti({
-                                        particleCount: 100,
-                                        spread: 70,
-                                        origin: { y: 0.6 }
-                                    });
-                                }
-                            }).then(() => {
-                                window.location.reload();
-                            });
+    }
+
+    // Edit Budget
+    var editForm = document.getElementById('editBudgetForm');
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var amount = document.getElementById('edit_amount_hidden').value;
+            if (!amount || amount <= 0) {
+                Swal.fire(getSwalConfig({ title: 'Oops!', text: 'Masukkan jumlah anggaran yang valid', icon: 'error' }));
+                return;
+            }
+
+            Swal.fire(getSwalConfig({ title: 'Update Anggaran?', icon: 'question', showCancelButton: true, confirmButtonText: 'Ya, Update!' }))
+            .then(function(res) {
+                if (res.isConfirmed) {
+                    Swal.fire(getSwalConfig({ title: 'Memproses...', didOpen: function() { Swal.showLoading(); } }));
+                    var formData = new FormData(editForm);
+                    fetch('edit.php', { method: 'POST', body: formData })
+                    .then(function(r) { return r.json(); })
+                    .then(function(d) {
+                        if (d.success) {
+                            Swal.fire(getSwalConfig({ title: 'Berhasil!', text: d.message, icon: 'success' })).then(function() { window.location.reload(); });
                         } else {
-                            Swal.fire({
-                                title: 'Gagal!',
-                                text: response.message,
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
+                            Swal.fire(getSwalConfig({ title: 'Gagal!', text: d.message, icon: 'error' }));
                         }
-                    },
-                    error: function() {
-                        Swal.fire({
-                            title: 'Error!',
-                            text: 'Terjadi kesalahan saat mengupdate data',
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-                });
-            }
-        });
-    });
-    
-    // DELETE Budget
-    function deleteBudget(id, categoryName) {
-        Swal.fire({
-            title: 'Hapus Anggaran?',
-            html: `Apakah Anda yakin ingin menghapus anggaran untuk kategori <strong>"${escapeHtml(categoryName)}"</strong>?<br><small style="color: #ef4444;">⚠️ Data yang dihapus tidak dapat dikembalikan!</small>`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ef4444',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: '<i class="fas fa-trash"></i> Ya, Hapus!',
-            cancelButtonText: '<i class="fas fa-times"></i> Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Menghapus...',
-                    text: 'Sedang menghapus anggaran',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-                
-                $.ajax({
-                    url: 'delete.php',
-                    type: 'POST',
-                    data: { id: id },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire({
-                                title: 'Berhasil!',
-                                text: response.message,
-                                icon: 'success',
-                                confirmButtonText: 'OK',
-                                timer: 2000,
-                                timerProgressBar: true
-                            }).then(() => {
-                                window.location.reload();
-                            });
-                        } else {
-                            Swal.fire({
-                                title: 'Gagal!',
-                                text: response.message,
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
-                        }
-                    },
-                    error: function() {
-                        Swal.fire({
-                            title: 'Error!',
-                            text: 'Terjadi kesalahan saat menghapus data',
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-                });
-            }
-        });
-    }
-    
-    function editBudget(id, categoryId, amount) {
-        document.getElementById('edit_budget_id').value = id;
-        document.getElementById('edit_category_id').value = categoryId;
-        document.getElementById('edit_amount').value = formatNumber(amount);
-        
-        var modal = new bootstrap.Modal(document.getElementById('editBudgetModal'));
-        modal.show();
-    }
-    
-    function bulanIndonesia(month) {
-        const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-        return months[month - 1];
-    }
-    
-    function formatRupiah(number) {
-        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
-    }
-    
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-    
-    // Success message with confetti animation
-    <?php if (isset($_SESSION['success_message'])): ?>
-    Swal.fire({
-        title: 'Berhasil!',
-        text: '<?= $_SESSION['success_message'] ?>',
-        icon: 'success',
-        confirmButtonColor: '#667eea',
-        confirmButtonText: 'OK',
-        didOpen: () => {
-            canvasConfetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 }
+                    })
+                    .catch(function() { Swal.fire(getSwalConfig({ title: 'Error!', text: 'Terjadi kesalahan sistem', icon: 'error' })); });
+                }
             });
-        }
-    }).then(() => {
+        });
+    }
+
+    // Success Alerts from Session
+    <?php if (isset($_SESSION['success_message']) || isset($_SESSION['success'])): ?>
+    <?php $msg = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : $_SESSION['success']; ?>
+    Swal.fire(getSwalConfig({ title: 'Berhasil!', text: <?= json_encode($msg) ?>, icon: 'success' })).then(function() {
         window.location.href = 'index.php?month=<?= $current_month ?>&year=<?= $current_year ?>';
     });
-    <?php unset($_SESSION['success_message']); ?>
+    <?php unset($_SESSION['success_message'], $_SESSION['success']); ?>
     <?php endif; ?>
-    
-    <?php if (isset($_SESSION['error_message'])): ?>
-    Swal.fire({
-        title: 'Gagal!',
-        text: '<?= $_SESSION['error_message'] ?>',
-        icon: 'error',
-        confirmButtonColor: '#667eea',
-        confirmButtonText: 'OK'
-    });
-    <?php unset($_SESSION['error_message']); ?>
-    <?php endif; ?>
-</script>
 
-<?php include '../../includes/footer.php'; ?>
+    <?php if (isset($_SESSION['error_message']) || isset($_SESSION['error'])): ?>
+    <?php $msg = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : $_SESSION['error']; ?>
+    Swal.fire(getSwalConfig({ title: 'Gagal!', text: <?= json_encode($msg) ?>, icon: 'error' }));
+    <?php unset($_SESSION['error_message'], $_SESSION['error']); ?>
+    <?php endif; ?>
+});
+
+// Global Helpers
+function editBudget(id, categoryId, amount) {
+    document.getElementById('edit_budget_id').value = id;
+    document.getElementById('edit_category_id').value = categoryId;
+    document.getElementById('edit_amount_display').value = new Intl.NumberFormat('id-ID').format(amount);
+    document.getElementById('edit_amount_hidden').value = amount;
+    var modal = new bootstrap.Modal(document.getElementById('editBudgetModal'));
+    modal.show();
+}
+
+function deleteBudget(id, categoryName) {
+    Swal.fire({
+        customClass: {
+            popup: 'swal2-popup',
+            title: 'swal2-title',
+            confirmButton: 'swal2-confirm bg-danger',
+            cancelButton: 'swal2-cancel'
+        },
+        buttonsStyling: false,
+        title: 'Hapus Anggaran?',
+        html: 'Hapus anggaran untuk <strong>' + categoryName + '</strong>?<br><small class="text-danger">Data tidak bisa dikembalikan!</small>',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+    }).then(function(result) {
+        if (result.isConfirmed) {
+            Swal.fire({ title: 'Menghapus...', customClass: { popup: 'swal2-popup' }, buttonsStyling: false, didOpen: function() { Swal.showLoading(); } });
+            var formData = new FormData();
+            formData.append('id', id);
+            fetch('delete.php', { method: 'POST', body: formData })
+            .then(function(r) { return r.json(); })
+            .then(function(d) {
+                if (d.success) {
+                    Swal.fire({ title: 'Berhasil!', text: d.message, icon: 'success', customClass: { popup: 'swal2-popup', confirmButton: 'swal2-confirm' }, buttonsStyling: false })
+                    .then(function() { window.location.reload(); });
+                } else {
+                    Swal.fire({ title: 'Gagal!', text: d.message, icon: 'error', customClass: { popup: 'swal2-popup', confirmButton: 'swal2-confirm' }, buttonsStyling: false });
+                }
+            });
+        }
+    });
+}
+</script>

@@ -129,453 +129,135 @@ include 'includes/sidebar.php';
 ?>
 
 <style>
-    /* ========== LAYOUT UTAMA ========== */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+    /* ========== DASHBOARD CUSTOM STYLES ========== */
     
-    body {
-        overflow-x: hidden !important;
-        width: 100% !important;
-        position: relative;
-    }
-    
-    .wrapper {
-        display: flex !important;
-        width: 100% !important;
-        align-items: stretch !important;
-        overflow-x: hidden !important;
-    }
-    
-    #sidebar {
-        min-width: 250px !important;
-        max-width: 250px !important;
-        width: 250px !important;
-        transition: all 0.3s;
-        flex-shrink: 0 !important;
-        background: #2c3e50;
-        color: #fff;
-    }
-    
-    #content, .main-content {
-        width: calc(100% - 250px) !important;
-        min-height: 100vh !important;
-        transition: all 0.3s;
-        overflow-x: hidden !important;
-        flex: 1 !important;
-        background: #f8f9fa;
-    }
+    /* Override or add specific dashboard styles here */
     
     .container-fluid {
         width: 100% !important;
         max-width: 100% !important;
-        padding: 20px !important;
+        padding: 24px !important;
         margin: 0 !important;
-        overflow-x: hidden !important;
     }
     
-    @media (max-width: 768px) {
-        #sidebar {
-            margin-left: -250px !important;
-            position: fixed !important;
-            z-index: 1000 !important;
-            height: 100vh !important;
-        }
-        
-        #sidebar.active {
-            margin-left: 0 !important;
-        }
-        
-        #content, .main-content {
-            width: 100% !important;
-        }
-        
-        .container-fluid {
-            padding: 15px !important;
-        }
-    }
-    
-     /* ========== WELCOME CARD ========== */
+    /* Welcome Card Gradient & Pattern */
     .welcome-card {
-    background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
-    border-radius: 20px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
+        background: #ffffff;
+        color: #1f2937;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
     
     .welcome-card::before {
         content: '';
         position: absolute;
         top: -50%;
-        right: -20%;
+        right: -10%;
         width: 300px;
         height: 300px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 50%;
-    }
-    
-    .welcome-card::after {
-        content: '';
-        position: absolute;
-        bottom: -30%;
-        left: -10%;
-        width: 200px;
-        height: 200px;
-        background: rgba(255,255,255,0.05);
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
         border-radius: 50%;
     }
     
     .welcome-title {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
         font-weight: 700;
-        margin: 0;
-        position: relative;
-        z-index: 1;
+        margin-bottom: 8px;
+        color: #1f2937;
     }
     
     .welcome-subtitle {
-        margin: 8px 0 0 0;
-        opacity: 0.9;
-        font-size: 0.9rem;
-        position: relative;
-        z-index: 1;
-    }
-    
-    /* ========== STAT CARDS ========== */
-    .stat-card {
-        background: white;
-        border-radius: 20px;
-        padding: 20px;
-        transition: all 0.3s ease;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        height: 100%;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .stat-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-    
-    .stat-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 15px;
-    }
-    
-    .stat-icon i {
-        font-size: 24px;
-    }
-    
-    .stat-title {
-        font-size: 12px;
         color: #6b7280;
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        font-weight: 600;
-        letter-spacing: 0.5px;
+        font-size: 1rem;
     }
-    
-    .stat-value {
-        font-size: 24px;
-        font-weight: 800;
-        color: #1f2937;
-        margin-bottom: 8px;
-    }
-    
-    .stat-change {
-        font-size: 11px;
-        color: #9ca3af;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-    
-    .text-success {
-        color: #10b981 !important;
-    }
-    
-    .text-danger {
-        color: #ef4444 !important;
-    }
-    
-    /* ========== CHART CARDS ========== */
-    .chart-card {
-        background: white;
-        border-radius: 20px;
-        padding: 20px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-        height: 100%;
-    }
-    
-    .chart-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-    
-    .card-title-custom {
-        font-size: 16px;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        border-left: 4px solid #667eea;
-        padding-left: 15px;
-    }
-    
-    .card-title-custom i {
-        color: #667eea;
-        font-size: 18px;
-    }
-    
-    /* ========== TRANSACTIONS TABLE ========== */
-    .transactions-card {
-        background: white;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    
-    .card-header-custom {
-        padding: 18px 24px;
-        background: #f8fafc;
-        border-bottom: 1px solid #e5e7eb;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    
-    .table-custom {
-        margin-bottom: 0;
-    }
-    
-    .table-custom thead {
-        background: #f9fafb;
-    }
-    
-    .table-custom thead th {
-        padding: 14px 16px;
-        font-weight: 600;
-        color: #4b5563;
-        border-bottom: 1px solid #e5e7eb;
-        font-size: 13px;
-        white-space: nowrap;
-    }
-    
-    .table-custom tbody td {
-        padding: 14px 16px;
-        vertical-align: middle;
-        border-bottom: 1px solid #f0f0f0;
-        font-size: 14px;
-    }
-    
-    .table-custom tbody tr:hover {
-        background: #f9fafb;
-    }
-    
-    .transaction-type {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-    
-    .income-badge {
-        background: #d1fae5;
-        color: #059669;
-    }
-    
-    .expense-badge {
-        background: #fee2e2;
-        color: #dc2626;
-    }
-    
-    /* Category Items */
-    .category-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 0;
-        border-bottom: 1px solid #f3f4f6;
-    }
-    
-    .category-item:last-child {
-        border-bottom: none;
-    }
-    
-    .category-name {
-        font-size: 13px;
-        font-weight: 500;
-        color: #4b5563;
-    }
-    
-    .category-amount {
-        font-size: 13px;
-        font-weight: 600;
-        color: #1f2937;
-    }
-    
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 40px 20px;
-    }
-    
-    .empty-state i {
-        font-size: 48px;
-        color: #d1d5db;
-        margin-bottom: 15px;
-    }
-    
-    .empty-state p {
-        color: #6b7280;
-        margin-bottom: 15px;
-    }
-    
-    /* Buttons */
+
     .btn-primary-custom {
-        background: linear-gradient(135deg, rgba(57, 57, 57, 0.87) 0%, #34d399 100%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        border: none;
         padding: 10px 24px;
         border-radius: 12px;
         font-weight: 600;
         transition: all 0.3s ease;
+        text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        text-decoration: none;
+        border: none;
     }
     
     .btn-primary-custom:hover {
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         color: white;
-        text-decoration: none;
     }
     
-    .badge {
-        border-radius: 20px !important;
-        padding: 4px 12px !important;
-        font-weight: 500 !important;
-    }
-    
-    /* Animations */
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .animated {
-        animation: fadeInUp 0.5s ease-out forwards;
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    
-    /* Responsive */
+    /* Responsive Adjustments */
     @media (max-width: 768px) {
         .container-fluid {
             padding: 15px !important;
         }
         
         .welcome-title {
-            font-size: 1.2rem !important;
+            font-size: 1.4rem !important;
         }
         
         .welcome-subtitle {
-            font-size: 0.8rem !important;
+            font-size: 0.9rem !important;
         }
-        
-        .stat-value {
-            font-size: 20px !important;
+
+        .stat-card {
+            padding: 20px;
         }
-        
-        .stat-icon {
-            width: 40px;
-            height: 40px;
-        }
-        
-        .stat-icon i {
-            font-size: 20px;
-        }
-        
+
+        /* Mobile Table Transformation */
         .table-custom thead {
             display: none;
         }
         
         .table-custom tbody td {
             display: block;
-            padding: 10px 16px;
+            padding: 12px 16px;
             border-bottom: none;
             position: relative;
-            padding-left: 45%;
+            padding-left: 40%;
+            text-align: right;
         }
         
         .table-custom tbody td:before {
             content: attr(data-label);
             position: absolute;
             left: 16px;
-            width: calc(45% - 20px);
+            width: calc(40% - 20px);
             font-weight: 600;
-            color: #4b5563;
+            color: #6b7280;
             font-size: 12px;
+            text-align: left;
         }
         
         .table-custom tbody tr {
             border-bottom: 1px solid #e5e7eb;
             display: block;
             margin-bottom: 10px;
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         
         .table-custom tbody tr:last-child {
-            border-bottom: none;
+            margin-bottom: 0;
         }
-    }
-    
-    @media (max-width: 576px) {
-        .stat-value {
-            font-size: 18px !important;
-        }
-        
-        .card-title-custom {
-            font-size: 14px;
-        }
-        
-        .welcome-card {
-            padding: 16px 20px;
+
+        .transaction-type {
+            justify-content: flex-end;
         }
     }
 </style>
 
 <!-- Main Content -->
-<div id="content" class="main-content">
+<div class="main-content">
     <div class="container-fluid">
         <!-- Welcome Section -->
         <div class="welcome-card animated" style="animation-delay: 0s">

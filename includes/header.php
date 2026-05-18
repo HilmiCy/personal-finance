@@ -30,7 +30,7 @@ if (!isset($current_page)) {
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f0f2f5;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -145,6 +145,28 @@ if (!isset($current_page)) {
             margin-left: 280px;
             min-height: 100vh;
             padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* Mobile Top Nav */
+        .mobile-header {
+            display: none;
+            background: #fff;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #4b5563;
+            cursor: pointer;
         }
 
         /* Stats Cards */
@@ -368,12 +390,18 @@ if (!isset($current_page)) {
 
         /* Responsive */
         @media (max-width: 768px) {
+            .mobile-header {
+                display: flex;
+            }
+
             .sidebar {
                 transform: translateX(-100%);
+                width: 260px;
             }
             
             .main-content {
                 margin-left: 0;
+                padding: 15px;
             }
             
             .stat-value {
@@ -382,6 +410,10 @@ if (!isset($current_page)) {
             
             .welcome-title {
                 font-size: 22px;
+            }
+
+            .welcome-card {
+                padding: 20px;
             }
             
             .table-custom {
@@ -440,3 +472,11 @@ if (!isset($current_page)) {
     </style>
 </head>
 <body>
+    <div class="mobile-header">
+        <div class="logo-mobile" style="font-weight: 800; font-size: 20px; color: #667eea;">
+            <i class="fas fa-chart-line"></i> <?= APP_NAME ?>
+        </div>
+        <button class="menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>

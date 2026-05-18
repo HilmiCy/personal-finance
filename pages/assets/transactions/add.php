@@ -83,25 +83,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($assetTransaction->create($data)) {
     if ($type == 'sell' && isset($_SESSION['last_sale'])) {
         $sale = $_SESSION['last_sale'];
-        $profitLossFormatted = ($sale['profit_loss'] >= 0 ? '🟢 PROFIT' : '🔴 LOSS');
+        $profitLossFormatted = ($sale['profit_loss'] >= 0 ? 'PROFIT' : 'LOSS');
         
-        $_SESSION['success'] = "✅ Transaksi penjualan berhasil!\n\n";
-        $_SESSION['success'] .= "📊 DETAIL TRANSAKSI:\n";
+        $_SESSION['success'] = "Transaksi penjualan berhasil!\n\n";
+        $_SESSION['success'] .= "DETAIL TRANSAKSI:\n";
         $_SESSION['success'] .= "• Jumlah Jual: " . number_format($sale['quantity'], 4) . " unit\n";
         $_SESSION['success'] .= "• Harga Jual: " . formatRupiah($sale['sell_price']) . " / unit\n";
         $_SESSION['success'] .= "• Total Hasil Jual: " . formatRupiah($sale['revenue']) . "\n\n";
         
-        $_SESSION['success'] .= "📈 DETAIL PEMBELIAN (FIFO):\n";
+        $_SESSION['success'] .= "DETAIL PEMBELIAN (FIFO):\n";
         foreach ($sale['debug_buys'] as $index => $buy) {
             $_SESSION['success'] .= "• Batch " . ($index + 1) . ": " . number_format($buy['sell_qty'], 4) . " unit @ " . formatRupiah($buy['buy_price']) . " = " . formatRupiah($buy['cost']) . "\n";
         }
         
-        $_SESSION['success'] .= "\n💰 TOTAL MODAL: " . formatRupiah($sale['total_cost']) . "\n";
-        $_SESSION['success'] .= "📊 " . $profitLossFormatted . ": " . formatRupiah(abs($sale['profit_loss'])) . " (" . number_format(abs($sale['profit_percent']), 2) . "%)\n";
+        $_SESSION['success'] .= "\nTOTAL MODAL: " . formatRupiah($sale['total_cost']) . "\n";
+        $_SESSION['success'] .= "STATUS " . $profitLossFormatted . ": " . formatRupiah(abs($sale['profit_loss'])) . " (" . number_format(abs($sale['profit_percent']), 2) . "%)\n";
         
         unset($_SESSION['last_sale']);
     } else {
-        $_SESSION['success'] = '✅ Transaksi pembelian berhasil ditambahkan!';
+        $_SESSION['success'] = 'Transaksi pembelian berhasil ditambahkan!';
     }
 }
 }

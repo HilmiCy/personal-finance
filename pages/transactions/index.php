@@ -101,7 +101,7 @@ include '../../includes/sidebar.php';
         transition: all 0.3s;
         overflow-x: hidden;
         flex: 1;
-        background: #f8f9fa;
+        background: #f0f2f5;
     }
     
     .container-fluid {
@@ -562,10 +562,120 @@ include '../../includes/sidebar.php';
         }
     }
     
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
+    @keyframes iconPop {
+        0% {
+            transform: scale(0);
+            opacity: 0;
+        }
+        80% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
     .animated {
         animation: fadeInUp 0.5s ease-out forwards;
     }
     
+    /* SweetAlert2 Professional Style */
+    .swal2-popup {
+        background: rgba(255, 255, 255, 0.98) !important;
+        backdrop-filter: blur(20px) !important;
+        border-radius: 24px !important;
+        padding: 2em !important;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        animation: fadeInScale 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    .swal2-title {
+        color: #1f2937 !important;
+        font-weight: 700 !important;
+        font-size: 1.5rem !important;
+    }
+    
+    .swal2-html-container {
+        color: #4b5563 !important;
+        font-size: 0.95rem !important;
+    }
+    
+    .swal2-confirm {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        border-radius: 12px !important;
+        padding: 10px 24px !important;
+        font-weight: 600 !important;
+        border: none !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .swal2-confirm:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
+    }
+    
+    .swal2-cancel {
+        border-radius: 12px !important;
+        padding: 10px 24px !important;
+        font-weight: 600 !important;
+        background: rgba(107, 114, 128, 0.1) !important;
+        color: #6b7280 !important;
+        border: 1px solid rgba(107, 114, 128, 0.2) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .swal2-cancel:hover {
+        background: rgba(107, 114, 128, 0.2) !important;
+        transform: translateY(-2px) !important;
+    }
+    
+    .swal2-icon {
+        animation: iconPop 0.5s ease !important;
+    }
+    
+    .swal2-icon.swal2-warning {
+        border-color: #f59e0b !important;
+        color: #f59e0b !important;
+    }
+    
+    .swal2-icon.swal2-success {
+        border-color: #10b981 !important;
+    }
+    
+    .swal2-icon.swal2-error {
+        border-color: #ef4444 !important;
+    }
+    
+    .swal2-icon.swal2-question {
+        border-color: #667eea !important;
+        color: #667eea !important;
+    }
+    
+    .swal2-loader {
+        border-color: #667eea !important;
+        border-top-color: transparent !important;
+        animation: spin 0.8s linear infinite !important;
+    }
+
     /* ========== RESPONSIVE ========== */
     @media (max-width: 768px) {
         #sidebar {
@@ -586,6 +696,11 @@ include '../../includes/sidebar.php';
         .container-fluid {
             padding: 15px;
         }
+
+        .summary-card {
+            padding: 15px;
+            margin-bottom: 15px;
+        }
         
         .table-custom thead {
             display: none;
@@ -594,32 +709,59 @@ include '../../includes/sidebar.php';
         .table-custom tbody td {
             display: block;
             padding: 12px 16px;
-            padding-left: 50%;
+            padding-left: 45%;
             position: relative;
+            text-align: right;
+            border-bottom: none;
         }
         
         .table-custom tbody td:before {
             content: attr(data-label);
             position: absolute;
             left: 16px;
-            width: calc(50% - 20px);
+            width: calc(45% - 20px);
             font-weight: 600;
-            color: #4b5563;
+            color: #6b7280;
+            text-align: left;
+            font-size: 13px;
         }
         
         .table-custom tbody tr {
             border-bottom: 1px solid #e5e7eb;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .table-custom tbody tr:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Adjust badges in mobile table */
+        .badge, .badge-income, .badge-expense, .badge-transfer, .transaction-type {
+            justify-content: flex-end;
         }
         
         .summary-value {
-            font-size: 20px;
+            font-size: 18px;
         }
         
         .pagination-custom {
             flex-direction: column;
             align-items: center;
+            gap: 15px;
+        }
+
+        .card-header-custom {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .pagination-info {
+            font-size: 12px;
         }
     }
     
@@ -1661,7 +1803,14 @@ include '../../includes/sidebar.php';
                     title: 'Berhasil!',
                     text: data.message,
                     icon: 'success',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    didOpen: () => {
+                        canvasConfetti({
+                            particleCount: 100,
+                            spread: 70,
+                            origin: { y: 0.6 }
+                        });
+                    }
                 }).then(() => {
                     window.location.reload();
                 });
@@ -1711,7 +1860,14 @@ include '../../includes/sidebar.php';
                     title: 'Berhasil!',
                     text: data.message,
                     icon: 'success',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    didOpen: () => {
+                        canvasConfetti({
+                            particleCount: 100,
+                            spread: 70,
+                            origin: { y: 0.6 }
+                        });
+                    }
                 }).then(() => {
                     window.location.reload();
                 });

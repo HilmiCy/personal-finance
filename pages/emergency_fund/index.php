@@ -86,37 +86,15 @@ if (empty($transactions)) {
         transition: all 0.3s;
         overflow-x: hidden !important;
         flex: 1 !important;
-        background: #f8f9fa;
+        background: #f0f2f5;
     }
     
     .container-fluid {
         width: 100% !important;
         max-width: 100% !important;
-        padding: 20px !important;
+        padding: 24px !important;
         margin: 0 !important;
         overflow-x: hidden !important;
-    }
-    
-    /* ========== RESPONSIVE ========== */
-    @media (max-width: 768px) {
-        #sidebar {
-            margin-left: -250px !important;
-            position: fixed !important;
-            z-index: 1000 !important;
-            height: 100vh !important;
-        }
-        
-        #sidebar.active {
-            margin-left: 0 !important;
-        }
-        
-        #content, .main-content {
-            width: 100% !important;
-        }
-        
-        .container-fluid {
-            padding: 15px !important;
-        }
     }
     
     /* ========== CARD STYLES ========== */
@@ -150,42 +128,54 @@ if (empty($transactions)) {
     
     /* ========== WELCOME CARD ========== */
     .welcome-card {
-    background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
-    border-radius: 20px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 24px;
+        margin-bottom: 24px;
+        color: #1f2937;
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
     
     .welcome-title {
-        font-size: 1.5rem;
-        font-weight: 600;
+        font-size: 1.6rem;
+        font-weight: 700;
         margin: 0;
+        color: #1f2937;
     }
     
     .welcome-subtitle {
         margin: 8px 0 0 0;
-        opacity: 0.9;
-        font-size: 0.9rem;
+        color: #6b7280;
+        font-size: 0.95rem;
     }
     
     /* Button Styles */
     .btn {
         border-radius: 12px !important;
         padding: 10px 20px !important;
-        font-weight: 500 !important;
-        transition: all 0.2s !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        border: none !important;
+        color: white !important;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4) !important;
     }
     
     .btn-group {
         display: flex !important;
         flex-wrap: wrap !important;
-        gap: 8px !important;
+        gap: 12px !important;
     }
     
     .btn-group .btn {
@@ -200,27 +190,11 @@ if (empty($transactions)) {
         height: 100%;
     }
     
-    .stat-card::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-        transform: rotate(45deg);
-        transition: all 0.6s;
-    }
-    
-    .stat-card:hover::before {
-        transform: rotate(45deg) translate(50%, 50%);
-    }
-    
     .display-amount {
         font-size: 28px;
-        font-weight: 700;
+        font-weight: 800;
         margin: 16px 0;
-        color: #2c3e50;
+        color: #1f2937;
         word-wrap: break-word;
         overflow-wrap: break-word;
     }
@@ -228,20 +202,22 @@ if (empty($transactions)) {
     /* Progress Bar */
     .progress {
         border-radius: 20px !important;
-        background-color: #f0f0f0 !important;
+        background-color: #f3f4f6 !important;
         overflow: hidden !important;
-        height: 10px !important;
+        height: 12px !important;
+        margin: 15px 0;
     }
     
     .progress-bar {
         border-radius: 20px !important;
+        background: linear-gradient(90deg, #10b981 0%, #34d399 100%) !important;
     }
     
     /* Badge */
     .badge {
         border-radius: 12px !important;
         padding: 6px 12px !important;
-        font-weight: 500 !important;
+        font-weight: 600 !important;
         display: inline-flex !important;
         align-items: center !important;
         gap: 4px !important;
@@ -249,76 +225,153 @@ if (empty($transactions)) {
     
     /* Alert */
     .alert {
-        border-radius: 16px !important;
+        border-radius: 20px !important;
         border: none !important;
-        padding: 16px 20px !important;
-        margin-bottom: 20px !important;
+        padding: 20px !important;
+        margin-bottom: 24px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
     
     /* Table */
-    .table-responsive {
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-    }
-    
     .table {
-        border-radius: 16px !important;
-        overflow: hidden !important;
-        min-width: 500px !important;
-        width: 100% !important;
         margin-bottom: 0 !important;
     }
     
     .table thead th {
-        background-color: #f8f9fa !important;
-        border-bottom: 2px solid #e0e0e0 !important;
-        padding: 14px 12px !important;
+        background-color: #f9fafb !important;
+        border-bottom: 2px solid #e5e7eb !important;
+        padding: 16px 12px !important;
         font-weight: 600 !important;
+        color: #4b5563 !important;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
     
     .table tbody td {
-        padding: 12px !important;
+        padding: 16px 12px !important;
         vertical-align: middle !important;
+        border-bottom: 1px solid #f3f4f6 !important;
+        color: #4b5563;
     }
-    
-    /* Transaction Row Animation */
-    .transaction-row {
-        transition: background-color 0.2s;
-    }
-    
-    .transaction-row:hover {
-        background-color: #f8f9fa !important;
-    }
-    
-    /* Modal */
+
+    /* Modal Styling */
     .modal-content {
         border-radius: 24px !important;
         border: none !important;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2) !important;
+        overflow: hidden;
     }
     
     .modal-header {
-        border-radius: 24px 24px 0 0 !important;
-        padding: 20px 24px !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 24px !important;
+        border-bottom: none !important;
+        color: white;
     }
     
+    .modal-header .btn-close {
+        filter: brightness(0) invert(1);
+    }
+
+    .modal-body {
+        padding: 32px !important;
+        background: #fff;
+    }
+
     .modal-footer {
-        border-radius: 0 0 24px 24px !important;
-        padding: 16px 24px !important;
+        padding: 20px 32px !important;
+        background: #f9fafb;
+        border-top: 1px solid #e5e7eb !important;
     }
-    
-    /* Form */
-    .form-control, .form-select {
+
+    /* SweetAlert2 Style */
+    .swal2-popup {
+        border-radius: 24px !important;
+        padding: 2em !important;
+        font-family: 'Inter', sans-serif !important;
+    }
+
+    .swal2-title {
+        font-weight: 700 !important;
+        color: #1f2937 !important;
+    }
+
+    .swal2-confirm {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         border-radius: 12px !important;
-        border: 1px solid #e0e0e0 !important;
-        padding: 10px 14px !important;
-        transition: all 0.2s !important;
+        padding: 10px 24px !important;
+        font-weight: 600 !important;
     }
-    
-    .form-control:focus, .form-select:focus {
-        border-color: #0d6efd !important;
-        box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.15) !important;
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+        #sidebar {
+            margin-left: -250px !important;
+            position: fixed !important;
+            z-index: 1000 !important;
+            height: 100vh !important;
+        }
+        
+        #sidebar.active {
+            margin-left: 0 !important;
+        }
+        
+        #content, .main-content {
+            width: 100% !important;
+        }
+        
+        .container-fluid {
+            padding: 15px !important;
+        }
+
+        .display-amount {
+            font-size: 22px !important;
+        }
+
+        /* Mobile Table */
+        .table thead {
+            display: none;
+        }
+        
+        .table tbody td {
+            display: block;
+            padding: 12px 16px !important;
+            text-align: right;
+            position: relative;
+            padding-left: 45% !important;
+            border-bottom: none !important;
+        }
+        
+        .table tbody td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 16px;
+            width: calc(45% - 20px);
+            font-weight: 600;
+            color: #6b7280;
+            text-align: left;
+            font-size: 12px;
+        }
+        
+        .table tbody tr {
+            display: block;
+            border-bottom: 1px solid #e5e7eb !important;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .btn-group {
+            flex-direction: column !important;
+        }
+        
+        .btn-group .btn {
+            width: 100% !important;
+        }
     }
-    
+
     /* Animasi */
     @keyframes fadeInUp {
         from {
@@ -334,110 +387,20 @@ if (empty($transactions)) {
     .animated {
         animation: fadeInUp 0.5s ease-out forwards;
     }
-    
-    /* Row dan Column */
-    .row {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-    }
-    
-    [class*="col-"] {
-        padding-left: 10px !important;
-        padding-right: 10px !important;
-    }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-        .container-fluid {
-            padding: 15px !important;
-        }
-        
-        .card-body {
-            padding: 20px !important;
-        }
-        
-        .display-amount {
-            font-size: 24px !important;
-        }
-        
-        .btn {
-            padding: 8px 16px !important;
-            font-size: 14px !important;
-        }
-        
-        .welcome-card {
-            padding: 16px 20px !important;
-        }
-        
-        .welcome-title {
-            font-size: 1.2rem !important;
-        }
-        
-        .welcome-subtitle {
-            font-size: 0.8rem !important;
-        }
-        
-        .btn-group {
-            flex-direction: column !important;
-        }
-        
-        .btn-group .btn {
-            width: 100% !important;
-        }
-        
-        .modal-dialog {
-            margin: 10px !important;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .display-amount {
-            font-size: 20px !important;
-        }
-        
-        .card-title {
-            font-size: 12px !important;
-        }
-        
-        .badge {
-            font-size: 11px !important;
-            padding: 4px 8px !important;
-        }
-    }
-    
-    /* Scrollbar styling */
-    .table-responsive::-webkit-scrollbar {
-        height: 8px;
-    }
-    
-    .table-responsive::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
-    }
-    
-    .table-responsive::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 10px;
-    }
-    
-    .table-responsive::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
 </style>
 
-<!-- PERUBAHAN: Pastikan konten utama menggunakan class yang tepat -->
 <div id="content" class="main-content">
     <div class="container-fluid">
         <!-- Header -->
         <div class="welcome-card animated">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <h1 class="welcome-title" style="animation: fadeInUp 0.4s ease;">Dana Darurat</h1>
-                    <p class="welcome-subtitle" style="animation: fadeInUp 0.4s ease 0.1s both;">Kelola dan pantau dana darurat Anda</p>
+                    <h1 class="welcome-title">Dana Darurat</h1>
+                    <p class="welcome-subtitle">Kelola dan pantau dana darurat Anda secara cerdas</p>
                 </div>
                 <div class="col-md-6 text-md-end mt-3 mt-md-0">
-                    <button type="button" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#setTargetModal" style="background: rgba(255,255,255,0.2); border: none; color: white; animation: fadeInUp 0.4s ease 0.2s both;">
-                        <i class="fas fa-plus me-1"></i> Atur Target
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setTargetModal">
+                        <i class="fas fa-bullseye me-2"></i> Atur Target
                     </button>
                 </div>
             </div>
@@ -582,7 +545,8 @@ if (empty($transactions)) {
                                         <th>Jumlah</th>
                                         <th>Sumber/Tujuan</th>
                                         <th>Deskripsi</th>
-                                    </thead>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     <?php if (empty($transactions)): ?>
                                     <tr>
@@ -599,24 +563,24 @@ if (empty($transactions)) {
                                     <?php else: ?>
                                         <?php foreach($transactions as $transaction): ?>
                                         <tr class="transaction-row">
-                                            <td style="white-space: nowrap;">
+                                            <td data-label="Tanggal" style="white-space: nowrap;">
                                                 <i class="fas fa-calendar-alt text-muted"></i> 
                                                 <?php echo date('d/m/Y', strtotime($transaction['transaction_date'])); ?>
                                                 <br>
                                                 <small class="text-muted"><?php echo date('H:i', strtotime($transaction['created_at'])); ?></small>
                                             </td>
-                                            <td>
+                                            <td data-label="Tipe">
                                                 <span class="badge bg-<?php echo $transaction['type'] == 'deposit' ? 'success' : 'warning'; ?>">
                                                     <i class="fas fa-<?php echo $transaction['type'] == 'deposit' ? 'arrow-down' : 'arrow-up'; ?> me-1"></i>
                                                     <?php echo $transaction['type'] == 'deposit' ? 'Setoran' : 'Penarikan'; ?>
                                                 </span>
                                             </td>
-                                            <td class="fw-bold <?php echo $transaction['type'] == 'deposit' ? 'text-success' : 'text-danger'; ?>">
+                                            <td data-label="Jumlah" class="fw-bold <?php echo $transaction['type'] == 'deposit' ? 'text-success' : 'text-danger'; ?>">
                                                 <?php echo $transaction['type'] == 'deposit' ? '+' : '-'; ?> 
                                                 Rp <?php echo number_format($transaction['amount'], 0, ',', '.'); ?>
                                             </td>
-                                            <td><?php echo htmlspecialchars($transaction['account_name'] ?? '-'); ?></td>
-                                            <td><?php echo htmlspecialchars($transaction['description'] ?: '-'); ?></td>
+                                            <td data-label="Sumber/Tujuan"><?php echo htmlspecialchars($transaction['account_name'] ?? '-'); ?></td>
+                                            <td data-label="Deskripsi"><?php echo htmlspecialchars($transaction['description'] ?: '-'); ?></td>
                                         </tr>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
@@ -632,20 +596,23 @@ if (empty($transactions)) {
 
 <!-- Modal Set Target -->
 <div class="modal fade" id="setTargetModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">
                     <i class="fas fa-bullseye me-2"></i> Atur Target Dana Darurat
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="setTargetForm">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label fw-bold">Target Jumlah</label>
-                        <input type="text" class="form-control money" name="target_amount" 
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="text" class="form-control money" name="target_amount" 
                                value="<?php echo $fund ? number_format($fund['target_amount'], 0, ',', '.') : ''; ?>" required>
+                        </div>
                         <small class="text-muted">Rekomendasi: 3-6 kali pengeluaran bulanan Anda</small>
                     </div>
                     <div class="mb-3">
@@ -659,12 +626,8 @@ if (empty($transactions)) {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i> Batal
-                    </button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-1"></i> Simpan
-                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Target</button>
                 </div>
             </form>
         </div>
@@ -673,19 +636,22 @@ if (empty($transactions)) {
 
 <!-- Modal Deposit -->
 <div class="modal fade" id="depositModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title">
+            <div class="modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                <h5 class="modal-title fw-bold">
                     <i class="fas fa-plus-circle me-2"></i> Tambah Dana Darurat
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="depositForm">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label fw-bold">Jumlah</label>
-                        <input type="text" class="form-control money" name="amount" required>
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="text" class="form-control money" name="amount" required>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Sumber Dana</label>
@@ -704,12 +670,8 @@ if (empty($transactions)) {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i> Batal
-                    </button>
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-plus me-1"></i> Tambah Dana
-                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none;">Simpan Setoran</button>
                 </div>
             </form>
         </div>
@@ -718,10 +680,10 @@ if (empty($transactions)) {
 
 <!-- Modal Withdraw -->
 <div class="modal fade" id="withdrawModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-warning">
-                <h5 class="modal-title">
+            <div class="modal-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                <h5 class="modal-title fw-bold">
                     <i class="fas fa-arrow-up-circle me-2"></i> Tarik Dana Darurat
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -730,7 +692,10 @@ if (empty($transactions)) {
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label fw-bold">Jumlah</label>
-                        <input type="text" class="form-control money" name="amount" required>
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="text" class="form-control money" name="amount" required>
+                        </div>
                         <small class="text-muted">Saldo saat ini: Rp <?php echo number_format($fund ? $fund['current_amount'] : 0, 0, ',', '.'); ?></small>
                     </div>
                     <div class="mb-3">
@@ -750,18 +715,16 @@ if (empty($transactions)) {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i> Batal
-                    </button>
-                    <button type="submit" class="btn btn-warning">
-                        <i class="fas fa-arrow-up me-1"></i> Tarik Dana
-                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: none;">Tarik Dana</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
 <script>
 // Format currency input
 document.querySelectorAll('.money').forEach(input => {
@@ -773,12 +736,45 @@ document.querySelectorAll('.money').forEach(input => {
     });
 });
 
+function showSuccessAlert(message) {
+    Swal.fire({
+        title: 'Berhasil!',
+        text: message,
+        icon: 'success',
+        confirmButtonText: 'OK',
+        didOpen: () => {
+            canvasConfetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+    }).then(() => {
+        window.location.reload();
+    });
+}
+
+function showErrorAlert(message) {
+    Swal.fire({
+        title: 'Gagal!',
+        text: message,
+        icon: 'error',
+        confirmButtonText: 'OK'
+    });
+}
+
 // Handle Set Target Form
 document.getElementById('setTargetForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     const formData = new FormData(this);
     formData.append('action', 'set_target');
+    
+    Swal.fire({
+        title: 'Memproses...',
+        allowOutsideClick: false,
+        didOpen: () => { Swal.showLoading(); }
+    });
     
     try {
         const response = await fetch('add.php', {
@@ -787,15 +783,13 @@ document.getElementById('setTargetForm').addEventListener('submit', async functi
         });
         
         const result = await response.json();
-        
         if (result.success) {
-            showAlert('success', result.message);
-            setTimeout(() => window.location.reload(), 1500);
+            showSuccessAlert(result.message);
         } else {
-            showAlert('danger', result.message);
+            showErrorAlert(result.message);
         }
     } catch (error) {
-        showAlert('danger', 'Terjadi kesalahan: ' + error.message);
+        showErrorAlert('Terjadi kesalahan sistem');
     }
 });
 
@@ -806,6 +800,12 @@ document.getElementById('depositForm').addEventListener('submit', async function
     const formData = new FormData(this);
     formData.append('action', 'deposit');
     
+    Swal.fire({
+        title: 'Menyimpan...',
+        allowOutsideClick: false,
+        didOpen: () => { Swal.showLoading(); }
+    });
+    
     try {
         const response = await fetch('add.php', {
             method: 'POST',
@@ -813,15 +813,13 @@ document.getElementById('depositForm').addEventListener('submit', async function
         });
         
         const result = await response.json();
-        
         if (result.success) {
-            showAlert('success', result.message);
-            setTimeout(() => window.location.reload(), 1500);
+            showSuccessAlert(result.message);
         } else {
-            showAlert('danger', result.message);
+            showErrorAlert(result.message);
         }
     } catch (error) {
-        showAlert('danger', 'Terjadi kesalahan: ' + error.message);
+        showErrorAlert('Terjadi kesalahan sistem');
     }
 });
 
@@ -832,6 +830,12 @@ document.getElementById('withdrawForm').addEventListener('submit', async functio
     const formData = new FormData(this);
     formData.append('action', 'withdraw');
     
+    Swal.fire({
+        title: 'Memproses Penarikan...',
+        allowOutsideClick: false,
+        didOpen: () => { Swal.showLoading(); }
+    });
+    
     try {
         const response = await fetch('add.php', {
             method: 'POST',
@@ -839,39 +843,15 @@ document.getElementById('withdrawForm').addEventListener('submit', async functio
         });
         
         const result = await response.json();
-        
         if (result.success) {
-            showAlert('success', result.message);
-            setTimeout(() => window.location.reload(), 1500);
+            showSuccessAlert(result.message);
         } else {
-            showAlert('danger', result.message);
+            showErrorAlert(result.message);
         }
     } catch (error) {
-        showAlert('danger', 'Terjadi kesalahan: ' + error.message);
+        showErrorAlert('Terjadi kesalahan sistem');
     }
 });
-
-function showAlert(type, message) {
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
-    alertDiv.style.zIndex = '9999';
-    alertDiv.style.minWidth = '300px';
-    alertDiv.style.maxWidth = '90%';
-    alertDiv.style.borderRadius = '12px';
-    alertDiv.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-    alertDiv.innerHTML = `
-        <div class="d-flex align-items-center">
-            <i class="fas fa-${type === 'success' ? 'check-circle' : (type === 'danger' ? 'times-circle' : 'info-circle')} me-2"></i>
-            <div class="flex-grow-1">${message}</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    `;
-    document.body.appendChild(alertDiv);
-    
-    setTimeout(() => {
-        alertDiv.remove();
-    }, 3000);
-}
 </script>
 
 <?php require_once '../../includes/footer.php'; ?>

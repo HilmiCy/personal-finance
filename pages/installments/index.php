@@ -42,9 +42,8 @@ html, body {
 }
 
 body {
-    background: #f8f9fa;
+    background: #f0f2f5;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -192,13 +191,13 @@ main {
     border: none;
     border-radius: 12px;
     padding: 0.5rem 1.25rem;
-    font-weight: 500;
+    font-weight: 600;
     color: white;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .btn-primary-glass:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
     color: white;
 }
@@ -207,184 +206,169 @@ main {
     background: linear-gradient(135deg, #10b981, #059669);
     border: none;
     border-radius: 10px;
-    padding: 0.4rem 1rem;
-    font-size: 0.75rem;
-    font-weight: 500;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: white;
     margin-right: 0.5rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-success-glass:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    color: white;
 }
 
 .btn-info-glass {
-    background: linear-gradient(135deg, var(--info), #2563eb);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     border: none;
     border-radius: 10px;
-    padding: 0.4rem 1rem;
-    font-size: 0.75rem;
-    font-weight: 500;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: white;
     margin-right: 0.5rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-info-glass:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    color: white;
 }
 
 .btn-warning-glass {
     background: linear-gradient(135deg, #f59e0b, #d97706);
     border: none;
     border-radius: 10px;
-    padding: 0.4rem 1rem;
-    font-size: 0.75rem;
-    font-weight: 500;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: white;
     margin-right: 0.5rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-warning-glass:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    color: white;
 }
 
 .btn-danger-glass {
     background: linear-gradient(135deg, #ef4444, #dc2626);
     border: none;
     border-radius: 10px;
-    padding: 0.4rem 1rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: white;
-}
-
-.btn-secondary-glass {
-    background: #6c757d;
-    border: none;
-    border-radius: 10px;
-    padding: 0.5rem 1.25rem;
-    font-weight: 500;
-    color: white;
-    transition: all 0.2s ease;
-}
-
-.btn-secondary-glass:hover {
-    background: #5a6268;
-}
-
-/* Modal Styles */
-.modal-content-glass {
-    background: white;
-    border-radius: 24px;
-    border: none;
-    box-shadow: var(--shadow-md);
-}
-
-.modal-header-glass {
-    background: linear-gradient(135deg, var(--primary), var(--info));
-    color: white;
-    border-radius: 24px 24px 0 0;
-    padding: 1.25rem 1.5rem;
-}
-
-.modal-header-glass .btn-close {
-    filter: brightness(0) invert(1);
-}
-
-.modal-body-glass {
-    padding: 1.5rem;
-}
-
-.modal-footer-glass {
-    border-top: 1px solid #e9ecef;
-    padding: 1rem 1.5rem;
-}
-
-/* Form Styles */
-.form-label {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    color: #495057;
-    margin-bottom: 0.5rem;
-    font-size: 0.875rem;
-}
-
-.form-control, .form-select {
-    border-radius: 12px;
-    border: 1px solid #e9ecef;
-    padding: 0.625rem 1rem;
-    transition: all 0.2s ease;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
-}
-
-/* Alert */
-.alert-glass {
-    border-radius: 12px;
-    border: none;
-    padding: 1rem;
-    margin-bottom: 1rem;
-}
-
-/* Badge */
-.badge-glass {
-    background: #e9ecef;
-    color: #495057;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 500;
-}
-
-/* Helper functions */
-.text-amount {
-    font-weight: 600;
-}
-
-/* Loading Spinner */
-.spinner-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
+    color: white;
+    transition: all 0.3s ease;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    z-index: 9999;
-    display: none;
 }
 
-.spinner-border-custom {
-    width: 3rem;
-    height: 3rem;
-    border-width: 0.25rem;
+.btn-danger-glass:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    color: white;
 }
 
-/* Action Buttons Group */
-.action-buttons {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+/* SweetAlert2 Style */
+.swal2-popup {
+    border-radius: 24px !important;
+    padding: 2em !important;
+}
+
+.swal2-title {
+    font-weight: 700 !important;
+}
+
+.swal2-confirm {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border-radius: 12px !important;
+    padding: 10px 24px !important;
+    font-weight: 600 !important;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
+    #sidebar {
+        margin-left: -250px !important;
+        position: fixed !important;
+        z-index: 1000 !important;
+        height: 100vh !important;
+    }
+    
+    #sidebar.active {
+        margin-left: 0 !important;
+    }
+    
+    #content, .main-content {
+        width: 100% !important;
+    }
+
     .summary-card .card-value {
         font-size: 1.25rem;
     }
     
-    .table-custom thead th {
-        font-size: 0.75rem;
-        padding: 0.75rem;
+    /* Mobile Table */
+    .table-custom thead {
+        display: none;
     }
     
     .table-custom tbody td {
-        padding: 0.75rem;
-        font-size: 0.875rem;
+        display: block;
+        padding: 12px 16px !important;
+        text-align: right;
+        position: relative;
+        padding-left: 45% !important;
+        border-bottom: none !important;
     }
     
+    .table-custom tbody td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 16px;
+        width: calc(45% - 20px);
+        font-weight: 600;
+        color: #6b7280;
+        text-align: left;
+        font-size: 12px;
+    }
+    
+    .table-custom tbody tr {
+        display: block;
+        border-bottom: 1px solid #e5e7eb !important;
+        margin-bottom: 15px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+
     .action-buttons {
         flex-direction: column;
+        gap: 8px;
     }
     
     .btn-success-glass, .btn-info-glass, .btn-warning-glass, .btn-danger-glass {
         width: 100%;
-        margin-bottom: 0.25rem;
+        margin-right: 0 !important;
     }
-
-    
 }
 </style>
 
@@ -405,9 +389,6 @@ main {
                     </button>
                 </div>
             </div>
-            
-            <!-- Alert Messages -->
-            <div id="alertContainer"></div>
             
             <!-- Summary Cards -->
             <div class="row g-4 mb-5">
@@ -494,7 +475,7 @@ main {
                                 <?php else: ?>
                                 <?php foreach ($active_installments as $item): ?>
                                 <tr>
-                                    <td>
+                                    <td data-label="Nama Cicilan">
                                         <strong><?php echo htmlspecialchars($item['name'] ?? '-'); ?></strong>
                                         <?php if (!empty($item['account_name'])): ?>
                                         <br>
@@ -503,25 +484,25 @@ main {
                                         </small>
                                         <?php endif; ?>
                                     </td>
-                                    <td class="text-amount">
+                                    <td data-label="Total" class="text-amount">
                                         Rp <?php 
                                         $total_amount = isset($item['total_amount']) ? (float)$item['total_amount'] : 0;
                                         echo number_format($total_amount, 0, ',', '.'); 
                                         ?>
                                     </td>
-                                    <td class="text-amount">
+                                    <td data-label="Terbayar" class="text-amount">
                                         Rp <?php 
                                         $paid_amount = isset($item['paid_amount']) ? (float)$item['paid_amount'] : 0;
                                         echo number_format($paid_amount, 0, ',', '.'); 
                                         ?>
                                     </td>
-                                    <td class="text-amount" style="color: var(--warning);">
+                                    <td data-label="Sisa" class="text-amount" style="color: var(--warning);">
                                         Rp <?php 
                                         $remaining_amount = isset($item['remaining_amount']) ? (float)$item['remaining_amount'] : 0;
                                         echo number_format($remaining_amount, 0, ',', '.'); 
                                         ?>
                                     </td>
-                                    <td>
+                                    <td data-label="Tenor">
                                         <span class="badge-glass">
                                             <?php 
                                             $current_tenor = isset($item['current_tenor']) ? (int)$item['current_tenor'] : 0;
@@ -531,13 +512,13 @@ main {
                                             ?>
                                         </span>
                                     </td>
-                                    <td class="text-amount">
+                                    <td data-label="Per Tenor" class="text-amount">
                                         Rp <?php 
                                         $amount_per_tenor = isset($item['amount_per_tenor']) ? (float)$item['amount_per_tenor'] : 0;
                                         echo number_format($amount_per_tenor, 0, ',', '.'); 
                                         ?>
                                     </td>
-                                    <td style="min-width: 120px;">
+                                    <td data-label="Progress" style="min-width: 120px;">
                                         <?php 
                                         $progress = 0;
                                         if (isset($item['total_amount']) && $item['total_amount'] > 0 && isset($item['paid_amount'])) {
@@ -549,7 +530,7 @@ main {
                                         </div>
                                         <span class="progress-text"><?php echo round($progress); ?>%</span>
                                     </td>
-                                    <td>
+                                    <td data-label="Aksi">
                                         <div class="action-buttons">
                                             <a href="pay.php?id=<?php echo $item['id']; ?>" class="btn btn-success-glass">
                                                 <i class="fas fa-money-bill-wave me-1"></i> Bayar
@@ -734,30 +715,8 @@ main {
     </div>
 </div>
 
-<!-- Modal Konfirmasi Hapus -->
-<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content modal-content-glass">
-            <div class="modal-header modal-header-glass" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
-                <h5 class="modal-title">
-                    <i class="fas fa-exclamation-triangle me-2"></i>Konfirmasi Hapus
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body modal-body-glass">
-                <p>Apakah Anda yakin ingin menghapus cicilan ini?</p>
-                <p class="text-danger mb-0"><small>Tindakan ini tidak dapat dibatalkan!</small></p>
-            </div>
-            <div class="modal-footer modal-footer-glass">
-                <button type="button" class="btn btn-secondary-glass" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-danger-glass" id="confirmDeleteBtn">
-                    <i class="fas fa-trash me-2"></i>Ya, Hapus
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
 <script>
 // Variabel global
 let deleteId = null;
@@ -793,19 +752,14 @@ $(document).ready(function() {
     
     // Fungsi hitung total untuk ADD FORM
     function calculateTotal() {
-        // Ambil angka bersih tanpa titik
         let amountPerTenorStr = $('#amount_per_tenor').val().replace(/[^0-9]/g, '');
         let tenorStr = $('#tenor').val().replace(/[^0-9]/g, '');
-        
         let amountPerTenor = parseInt(amountPerTenorStr) || 0;
         let tenor = parseInt(tenorStr) || 0;
-        
-        console.log("Calculate Total - Amount:", amountPerTenor, "Tenor:", tenor);
         
         if (amountPerTenor > 0 && tenor > 0) {
             let total = amountPerTenor * tenor;
             $('#totalPreview').text('Rp ' + formatRupiah(total.toString()));
-            console.log("Total:", total);
         } else {
             $('#totalPreview').text('Rp 0');
         }
@@ -813,66 +767,65 @@ $(document).ready(function() {
     
     // Fungsi hitung total untuk EDIT FORM
     function calculateEditTotal() {
-        // Ambil angka bersih tanpa titik
         let amountPerTenorStr = $('#edit_amount_per_tenor').val().replace(/[^0-9]/g, '');
         let tenorStr = $('#edit_tenor').val().replace(/[^0-9]/g, '');
-        
         let amountPerTenor = parseInt(amountPerTenorStr) || 0;
         let tenor = parseInt(tenorStr) || 0;
-        
-        console.log("Calculate Edit Total - Amount:", amountPerTenor, "Tenor:", tenor);
         
         if (amountPerTenor > 0 && tenor > 0) {
             let total = amountPerTenor * tenor;
             $('#editTotalPreview').text('Rp ' + formatRupiah(total.toString()));
-            console.log("Edit Total:", total);
         } else {
             $('#editTotalPreview').text('Rp 0');
         }
+    }
+    
+    function showSuccess(message) {
+        Swal.fire({
+            title: 'Berhasil!',
+            text: message,
+            icon: 'success',
+            confirmButtonText: 'OK',
+            didOpen: () => {
+                canvasConfetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+        }).then(() => {
+            location.reload();
+        });
+    }
+
+    function showError(message) {
+        Swal.fire({
+            title: 'Gagal!',
+            text: message,
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
     }
     
     // Submit add form
     $('#addInstallmentForm').on('submit', function(e) {
         e.preventDefault();
         
-        // Ambil nilai bersih (tanpa titik)
         let amountPerTenor = $('#amount_per_tenor').val().replace(/[^0-9]/g, '');
         let tenor = $('#tenor').val().replace(/[^0-9]/g, '');
         let name = $('#name').val().trim();
         let startDate = $('#start_date').val();
         
-        if (!name) {
-            showAlert('Nama cicilan harus diisi!', 'danger');
+        if (!name || !amountPerTenor || !tenor || !startDate) {
+            showError('Harap isi semua kolom yang wajib!');
             return;
         }
         
-        if (!amountPerTenor || parseInt(amountPerTenor) <= 0) {
-            showAlert('Jumlah per tenor harus diisi!', 'danger');
-            return;
-        }
-        
-        if (!tenor || parseInt(tenor) <= 0) {
-            showAlert('Tenor harus diisi!', 'danger');
-            return;
-        }
-        
-        if (!startDate) {
-            showAlert('Tanggal mulai harus diisi!', 'danger');
-            return;
-        }
-        
-        let formData = new FormData();
+        let formData = new FormData(this);
+        formData.set('amount_per_tenor', amountPerTenor);
         formData.append('action', 'add_installment');
-        formData.append('name', name);
-        formData.append('amount_per_tenor', amountPerTenor);
-        formData.append('tenor', tenor);
-        formData.append('tenor_type', $('#tenor_type').val());
-        formData.append('start_date', startDate);
-        formData.append('interest_rate', $('#interest_rate').val().replace(/[^0-9.-]/g, ''));
-        formData.append('notes', $('#notes').val());
         
         $('#spinnerOverlay').fadeIn();
-        $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...');
         
         $.ajax({
             url: 'add.php',
@@ -883,25 +836,15 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 $('#spinnerOverlay').fadeOut();
-                $('#submitBtn').prop('disabled', false).html('<i class="fas fa-save me-2"></i>Simpan Cicilan');
-                
                 if (response.success) {
-                    showAlert(response.message, 'success');
-                    $('#addInstallmentModal').modal('hide');
-                    $('#addInstallmentForm')[0].reset();
-                    $('#totalPreview').text('Rp 0');
-                    
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1500);
+                    showSuccess(response.message);
                 } else {
-                    showAlert(response.message, 'danger');
+                    showError(response.message);
                 }
             },
-            error: function(xhr, status, error) {
+            error: function() {
                 $('#spinnerOverlay').fadeOut();
-                $('#submitBtn').prop('disabled', false).html('<i class="fas fa-save me-2"></i>Simpan Cicilan');
-                showAlert('Terjadi kesalahan: ' + error, 'danger');
+                showError('Terjadi kesalahan koneksi!');
             }
         });
     });
@@ -910,46 +853,12 @@ $(document).ready(function() {
     $('#editInstallmentForm').on('submit', function(e) {
         e.preventDefault();
         
-        // Ambil nilai bersih (tanpa titik)
         let amountPerTenor = $('#edit_amount_per_tenor').val().replace(/[^0-9]/g, '');
-        let tenor = $('#edit_tenor').val().replace(/[^0-9]/g, '');
-        let id = $('#edit_id').val();
-        let name = $('#edit_name').val().trim();
-        let startDate = $('#edit_start_date').val();
-        
-        if (!name) {
-            showAlert('Nama cicilan harus diisi!', 'danger');
-            return;
-        }
-        
-        if (!amountPerTenor || parseInt(amountPerTenor) <= 0) {
-            showAlert('Jumlah per tenor harus diisi!', 'danger');
-            return;
-        }
-        
-        if (!tenor || parseInt(tenor) <= 0) {
-            showAlert('Tenor harus diisi!', 'danger');
-            return;
-        }
-        
-        if (!startDate) {
-            showAlert('Tanggal mulai harus diisi!', 'danger');
-            return;
-        }
-        
-        let formData = new FormData();
+        let formData = new FormData(this);
+        formData.set('amount_per_tenor', amountPerTenor);
         formData.append('action', 'edit_installment');
-        formData.append('id', id);
-        formData.append('name', name);
-        formData.append('amount_per_tenor', amountPerTenor);
-        formData.append('tenor', tenor);
-        formData.append('tenor_type', $('#edit_tenor_type').val());
-        formData.append('start_date', startDate);
-        formData.append('interest_rate', $('#edit_interest_rate').val().replace(/[^0-9.-]/g, ''));
-        formData.append('notes', $('#edit_notes').val());
         
         $('#spinnerOverlay').fadeIn();
-        $('#editSubmitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Mengupdate...');
         
         $.ajax({
             url: 'edit.php',
@@ -960,63 +869,28 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 $('#spinnerOverlay').fadeOut();
-                $('#editSubmitBtn').prop('disabled', false).html('<i class="fas fa-save me-2"></i>Update Cicilan');
-                
                 if (response.success) {
-                    showAlert(response.message, 'success');
-                    $('#editInstallmentModal').modal('hide');
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1500);
+                    showSuccess(response.message);
                 } else {
-                    showAlert(response.message, 'danger');
+                    showError(response.message);
                 }
             },
-            error: function(xhr, status, error) {
+            error: function() {
                 $('#spinnerOverlay').fadeOut();
-                $('#editSubmitBtn').prop('disabled', false).html('<i class="fas fa-save me-2"></i>Update Cicilan');
-                showAlert('Terjadi kesalahan: ' + error, 'danger');
+                showError('Terjadi kesalahan koneksi!');
             }
         });
-    });
-    
-    function showAlert(message, type) {
-        let alertHtml = `
-            <div class="alert alert-${type} alert-glass alert-dismissible fade show" role="alert">
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `;
-        $('#alertContainer').html(alertHtml);
-        
-        setTimeout(function() {
-            $('.alert').fadeOut('slow', function() {
-                $(this).remove();
-            });
-        }, 3000);
-    }
-    
-    // Reset form saat modal ditutup
-    $('#addInstallmentModal').on('hidden.bs.modal', function() {
-        $('#addInstallmentForm')[0].reset();
-        $('#totalPreview').text('Rp 0');
-        $('.is-invalid').removeClass('is-invalid');
     });
 });
 
 // ============ FUNGSI GLOBAL ============
 
-// Fungsi format Rupiah (angka ke format dengan titik)
 function formatRupiah(angka) {
     if (!angka) return '0';
     let number_string = angka.toString().replace(/[^0-9]/g, '');
-    if (!number_string) return '0';
-    
     let sisa = number_string.length % 3;
     let rupiah = number_string.substr(0, sisa);
     let ribuan = number_string.substr(sisa).match(/\d{3}/g);
-    
     if (ribuan) {
         let separator = sisa ? '.' : '';
         rupiah += separator + ribuan.join('.');
@@ -1024,11 +898,8 @@ function formatRupiah(angka) {
     return rupiah;
 }
 
-// Fungsi untuk edit installment
 function editInstallment(id) {
-    console.log("Edit function called with ID:", id);
     $('#spinnerOverlay').fadeIn();
-    
     $.ajax({
         url: 'get_installment.php',
         type: 'GET',
@@ -1036,116 +907,56 @@ function editInstallment(id) {
         dataType: 'json',
         success: function(data) {
             $('#spinnerOverlay').fadeOut();
-            
             if (data.success) {
-                // Isi form dengan data yang diterima
                 $('#edit_id').val(data.data.id);
                 $('#edit_name').val(data.data.name);
-                
-                // Format amount_per_tenor ke format Rupiah
-                let amountPerTenor = parseInt(data.data.amount_per_tenor) || 0;
-                $('#edit_amount_per_tenor').val(formatRupiah(amountPerTenor.toString()));
-                
-                // Isi tenor (pastikan tidak ada leading zero)
-                let tenor = parseInt(data.data.tenor) || 0;
-                $('#edit_tenor').val(tenor);
-                
+                $('#edit_amount_per_tenor').val(formatRupiah(data.data.amount_per_tenor));
+                $('#edit_tenor').val(data.data.tenor);
                 $('#edit_tenor_type').val(data.data.tenor_type);
                 $('#edit_start_date').val(data.data.start_date);
-                
-                let interestRate = parseFloat(data.data.interest_rate) || 0;
-                $('#edit_interest_rate').val(interestRate);
-                
+                $('#edit_interest_rate').val(data.data.interest_rate);
                 $('#edit_notes').val(data.data.notes || '');
                 
-                // Hitung dan tampilkan total preview
-                calculateEditTotal();
+                // Trigger preview
+                let total = data.data.amount_per_tenor * data.data.tenor;
+                $('#editTotalPreview').text('Rp ' + formatRupiah(total.toString()));
                 
-                // Tampilkan modal
                 $('#editInstallmentModal').modal('show');
-            } else {
-                showAlertGlobal(data.message, 'danger');
             }
-        },
-        error: function(xhr, status, error) {
-            $('#spinnerOverlay').fadeOut();
-            console.error("AJAX Error:", error);
-            showAlertGlobal('Gagal mengambil data cicilan!', 'danger');
         }
     });
 }
 
-// Fungsi hitung total untuk edit (global)
-function calculateEditTotal() {
-    let amountPerTenorStr = $('#edit_amount_per_tenor').val().replace(/[^0-9]/g, '');
-    let tenorStr = $('#edit_tenor').val().replace(/[^0-9]/g, '');
-    
-    let amountPerTenor = parseInt(amountPerTenorStr) || 0;
-    let tenor = parseInt(tenorStr) || 0;
-    
-    if (amountPerTenor > 0 && tenor > 0) {
-        let total = amountPerTenor * tenor;
-        $('#editTotalPreview').text('Rp ' + formatRupiah(total.toString()));
-    } else {
-        $('#editTotalPreview').text('Rp 0');
-    }
-}
-
-// Fungsi show alert global
-function showAlertGlobal(message, type) {
-    let alertHtml = `
-        <div class="alert alert-${type} alert-glass alert-dismissible fade show" role="alert">
-            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    `;
-    $('#alertContainer').html(alertHtml);
-    
-    setTimeout(function() {
-        $('.alert').fadeOut('slow', function() {
-            $(this).remove();
-        });
-    }, 3000);
-}
-
-// Fungsi delete installment
 function deleteInstallment(id) {
-    deleteId = id;
-    $('#deleteConfirmModal').modal('show');
-}
-
-// Event confirm delete
-$('#confirmDeleteBtn').on('click', function() {
-    if (deleteId) {
-        $('#spinnerOverlay').fadeIn();
-        
-        $.ajax({
-            url: 'delete.php',
-            type: 'POST',
-            data: { id: deleteId, action: 'delete_installment' },
-            dataType: 'json',
-            success: function(response) {
-                $('#spinnerOverlay').fadeOut();
-                $('#deleteConfirmModal').modal('hide');
-                
-                if (response.success) {
-                    showAlertGlobal(response.message, 'success');
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1500);
-                } else {
-                    showAlertGlobal(response.message, 'danger');
+    Swal.fire({
+        title: 'Hapus Cicilan?',
+        text: "Seluruh data riwayat pembayaran cicilan ini juga akan dihapus!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $('#spinnerOverlay').fadeIn();
+            $.ajax({
+                url: 'delete.php',
+                type: 'POST',
+                data: { id: id, action: 'delete_installment' },
+                dataType: 'json',
+                success: function(response) {
+                    $('#spinnerOverlay').fadeOut();
+                    if (response.success) {
+                        Swal.fire('Terhapus!', response.message, 'success').then(() => location.reload());
+                    } else {
+                        Swal.fire('Gagal!', response.message, 'error');
+                    }
                 }
-            },
-            error: function() {
-                $('#spinnerOverlay').fadeOut();
-                $('#deleteConfirmModal').modal('hide');
-                showAlertGlobal('Gagal menghapus cicilan!', 'danger');
-            }
-        });
-    }
-});
+            });
+        }
+    });
+}
 </script>
 
 <?php include '../../includes/footer.php'; ?>
