@@ -65,53 +65,6 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    /* ========== LAYOUT UTAMA ========== */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
-    body {
-        overflow-x: hidden;
-        width: 100%;
-        position: relative;
-    }
-    
-    .wrapper {
-        display: flex;
-        width: 100%;
-        align-items: stretch;
-        overflow-x: hidden;
-    }
-    
-    #sidebar {
-        min-width: 250px;
-        max-width: 250px;
-        width: 250px;
-        transition: all 0.3s;
-        flex-shrink: 0;
-        background: #2c3e50;
-        color: #fff;
-    }
-    
-    #content, .main-content {
-        width: calc(100% - 250px);
-        min-height: 100vh;
-        transition: all 0.3s;
-        overflow-x: hidden;
-        flex: 1;
-        background: #f0f2f5;
-    }
-    
-    .container-fluid {
-        width: 100%;
-        max-width: 100%;
-        padding: 20px;
-        margin: 0;
-        overflow-x: hidden;
-    }
-    
     /* ========== CARD STYLES ========== */
     .card {
         border-radius: 20px;

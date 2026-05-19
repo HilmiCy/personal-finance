@@ -1,0 +1,8 @@
+/vendor/
+.env
+*.log
+.vscode/
+.idea/
+node_modules/
+# Specific to this project if any
+pages/transactions/save_debug.log

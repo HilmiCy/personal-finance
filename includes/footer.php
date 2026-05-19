@@ -6,57 +6,45 @@
     
     <!-- Mobile Menu Toggle Script -->
     <script>
-        // Tambahkan toggle untuk mobile jika diperlukan
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
-            if (sidebar.style.transform === 'translateX(0px)') {
-                sidebar.style.transform = 'translateX(-100%)';
-            } else {
-                sidebar.style.transform = 'translateX(0px)';
-            }
+            const overlay = document.querySelector('.sidebar-overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
         
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const sidebar = document.querySelector('.sidebar');
-            const isClickInsideSidebar = sidebar.contains(event.target);
-            const isClickOnToggle = event.target.classList.contains('menu-toggle') || 
-                                   event.target.closest('.menu-toggle');
-            
-            if (window.innerWidth <= 768 && !isClickInsideSidebar && !isClickOnToggle) {
-                sidebar.style.transform = 'translateX(-100%)';
-            }
-        });
+        // Close sidebar when clicking overlay on mobile
+        // already handled by onclick="toggleSidebar()" on overlay
     </script>
 
 <!-- Footer -->
 <footer style="
-    width: 100%;
+    margin-left: 70px;
     background: #ffffff;
-    padding: 18px 0;
-    border-top: 1px solid #e5e7eb;
+    padding: 24px 0;
+    border-top: 1px solid #f3f4f6;
     display: flex;
     justify-content: center;
     align-items: center;
-">
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+" class="main-footer">
+    <style>
+        @media (max-width: 768px) {
+            .main-footer {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
     <p style="
         margin: 0;
         color: #6b7280;
         font-size: 14px;
-        font-family: 'Poppins', sans-serif;
-        letter-spacing: 0.3px;
+        font-weight: 500;
         text-align: center;
     ">
         © 2026 
-        
-        <span style="
-            color: #111827;
-            font-weight: 600;
-        ">
-            Fadhil Cahya Hilmi
-        </span>. 
-        
-        All rights reserved.
+        <span style="color: #6366f1; font-weight: 700;"><?= APP_NAME ?></span>. 
+        Developed by <span style="color: #1f2937; font-weight: 600;">Fadhil Cahya Hilmi</span>
     </p>
 </footer>
 </body>

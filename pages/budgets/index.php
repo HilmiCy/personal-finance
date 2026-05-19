@@ -42,54 +42,6 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    /* ========== LAYOUT UTAMA ========== */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
-    body {
-        overflow-x: hidden !important;
-        width: 100% !important;
-        position: relative;
-        background: #f0f2f5;
-    }
-    
-    .wrapper {
-        display: flex !important;
-        width: 100% !important;
-        align-items: stretch !important;
-        overflow-x: hidden !important;
-    }
-    
-    #sidebar {
-        min-width: 250px !important;
-        max-width: 250px !important;
-        width: 250px !important;
-        transition: all 0.3s;
-        flex-shrink: 0 !important;
-        background: #2c3e50;
-        color: #fff;
-    }
-    
-    #content, .main-content {
-        width: calc(100% - 250px) !important;
-        min-height: 100vh !important;
-        transition: all 0.3s;
-        overflow-x: hidden !important;
-        flex: 1 !important;
-        background: #f0f2f5;
-    }
-    
-    .container-fluid {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 24px !important;
-        margin: 0 !important;
-        overflow-x: hidden !important;
-    }
-    
     /* ========== CARD STYLES ========== */
     .card {
         border-radius: 20px !important;
@@ -671,7 +623,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             Swal.fire(getSwalConfig({ title: 'Simpan Anggaran?', icon: 'question', showCancelButton: true, confirmButtonText: 'Ya, Simpan!' }))
-            .then(function(res) {
+            .then(function(result) {
                 if (result.isConfirmed) {
                     Swal.fire(getSwalConfig({ title: 'Memproses...', didOpen: function() { Swal.showLoading(); } }));
                     var formData = new FormData(addForm);
@@ -702,8 +654,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             Swal.fire(getSwalConfig({ title: 'Update Anggaran?', icon: 'question', showCancelButton: true, confirmButtonText: 'Ya, Update!' }))
-            .then(function(res) {
-                if (res.isConfirmed) {
+            .then(function(result) {
+                if (result.isConfirmed) {
                     Swal.fire(getSwalConfig({ title: 'Memproses...', didOpen: function() { Swal.showLoading(); } }));
                     var formData = new FormData(editForm);
                     fetch('edit.php', { method: 'POST', body: formData })
@@ -781,3 +733,5 @@ function deleteBudget(id, categoryName) {
     });
 }
 </script>
+
+<?php include '../../includes/footer.php'; ?>

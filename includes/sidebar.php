@@ -1,114 +1,110 @@
 <?php
 // Sidebar Navigation
-// Pastikan variabel $current_page sudah didefinisikan di setiap halaman
 if (!isset($current_page)) {
     $current_page = basename($_SERVER['PHP_SELF']);
 }
 ?>
 
+<!-- Overlay for mobile -->
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
 <div class="sidebar">
     <div class="sidebar-header">
-        <div class="logo">
-            <i class="fas fa-chart-line"></i> <?= APP_NAME ?>
-        </div>
-        <div class="user-info-sidebar">
-            <div class="user-avatar-sidebar">
-                <?= strtoupper(substr($_SESSION['user_name'], 0, 1)) ?>
-            </div>
-            <div class="user-name-sidebar">
-                <?= htmlspecialchars($_SESSION['user_name']) ?>
-            </div>
-            <div class="user-email-sidebar">
-                <?= htmlspecialchars($_SESSION['user_email']) ?>
-            </div>
-        </div>
+        <a href="/keuangan/dashboard.php" class="logo">
+            <i class="fas fa-chart-line"></i>
+            <span><?= APP_NAME ?></span>
+        </a>
     </div>
     
     <div class="sidebar-nav">
         <ul class="nav-menu">
-            <!-- 1. DASHBOARD - Pusat Informasi -->
             <li class="nav-item">
-                <a href="/keuangan/dashboard.php" class="nav-link-sidebar <?= $current_page == 'dashboard.php' ? 'active' : '' ?>">
+                <a href="/keuangan/dashboard.php" class="nav-link-sidebar <?= $current_page == 'dashboard.php' ? 'active' : '' ?>" title="Dashboard">
                     <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             
-            <!-- 2. TRANSAKSI - Aktivitas Paling Sering -->
             <li class="nav-item">
-                <a href="/keuangan/pages/transactions/index.php" class="nav-link-sidebar <?= strpos($current_page, 'transactions') !== false ? 'active' : '' ?>">
+                <a href="/keuangan/pages/transactions/index.php" class="nav-link-sidebar <?= strpos($current_page, 'transactions') !== false ? 'active' : '' ?>" title="Transaksi">
                     <i class="fas fa-exchange-alt"></i>
                     <span>Transaksi</span>
                 </a>
             </li>
             
-            <!-- 3. DANA DARURAT - PRIORITAS UTAMA (TAMBAHAN BARU) -->
             <li class="nav-item">
-                <a href="/keuangan/pages/emergency_fund/index.php" class="nav-link-sidebar <?= strpos($current_page, 'emergency') !== false ? 'active' : '' ?>">
+                <a href="/keuangan/pages/emergency_fund/index.php" class="nav-link-sidebar <?= strpos($current_page, 'emergency') !== false ? 'active' : '' ?>" title="Dana Darurat">
                     <i class="fas fa-shield-alt"></i>
                     <span>Dana Darurat</span>
                 </a>
             </li>
             
-            <!-- 4. CICILAN - PRIORITAS UTAMA (TAMBAHAN BARU) -->
             <li class="nav-item">
-                <a href="/keuangan/pages/installments/index.php" class="nav-link-sidebar <?= strpos($current_page, 'loans') !== false ? 'active' : '' ?>">
+                <a href="/keuangan/pages/installments/index.php" class="nav-link-sidebar <?= strpos($current_page, 'installments') !== false || strpos($current_page, 'loans') !== false ? 'active' : '' ?>" title="Cicilan">
                     <i class="fas fa-hand-holding-usd"></i>
                     <span>Cicilan</span>
                 </a>
             </li>
             
-            <!-- 5. AKUN - Kelola Sumber Dana -->
             <li class="nav-item">
-                <a href="/keuangan/pages/accounts/index.php" class="nav-link-sidebar <?= strpos($current_page, 'accounts') !== false ? 'active' : '' ?>">
+                <a href="/keuangan/pages/accounts/index.php" class="nav-link-sidebar <?= strpos($current_page, 'accounts') !== false ? 'active' : '' ?>" title="Akun">
                     <i class="fas fa-wallet"></i>
                     <span>Akun</span>
                 </a>
             </li>
             
-            <!-- 6. ANGGARAN - Kontrol Pengeluaran -->
             <li class="nav-item">
-                <a href="/keuangan/pages/budgets/index.php" class="nav-link-sidebar <?= strpos($current_page, 'budgets') !== false ? 'active' : '' ?>">
+                <a href="/keuangan/pages/budgets/index.php" class="nav-link-sidebar <?= strpos($current_page, 'budgets') !== false ? 'active' : '' ?>" title="Anggaran">
                     <i class="fas fa-chart-pie"></i>
                     <span>Anggaran</span>
                 </a>
             </li>
             
-            <!-- 7. KATEGORI - Pengelompokan Transaksi -->
             <li class="nav-item">
-                <a href="/keuangan/pages/categories/index.php" class="nav-link-sidebar <?= strpos($current_page, 'categories') !== false ? 'active' : '' ?>">
+                <a href="/keuangan/pages/categories/index.php" class="nav-link-sidebar <?= strpos($current_page, 'categories') !== false ? 'active' : '' ?>" title="Kategori">
                     <i class="fas fa-tags"></i>
                     <span>Kategori</span>
                 </a>
             </li>
             
-            <!-- 8. PORTOFOLIO - Investasi (Setelah Dana Darurat & Cicilan Aman) -->
             <li class="nav-item">
-                <a href="/keuangan/pages/assets/index.php" class="nav-link-sidebar <?= strpos($current_page, 'assets') !== false ? 'active' : '' ?>">
+                <a href="/keuangan/pages/assets/index.php" class="nav-link-sidebar <?= strpos($current_page, 'assets') !== false ? 'active' : '' ?>" title="Portofolio">
                     <i class="fas fa-chart-line"></i>
                     <span>Portofolio</span>
                 </a>
             </li>
             
-            <!-- 9. LAPORAN - Analisis Berkala -->
             <li class="nav-item">
-                <a href="/keuangan/pages/reports/index.php" class="nav-link-sidebar <?= strpos($current_page, 'reports') !== false ? 'active' : '' ?>">
+                <a href="/keuangan/pages/reports/index.php" class="nav-link-sidebar <?= strpos($current_page, 'reports') !== false ? 'active' : '' ?>" title="Laporan">
                     <i class="fas fa-chart-bar"></i>
                     <span>Laporan</span>
                 </a>
             </li>
-            
-            <!-- 10. PROFIL - Pengaturan Akun -->
+        </ul>
+    </div>
+
+    <!-- User Profile at bottom -->
+    <div class="user-info-sidebar">
+        <div class="user-avatar-sidebar">
+            <?= strtoupper(substr($_SESSION['user_name'], 0, 1)) ?>
+        </div>
+        <div class="user-details">
+            <div class="user-name-sidebar"><?= htmlspecialchars($_SESSION['user_name']) ?></div>
+            <div class="user-email-sidebar"><?= htmlspecialchars($_SESSION['user_email']) ?></div>
+        </div>
+    </div>
+
+    <!-- Profile & Logout Section -->
+    <div class="sidebar-footer" style="padding-bottom: 10px;">
+        <ul class="nav-menu">
             <li class="nav-item">
-                <a href="/keuangan/pages/profile/index.php" class="nav-link-sidebar <?= $current_page == 'profile.php' ? 'active' : '' ?>">
-                    <i class="fas fa-user"></i>
-                    <span>Profil</span>
+                <a href="/keuangan/pages/profile/index.php" class="nav-link-sidebar <?= $current_page == 'profile.php' ? 'active' : '' ?>" title="Profil">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Profil Saya</span>
                 </a>
             </li>
-            
-            <!-- 11. LOGOUT - Keluar Aplikasi -->
             <li class="nav-item">
-                <a href="/keuangan/logout.php" class="nav-link-sidebar">
+                <a href="/keuangan/logout.php" class="nav-link-sidebar text-danger" title="Logout">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </a>

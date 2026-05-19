@@ -8,6 +8,8 @@ require_once '../../classes/Category.php';
 require_once '../../classes/Account.php';
 require_once '../../classes/EmergencyFund.php';
 require_once '../../classes/Installment.php';
+require_once '../../classes/Budget.php';
+require_once '../../classes/Asset.php';
 
 if (!isLoggedIn()) {
     header('Location: ../../login.php');
@@ -23,6 +25,8 @@ $category = new Category();
 $account = new Account();
 $emergencyFund = new EmergencyFund();
 $installment = new Installment();
+$budget = new Budget();
+$asset = new Asset();
 
 // Validasi input
 $current_month = isset($_GET['month']) ? (int)$_GET['month'] : date('n');
@@ -62,6 +66,9 @@ if ($report_type == 'monthly') {
         $date = date('Y-m', strtotime($ip['payment_date']));
         return $date == "$current_year-" . str_pad($current_month, 2, '0', STR_PAD_LEFT);
     });
+
+    // 4. Budgets for this month
+    $monthly_budgets = $budget->getByMonth($_SESSION['user_id'], $current_month, $current_year);
     
     // Get daily summary for chart
     $daily_data = $transaction->getDailySummary($_SESSION['user_id'], $start_date, $end_date);
@@ -84,6 +91,9 @@ if ($report_type == 'monthly') {
 ");
     $stmt->execute([$_SESSION['user_id'], $current_month, $current_year]);
     $account_breakdown = $stmt->fetchAll();
+    
+    // Get transfers for this month
+    $transfers = $account->getTransferHistoryByDate($_SESSION['user_id'], $start_date, $end_date . ' 23:59:59');
     
     // Get top transactions
     $top_income_trans = $transaction->getTopTransactions($_SESSION['user_id'], $start_date, $end_date, 'income', 5);
@@ -115,6 +125,8 @@ if ($report_type == 'monthly') {
     $installment_payments = array_filter($all_installment_payments, function($ip) use ($current_year) {
         return date('Y', strtotime($ip['payment_date'])) == $current_year;
     });
+
+    $monthly_budgets = [];
     
     // Get monthly summary for chart
     $monthly_data = [];
@@ -147,12 +159,42 @@ if ($report_type == 'monthly') {
         return $cat['type'] == 'expense';
     });
     
+    // Get transfers for this year
+    $transfers = $account->getTransferHistoryByDate($_SESSION['user_id'], $start_date, $end_date . ' 23:59:59');
+    
     // Get top transactions for the year
     $top_income_trans = $transaction->getTopTransactions($_SESSION['user_id'], $start_date, $end_date, 'income', 5);
     $top_expense_trans = $transaction->getTopTransactions($_SESSION['user_id'], $start_date, $end_date, 'expense', 5);
     
     $account_breakdown = [];
 }
+
+// Get current emergency fund status
+$current_emergency = $emergencyFund->getEmergencyFund($_SESSION['user_id']);
+$emergency_target = $current_emergency ? (float)$current_emergency['target_amount'] : 0;
+$emergency_current = $current_emergency ? (float)$current_emergency['current_amount'] : 0;
+$emergency_percentage = $emergency_target > 0 ? ($emergency_current / $emergency_target) * 100 : 0;
+
+// Get active installments summary
+$installment_summary = $installment->getSummary($_SESSION['user_id']);
+if (!$installment_summary) {
+    $installment_summary = [
+        'total_installments' => 0,
+        'active_installments' => 0,
+        'completed_installments' => 0,
+        'total_remaining' => 0,
+        'total_paid' => 0
+    ];
+}
+
+// 5. Asset Portfolio Summary
+$portfolio = $asset->getPortfolioSummary($_SESSION['user_id']);
+
+// 6. Account Total Balance
+$total_account_balance = $account->getTotalBalance($_SESSION['user_id']);
+
+// Calculate Net Worth
+$net_worth = $total_account_balance + $portfolio['total_value'] - ($installment_summary['total_remaining'] ?? 0);
 
 // Calculate totals for REGULAR TRANSACTIONS
 $total_income = 0;
@@ -163,7 +205,6 @@ foreach ($transactions as $t) {
     } elseif ($t['type'] == 'expense') {
         $total_expense += $t['amount'];
     }
-    // selain itu (transfer, dll) diabaikan
 }
 
 // Calculate EMERGENCY FUND totals
@@ -183,14 +224,19 @@ foreach ($installment_payments as $ip) {
     $total_installment_paid += $ip['total_paid'];
 }
 
+// TOTAL PEMASUKAN KESELURUHAN
+$total_income_overall = $total_income + $total_emergency_deposit;
+
 // TOTAL PENGELUARAN KESELURUHAN
 $total_expense_overall = $total_expense + $total_emergency_withdraw + $total_installment_paid;
 
-// TOTAL PEMASUKAN KESELURUHAN (HANYA TRANSAKSI INCOME)
-$total_income_overall = $total_income;
-
-// SALDO
+// SALDO BERSIH (OPERASIONAL)
 $balance_overall = $total_income_overall - $total_expense_overall;
+
+// FINANCIAL RATIOS
+$savings_rate = $total_income_overall > 0 ? (($total_income_overall - $total_expense_overall) / $total_income_overall) * 100 : 0;
+$debt_service_ratio = $total_income_overall > 0 ? ($total_installment_paid / $total_income_overall) * 100 : 0;
+$emergency_ratio = $total_expense_overall > 0 ? $emergency_current / ($total_expense_overall / ($report_type == 'monthly' ? 1 : 12)) : 0;
 
 $transaction_count = count($transactions);
 $emergency_count = count($emergency_transactions);
@@ -199,24 +245,6 @@ $installment_count = count($installment_payments);
 $avg_transaction = $transaction_count > 0 ? ($total_income + $total_expense) / $transaction_count : 0;
 $avg_income = $transaction_count > 0 ? $total_income / $transaction_count : 0;
 $avg_expense = $transaction_count > 0 ? $total_expense / $transaction_count : 0;
-
-// Get current emergency fund status
-$current_emergency = $emergencyFund->getEmergencyFund($_SESSION['user_id']);
-$emergency_target = $current_emergency ? $current_emergency['target_amount'] : 0;
-$emergency_current = $current_emergency ? $current_emergency['current_amount'] : 0;
-$emergency_percentage = $emergency_target > 0 ? ($emergency_current / $emergency_target) * 100 : 0;
-
-// Get active installments summary
-$installment_summary = $installment->getSummary($_SESSION['user_id']);
-if (!$installment_summary) {
-    $installment_summary = [
-        'total_installments' => 0,
-        'active_installments' => 0,
-        'completed_installments' => 0,
-        'total_remaining' => 0,
-        'total_paid' => 0
-    ];
-}
 
 // Prepare data for PDF
 $pdf_data = [
@@ -230,6 +258,11 @@ $pdf_data = [
     'total_income_overall' => $total_income_overall,
     'total_expense_overall' => $total_expense_overall,
     'balance_overall' => $balance_overall,
+    'net_worth' => $net_worth,
+    'total_account_balance' => $total_account_balance,
+    'savings_rate' => $savings_rate,
+    'debt_service_ratio' => $debt_service_ratio,
+    'emergency_ratio' => $emergency_ratio,
     'total_emergency_deposit' => $total_emergency_deposit,
     'total_emergency_withdraw' => $total_emergency_withdraw,
     'total_installment_paid' => $total_installment_paid,
@@ -247,11 +280,14 @@ $pdf_data = [
     'top_income_trans' => $top_income_trans,
     'top_expense_trans' => $top_expense_trans,
     'transactions' => $transactions,
+    'transfers' => $transfers,
     'emergency_transactions' => $emergency_transactions,
     'installment_payments' => $installment_payments,
     'daily_data' => isset($daily_data) ? $daily_data : [],
     'monthly_data' => isset($monthly_data) ? $monthly_data : [],
-    'account_breakdown' => isset($account_breakdown) ? $account_breakdown : []
+    'account_breakdown' => isset($account_breakdown) ? $account_breakdown : [],
+    'monthly_budgets' => $monthly_budgets,
+    'portfolio' => $portfolio
 ];
 
 include '../../includes/header.php';
@@ -259,75 +295,7 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    /* ========== LAYOUT UTAMA ========== */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
-    body {
-        overflow-x: hidden !important;
-        width: 100% !important;
-        position: relative;
-    }
-    
-    .wrapper {
-        display: flex !important;
-        width: 100% !important;
-        align-items: stretch !important;
-        overflow-x: hidden !important;
-    }
-    
-    #sidebar {
-        min-width: 250px !important;
-        max-width: 250px !important;
-        width: 250px !important;
-        transition: all 0.3s;
-        flex-shrink: 0 !important;
-        background: #2c3e50;
-        color: #fff;
-    }
-    
-    #content, .main-content {
-        width: calc(100% - 250px) !important;
-        min-height: 100vh !important;
-        transition: all 0.3s;
-        overflow-x: hidden !important;
-        flex: 1 !important;
-        background: #f8f9fa;
-    }
-    
-    .container-fluid {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 20px !important;
-        margin: 0 !important;
-        overflow-x: hidden !important;
-    }
-    
-    @media (max-width: 768px) {
-        #sidebar {
-            margin-left: -250px !important;
-            position: fixed !important;
-            z-index: 1000 !important;
-            height: 100vh !important;
-        }
-        
-        #sidebar.active {
-            margin-left: 0 !important;
-        }
-        
-        #content, .main-content {
-            width: 100% !important;
-        }
-        
-        .container-fluid {
-            padding: 15px !important;
-        }
-    }
-    
-     /* ========== WELCOME CARD ========== */
+    /* ========== WELCOME CARD ========== */
     .welcome-card {
     background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
     border-radius: 20px;
@@ -362,6 +330,7 @@ include '../../includes/sidebar.php';
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         display: inline-flex;
         gap: 10px;
+        flex-wrap: wrap;
     }
     
     .report-tab {
@@ -497,6 +466,7 @@ include '../../includes/sidebar.php';
     .stat-box.balance .value { color: #667eea; }
     .stat-box.emergency .value { color: #f59e0b; }
     .stat-box.installment .value { color: #8b5cf6; }
+    .stat-box.net-worth .value { color: #1a2a6c; }
     
     /* ========== INFO CARD ========== */
     .info-card {
@@ -507,6 +477,21 @@ include '../../includes/sidebar.php';
     .warning-card {
         background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
         border-left: 4px solid #f59e0b;
+    }
+    
+    .dark-card {
+        background: linear-gradient(135deg, #1a2a6c 0%, #2c3e50 100%);
+        color: white;
+        border-left: 4px solid #3498db;
+    }
+    
+    .dark-card .report-title {
+        color: white;
+        border-left-color: #3498db;
+    }
+    
+    .dark-card .text-muted {
+        color: #bdc3c7 !important;
     }
     
     /* ========== CATEGORY ITEMS ========== */
@@ -605,6 +590,15 @@ include '../../includes/sidebar.php';
         gap: 5px;
     }
     
+    .badge-transfer {
+        background: #e0e7ff;
+        color: #4338ca;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    
     /* ========== EMPTY STATE ========== */
     .empty-state {
         text-align: center;
@@ -694,6 +688,30 @@ include '../../includes/sidebar.php';
         opacity: 0;
     }
     
+    /* ========== RATIO CARD ========== */
+    .ratio-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 15px;
+        height: 100%;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .ratio-value {
+        font-size: 20px;
+        font-weight: 800;
+        margin: 5px 0;
+    }
+    
+    .ratio-label {
+        font-size: 12px;
+        color: #6b7280;
+        font-weight: 600;
+    }
+    
     /* ========== RESPONSIVE ========== */
     @media (max-width: 768px) {
         .container-fluid {
@@ -772,13 +790,16 @@ include '../../includes/sidebar.php';
         <div class="welcome-card animated" style="animation-delay: 0s">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <h1 class="welcome-title">Laporan Keuangan</h1>
-                    <p class="welcome-subtitle">Analisis lengkap arus kas, dana darurat, dan cicilan</p>
+                    <h1 class="welcome-title text-dark">Laporan Keuangan</h1>
+                    <p class="welcome-subtitle text-muted">Analisis lengkap arus kas, dana darurat, dan cicilan</p>
                 </div>
                 <div class="col-md-6 text-md-end mt-3 mt-md-0">
                     <div class="export-buttons">
                         <button class="btn-export" onclick="exportToExcel()">
                             <i class="fas fa-file-excel"></i> Export Excel
+                        </button>
+                        <button class="btn-export" onclick="exportToPDF()">
+                            <i class="fas fa-file-pdf"></i> Export PDF
                         </button>
                         <button class="btn-export" onclick="window.print()">
                             <i class="fas fa-print"></i> Print
@@ -849,84 +870,243 @@ include '../../includes/sidebar.php';
         <div class="row g-4 mb-4">
             <div class="col-md-3 col-sm-6">
                 <div class="stat-box animated" style="animation-delay: 0.2s">
-                    <div class="label">Total Pemasukan</div>
-                    <div class="value income"><?= formatRupiah($total_income) ?></div>
+                    <div class="label">Net Worth (Kekayaan Bersih)</div>
+                    <div class="value net-worth"><?= formatRupiah($net_worth) ?></div>
                     <div class="mt-2">
-                        <i class="fas fa-arrow-up text-success"></i>
-                        <span class="text-success small">+<?= formatRupiah($total_income) ?></span>
+                        <i class="fas fa-university"></i>
+                        <span class="small">Total Aset & Saldo - Hutang</span>
                     </div>
                 </div>
             </div>
             <div class="col-md-3 col-sm-6">
                 <div class="stat-box animated" style="animation-delay: 0.25s">
-                    <div class="label">Total Pengeluaran</div>
-                    <div class="value expense">
-    <?= formatRupiah($total_expense + $total_emergency_withdraw + $total_installment_paid) ?>
-</div>
+                    <div class="label">Total Pemasukan</div>
+                    <div class="value income"><?= formatRupiah($total_income_overall) ?></div>
                     <div class="mt-2">
-                        <i class="fas fa-arrow-down text-danger"></i>
-                        <span class="text-danger small">-<?= formatRupiah($total_expense) ?></span>
+                        <i class="fas fa-arrow-up text-success"></i>
+                        <span class="text-success small">+<?= formatRupiah($total_income_overall) ?></span>
                     </div>
                 </div>
             </div>
             <div class="col-md-3 col-sm-6">
                 <div class="stat-box animated" style="animation-delay: 0.3s">
-                    <div class="label">Dana Darurat</div>
-                    <div class="value emergency"><?= formatRupiah($emergency_current) ?></div>
+                    <div class="label">Total Pengeluaran</div>
+                    <div class="value expense"><?= formatRupiah($total_expense_overall) ?></div>
                     <div class="mt-2">
-                        <i class="fas fa-umbrella"></i>
-                        <span class="small">Target: <?= formatRupiah($emergency_target) ?></span>
+                        <i class="fas fa-arrow-down text-danger"></i>
+                        <span class="text-danger small">-<?= formatRupiah($total_expense_overall) ?></span>
                     </div>
                 </div>
             </div>
             <div class="col-md-3 col-sm-6">
                 <div class="stat-box animated" style="animation-delay: 0.35s">
-                    <div class="label">Sisa Cicilan Aktif</div>
-                    <div class="value installment"><?= formatRupiah($installment_summary['total_remaining'] ?? 0) ?></div>
+                    <div class="label">Saldo Bersih Periode Ini</div>
+                    <div class="value balance"><?= formatRupiah($balance_overall) ?></div>
                     <div class="mt-2">
-                        <i class="fas fa-hand-holding-usd"></i>
-                        <span class="small"><?= $installment_summary['active_installments'] ?? 0 ?> Cicilan Aktif</span>
+                        <i class="fas <?= $balance_overall >= 0 ? 'fa-smile text-success' : 'fa-frown text-danger' ?>"></i>
+                        <span class="small"><?= $balance_overall >= 0 ? 'Surplus' : 'Defisit' ?></span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Overall Financial Summary Card -->
+        <!-- Net Worth & Health Ratios Card -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-8">
+                <div class="report-card animated dark-card" style="animation-delay: 0.4s">
+                    <div class="report-title">
+                        <i class="fas fa-heartbeat"></i>
+                        Kesehatan Keuangan & Kekayaan Bersih
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-md-6 mb-4 mb-md-0">
+                            <div class="mb-4">
+                                <small class="text-muted d-block">Komposisi Kekayaan Bersih:</small>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <span>Saldo Akun</span>
+                                    <span><?= formatRupiah($total_account_balance) ?></span>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <span>Nilai Portofolio Aset</span>
+                                    <span><?= formatRupiah($portfolio['total_value']) ?></span>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1 text-warning">
+                                    <span>Total Cicilan (Hutang)</span>
+                                    <span>-<?= formatRupiah($installment_summary['total_remaining'] ?? 0) ?></span>
+                                </div>
+                                <hr style="border-color: rgba(255,255,255,0.1)">
+                                <div class="d-flex justify-content-between fw-bold">
+                                    <span>KEKAYAAN BERSIH</span>
+                                    <span style="font-size: 1.2rem;"><?= formatRupiah($net_worth) ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="ratio-card text-dark">
+                                        <div class="ratio-label">Savings Rate</div>
+                                        <div class="ratio-value <?= $savings_rate >= 20 ? 'text-success' : ($savings_rate >= 10 ? 'text-warning' : 'text-danger') ?>">
+                                            <?= number_format($savings_rate, 1) ?>%
+                                        </div>
+                                        <small class="text-muted">Target: >20%</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="ratio-card text-dark">
+                                        <div class="ratio-label">Debt Service</div>
+                                        <div class="ratio-value <?= $debt_service_ratio <= 35 ? 'text-success' : 'text-danger' ?>">
+                                            <?= number_format($debt_service_ratio, 1) ?>%
+                                        </div>
+                                        <small class="text-muted">Max: 35%</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="ratio-card text-dark">
+                                        <div class="ratio-label">EF Coverage</div>
+                                        <div class="ratio-value <?= $emergency_ratio >= 6 ? 'text-success' : ($emergency_ratio >= 3 ? 'text-warning' : 'text-danger') ?>">
+                                            <?= number_format($emergency_ratio, 1) ?> bln
+                                        </div>
+                                        <small class="text-muted">Target: 6-12 bln</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="ratio-card text-dark">
+                                        <div class="ratio-label">Asset Liquidity</div>
+                                        <div class="ratio-value text-primary">
+                                            <?= number_format(($total_account_balance / ($net_worth > 0 ? $net_worth : 1)) * 100, 1) ?>%
+                                        </div>
+                                        <small class="text-muted">Cash vs Total</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="report-card animated info-card" style="animation-delay: 0.45s">
+                    <div class="report-title">
+                        <i class="fas fa-coins"></i>
+                        Alokasi Pemasukan
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Pengeluaran (Reguler)</span>
+                            <span class="fw-bold text-danger"><?= formatRupiah($total_expense) ?></span>
+                        </div>
+                        <div class="progress-bar-custom mb-3">
+                            <div class="progress-fill bg-danger" style="width: <?= $total_income_overall > 0 ? ($total_expense / $total_income_overall) * 100 : 0 ?>%"></div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Pembayaran Cicilan</span>
+                            <span class="fw-bold text-warning"><?= formatRupiah($total_installment_paid) ?></span>
+                        </div>
+                        <div class="progress-bar-custom mb-3">
+                            <div class="progress-fill bg-warning" style="width: <?= $total_income_overall > 0 ? ($total_installment_paid / $total_income_overall) * 100 : 0 ?>%"></div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tabungan (EF/Surplus)</span>
+                            <span class="fw-bold text-success"><?= formatRupiah($balance_overall) ?></span>
+                        </div>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill bg-success" style="width: <?= $total_income_overall > 0 ? (max(0, $balance_overall) / $total_income_overall) * 100 : 0 ?>%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Asset Portfolio Summary Card -->
         <div class="row g-4 mb-4">
             <div class="col-12">
-                <div class="report-card animated info-card" style="animation-delay: 0.4s">
-                    <div class="report-title">
-                        <i class="fas fa-chart-line"></i>
-                        Ringkasan Keuangan Keseluruhan
+                <div class="report-card animated" style="animation-delay: 0.42s; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-left: 4px solid #22c55e;">
+                    <div class="report-title" style="border-left-color: #22c55e;">
+                        <i class="fas fa-briefcase text-success"></i>
+                        Ringkasan Portofolio Aset
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3 col-6 mb-3 mb-md-0">
                             <div class="text-center">
-                                <small class="text-muted">Total Pemasukan Keseluruhan</small>
-                                <h4 class="text-success mb-0"><?= formatRupiah($total_income_overall) ?></h4>
-                                <small>(Transaksi + Deposit Dana Darurat)</small>
+                                <small class="text-muted">Total Aset</small>
+                                <h5 class="mb-0"><?= $portfolio['total_assets'] ?></h5>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3 col-6 mb-3 mb-md-0">
                             <div class="text-center">
-                                <small class="text-muted">Total Pengeluaran Keseluruhan</small>
-                                <h4 class="text-danger mb-0"><?= formatRupiah($total_expense_overall) ?></h4>
-                                <small>(Transaksi + Penarikan Dana Darurat + Cicilan)</small>
+                                <small class="text-muted">Total Investasi</small>
+                                <h5 class="mb-0"><?= formatRupiah($portfolio['total_investment']) ?></h5>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3 col-6">
                             <div class="text-center">
-                                <small class="text-muted">Saldo Bersih Keseluruhan</small>
-                                <h4 class="<?= $balance_overall >= 0 ? 'text-success' : 'text-danger' ?> mb-0">
-                                    <?= formatRupiah($balance_overall) ?>
-                                </h4>
-                                <small><?= $balance_overall >= 0 ? 'Surplus' : 'Defisit' ?></small>
+                                <small class="text-muted">Nilai Saat Ini</small>
+                                <h5 class="text-primary mb-0"><?= formatRupiah($portfolio['total_value']) ?></h5>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="text-center">
+                                <small class="text-muted">Profit/Loss</small>
+                                <h5 class="<?= $portfolio['profit_loss'] >= 0 ? 'text-success' : 'text-danger' ?> mb-0">
+                                    <?= formatRupiah($portfolio['profit_loss']) ?> 
+                                    <small>(<?= number_format($portfolio['profit_loss_percent'], 1) ?>%)</small>
+                                </h5>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Budget vs Actual (Only Monthly) -->
+        <?php if ($report_type == 'monthly' && count($monthly_budgets) > 0): ?>
+        <div class="row g-4 mb-4">
+            <div class="col-12">
+                <div class="report-card animated" style="animation-delay: 0.44s">
+                    <div class="report-title">
+                        <i class="fas fa-tasks"></i>
+                        Budget vs Realisasi Pengeluaran
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table-report table">
+                            <thead>
+                                <tr>
+                                    <th>Kategori</th>
+                                    <th>Budget</th>
+                                    <th>Terpakai</th>
+                                    <th>Sisa</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($monthly_budgets as $b): 
+                                    $remaining = $b['budget_amount'] - $b['spent_amount'];
+                                    $percent = $b['budget_amount'] > 0 ? ($b['spent_amount'] / $b['budget_amount']) * 100 : 0;
+                                    $status_class = $percent > 100 ? 'text-danger' : ($percent > 80 ? 'text-warning' : 'text-success');
+                                ?>
+                                <tr>
+                                    <td><strong><?= htmlspecialchars($b['category_name']) ?></strong></td>
+                                    <td><?= formatRupiah($b['budget_amount']) ?></td>
+                                    <td class="<?= $status_class ?> fw-bold"><?= formatRupiah($b['spent_amount']) ?></td>
+                                    <td class="<?= $remaining < 0 ? 'text-danger' : 'text-success' ?>"><?= formatRupiah($remaining) ?></td>
+                                    <td>
+                                        <div class="progress-bar-custom" style="width: 100px;">
+                                            <div class="progress-fill <?= $percent > 100 ? 'bg-danger' : ($percent > 80 ? 'bg-warning' : 'bg-success') ?>" 
+                                                 style="width: <?= min($percent, 100) ?>%"></div>
+                                        </div>
+                                        <small><?= number_format($percent, 1) ?>%</small>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
 
         <!-- Emergency Fund Progress -->
         <?php if ($emergency_target > 0): ?>
@@ -937,9 +1117,9 @@ include '../../includes/sidebar.php';
                         <i class="fas fa-umbrella-beach"></i>
                         Progress Dana Darurat
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Terkumpul: <strong><?= formatRupiah($emergency_current) ?></strong></span>
-                        <span>Target: <strong><?= formatRupiah($emergency_target) ?></strong></span>
+                    <div class="d-flex flex-wrap justify-content-between mb-2">
+                        <span class="me-3">Terkumpul: <strong><?= formatRupiah($emergency_current) ?></strong></span>
+                        <span class="me-3">Target: <strong><?= formatRupiah($emergency_target) ?></strong></span>
                         <span>Persentase: <strong><?= number_format($emergency_percentage, 1) ?>%</strong></span>
                     </div>
                     <div class="progress-bar-custom" style="height: 12px;">
@@ -963,7 +1143,9 @@ include '../../includes/sidebar.php';
                         <i class="fas fa-chart-line"></i>
                         Tren Keuangan (Transaksi Reguler)
                     </div>
-                    <canvas id="trendChart" height="280"></canvas>
+                    <div style="height: 300px;">
+                        <canvas id="trendChart"></canvas>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -1067,6 +1249,38 @@ include '../../includes/sidebar.php';
             </div>
         </div>
 
+        <!-- Transfer History Summary -->
+        <?php if (count($transfers) > 0): ?>
+        <div class="row g-4 mb-4">
+            <div class="col-12">
+                <div class="report-card animated" style="animation-delay: 0.68s">
+                    <div class="report-title">
+                        <i class="fas fa-exchange-alt"></i>
+                        Ringkasan Transfer Antar Akun
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table-report table">
+                            <thead>
+                                <tr><th>Tanggal</th><th>Dari Akun</th><th>Ke Akun</th><th>Jumlah</th><th>Keterangan</th></tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($transfers as $tr): ?>
+                                <tr>
+                                    <td><?= formatDate($tr['transfer_date']) ?></td>
+                                    <td><?= htmlspecialchars($tr['from_account_name']) ?></td>
+                                    <td><?= htmlspecialchars($tr['to_account_name']) ?></td>
+                                    <td class="fw-bold"><?= formatRupiah($tr['amount']) ?></td>
+                                    <td><?= htmlspecialchars($tr['description'] ?: '-') ?></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
         <!-- Category Breakdown -->
         <div class="row g-4 mb-4">
             <div class="col-md-6">
@@ -1076,7 +1290,9 @@ include '../../includes/sidebar.php';
                         Kategori Pemasukan Teratas
                     </div>
                     <?php if (count($income_categories) > 0): ?>
-                        <canvas id="incomeChart" height="220"></canvas>
+                        <div style="height: 220px;">
+                            <canvas id="incomeChart"></canvas>
+                        </div>
                         <div class="mt-3">
                             <?php 
                             $top_income = array_slice($income_categories, 0, 5);
@@ -1087,7 +1303,7 @@ include '../../includes/sidebar.php';
                                 <span class="category-amount income"><?= formatRupiah($cat['total']) ?></span>
                             </div>
                             <div class="progress-bar-custom">
-                                <div class="progress-fill income" style="width: <?= ($cat['total'] / $total_income) * 100 ?>%"></div>
+                                <div class="progress-fill income" style="width: <?= ($cat['total'] / ($total_income > 0 ? $total_income : 1)) * 100 ?>%"></div>
                             </div>
                             <?php endforeach; ?>
                         </div>
@@ -1106,7 +1322,9 @@ include '../../includes/sidebar.php';
                         Kategori Pengeluaran Teratas
                     </div>
                     <?php if (count($expense_categories) > 0): ?>
-                        <canvas id="expenseChart" height="220"></canvas>
+                        <div style="height: 220px;">
+                            <canvas id="expenseChart"></canvas>
+                        </div>
                         <div class="mt-3">
                             <?php 
                             $top_expense = array_slice($expense_categories, 0, 5);
@@ -1117,7 +1335,7 @@ include '../../includes/sidebar.php';
                                 <span class="category-amount expense"><?= formatRupiah($cat['total']) ?></span>
                             </div>
                             <div class="progress-bar-custom">
-                                <div class="progress-fill expense" style="width: <?= ($cat['total'] / $total_expense) * 100 ?>%"></div>
+                                <div class="progress-fill expense" style="width: <?= ($cat['total'] / ($total_expense > 0 ? $total_expense : 1)) * 100 ?>%"></div>
                             </div>
                             <?php endforeach; ?>
                         </div>
@@ -1181,7 +1399,7 @@ include '../../includes/sidebar.php';
                     <div class="table-responsive">
                         <table class="table-report table">
                             <thead>
-                                <tr><th>Tanggal</th><th>Nama Cicilan</th><th>Pembayaran Ke-</th><th>Jumlah</th><th>Denda</th><th>Total Dibayar</th></tr>
+                                <tr><th>Tanggal</th><th>Nama Cicilan</th><th>Ke-</th><th>Jumlah</th><th>Denda</th><th>Total</th></tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($installment_payments as $ip): ?>
@@ -1214,14 +1432,13 @@ include '../../includes/sidebar.php';
                         <div class="table-responsive">
                             <table class="table-report table table-sm">
                                 <thead>
-                                    <tr><th>Tanggal</th><th>Deskripsi</th><th>Kategori</th><th>Jumlah</th></tr>
+                                    <tr><th>Tanggal</th><th>Deskripsi</th><th>Jumlah</th></tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($top_income_trans as $t): ?>
                                     <tr>
                                         <td><?= formatDate($t['transaction_date']) ?></td>
                                         <td><?= htmlspecialchars($t['description']) ?></td>
-                                        <td><?= htmlspecialchars($t['category_name']) ?></td>
                                         <td class="text-success fw-bold"><?= formatRupiah($t['amount']) ?></td>
                                     </tr>
                                     <?php endforeach; ?>
@@ -1246,14 +1463,13 @@ include '../../includes/sidebar.php';
                         <div class="table-responsive">
                             <table class="table-report table table-sm">
                                 <thead>
-                                    <tr><th>Tanggal</th><th>Deskripsi</th><th>Kategori</th><th>Jumlah</th></tr>
+                                    <tr><th>Tanggal</th><th>Deskripsi</th><th>Jumlah</th></tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($top_expense_trans as $t): ?>
                                     <tr>
                                         <td><?= formatDate($t['transaction_date']) ?></td>
                                         <td><?= htmlspecialchars($t['description']) ?></td>
-                                        <td><?= htmlspecialchars($t['category_name']) ?></td>
                                         <td class="text-danger fw-bold"><?= formatRupiah($t['amount']) ?></td>
                                     </tr>
                                     <?php endforeach; ?>
@@ -1353,13 +1569,12 @@ include '../../includes/sidebar.php';
 
 <!-- Include Required Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 <script>
     // Initialize Charts
     <?php if ($report_type == 'monthly'): ?>
     // Monthly chart
-    const ctx = document.getElementById('trendChart').getContext('2d');
+    const trendCtx = document.getElementById('trendChart').getContext('2d');
     const dailyData = <?= json_encode($daily_data) ?>;
     const labels = dailyData.map(d => {
         const date = new Date(d.transaction_date);
@@ -1368,7 +1583,7 @@ include '../../includes/sidebar.php';
     const incomeData = dailyData.map(d => d.income);
     const expenseData = dailyData.map(d => d.expense);
     
-    new Chart(ctx, {
+    new Chart(trendCtx, {
         type: 'line',
         data: {
             labels: labels,
@@ -1405,7 +1620,7 @@ include '../../includes/sidebar.php';
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'top',
@@ -1443,13 +1658,13 @@ include '../../includes/sidebar.php';
     });
     <?php else: ?>
     // Yearly chart
-    const ctx = document.getElementById('trendChart').getContext('2d');
+    const trendCtx = document.getElementById('trendChart').getContext('2d');
     const monthlyData = <?= json_encode($monthly_data) ?>;
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
     const monthlyIncome = monthlyData.map(d => d.income);
     const monthlyExpense = monthlyData.map(d => d.expense);
     
-    new Chart(ctx, {
+    new Chart(trendCtx, {
         type: 'bar',
         data: {
             labels: months,
@@ -1474,7 +1689,7 @@ include '../../includes/sidebar.php';
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'top',
@@ -1528,7 +1743,7 @@ include '../../includes/sidebar.php';
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'bottom',
@@ -1571,7 +1786,7 @@ include '../../includes/sidebar.php';
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'bottom',
@@ -1599,19 +1814,22 @@ include '../../includes/sidebar.php';
     
     // Export to Excel
     function exportToExcel() {
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        loadingOverlay.style.display = 'flex';
-        
         const params = new URLSearchParams(window.location.search);
         const type = params.get('type') || 'monthly';
-        const month = params.get('month') || new Date().getMonth() + 1;
-        const year = params.get('year') || new Date().getFullYear();
+        const month = params.get('month') || <?= $current_month ?>;
+        const year = params.get('year') || <?= $current_year ?>;
         
         window.location.href = `export_excel.php?type=${type}&month=${month}&year=${year}`;
+    }
+
+    // Export to PDF
+    function exportToPDF() {
+        const params = new URLSearchParams(window.location.search);
+        const type = params.get('type') || 'monthly';
+        const month = params.get('month') || <?= $current_month ?>;
+        const year = params.get('year') || <?= $current_year ?>;
         
-        setTimeout(() => {
-            loadingOverlay.style.display = 'none';
-        }, 2000);
+        window.open(`export_pdf.php?type=${type}&month=${month}&year=${year}`, '_blank');
     }
     
     // Helper functions
