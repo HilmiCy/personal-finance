@@ -5,7 +5,7 @@ This application helps users manage personal finances efficiently, including exp
 
 ---
 
-## 🚀 Recent Updates (Major Redesign)
+##  Recent Updates (Major Redesign)
 
 - **Modern UI/UX**: Completely redesigned interface with a sleek, minimalist responsive sidebar and 'Inter' typography.
 - **Enhanced Reporting**: Comprehensive financial reports integrating transactions, emergency funds, installments, and budgets.
