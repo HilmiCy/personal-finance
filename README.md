@@ -5,6 +5,15 @@ This application helps users manage personal finances efficiently, including exp
 
 ---
 
+## 🚀 Recent Updates (Major Redesign)
+
+- **Modern UI/UX**: Completely redesigned interface with a sleek, minimalist responsive sidebar and 'Inter' typography.
+- **Enhanced Reporting**: Comprehensive financial reports integrating transactions, emergency funds, installments, and budgets.
+- **Dependency Management**: Now using **Composer** for better library management.
+- **Advanced Export**: Improved PDF export using `dompdf` and Excel export functionality.
+
+---
+
 ## Features
 
 ### Core Financial Management
@@ -34,8 +43,8 @@ This application helps users manage personal finances efficiently, including exp
 ### Reporting & Analytics
 - Monthly financial reports
 - Excel export
-- PDF export
-- Transaction filtering
+- PDF export (powered by `dompdf`)
+- Transaction filtering and summaries
 
 ---
 
@@ -43,11 +52,12 @@ This application helps users manage personal finances efficiently, including exp
 
 | Component | Technology |
 |-----------|------------|
-| Backend | PHP Native |
+| Backend | PHP Native 8.x |
 | Database | MySQL |
-| Frontend | HTML5, CSS3, JavaScript |
-| Styling | Custom CSS |
-| Export | Excel & PDF Libraries |
+| Frontend | HTML5, CSS3 (Vanilla), JavaScript |
+| Styling | Custom Modern CSS (Responsive) |
+| Dependencies | Composer |
+| Libraries | dompdf, TCPDF, phpspreadsheet |
 
 ---
 
@@ -55,44 +65,15 @@ This application helps users manage personal finances efficiently, including exp
 
 ```bash
 keuangan/
-├── dashboard.php
-├── login.php
+├── vendor/             # Composer dependencies (ignored by Git)
+├── composer.json       # Project dependencies
+├── dashboard.php       # Main dashboard
+├── login.php           # Authentication
 ├── register.php
-├── logout.php
-├── index.php
-│
-├── assets/
-│   ├── css/
-│   └── images/
-│
-├── classes/
-│   ├── Database.php
-│   ├── User.php
-│   ├── Transaction.php
-│   ├── Account.php
-│   ├── Category.php
-│   └── Asset.php
-│
-├── config/
-│   ├── config.php
-│   ├── database.php
-│   └── session.php
-│
-├── includes/
-│   ├── header.php
-│   ├── footer.php
-│   ├── sidebar.php
-│   └── functions.php
-│
-└── pages/
-    ├── transactions/
-    ├── accounts/
-    ├── categories/
-    ├── emergency_fund/
-    ├── installments/
-    ├── budgets/
-    ├── assets/
-    └── reports/
+├── config/             # System configuration
+├── classes/            # Business logic (OOP)
+├── includes/           # Layout components (Header, Sidebar, Footer)
+└── pages/              # Module-specific pages
 ```
 
 ---
@@ -103,105 +84,51 @@ keuangan/
 
 - PHP 7.4 or higher
 - MySQL 5.7 or higher
-- Apache / Nginx / XAMPP
+- [Composer](https://getcomposer.org/) (Required)
+- Apache / Nginx / Laragon / XAMPP
 
 ### Steps
 
 #### 1. Clone Repository
-
 ```bash
-git clone https://github.com/penuliscode/keuangan.git
+git clone https://github.com/HilmiCy/personal-finance.git
+cd personal-finance
 ```
 
-#### 2. Move to Project Directory
-
+#### 2. Install Dependencies
+This project uses Composer to manage libraries. Run the following command:
 ```bash
-cd keuangan
+composer install
 ```
 
 #### 3. Configure Database
-
-Create a new MySQL database and update database credentials in:
-
-```bash
-config/database.php
-```
+Update your database credentials in:
+`config/database.php`
 
 #### 4. Import Database Schema
-
-Import the SQL schema into your MySQL database.
+Import the provided SQL schema into your MySQL database.
 
 #### 5. Run Application
-
-Using PHP built-in server:
-
+Open the project via your local server (e.g., `http://localhost/keuangan`) or use PHP built-in server:
 ```bash
 php -S localhost:8000
 ```
 
-Open in browser:
-
-```bash
-http://localhost:8000
-```
-
----
-
-## Modules Overview
-
-| Module | Description |
-|--------|-------------|
-| Dashboard | Financial summary |
-| Transactions | Manage income & expenses |
-| Accounts | Manage wallets and bank accounts |
-| Categories | Transaction categorization |
-| Budgets | Monthly budget planning |
-| Assets | Investment portfolio tracking |
-| Emergency Fund | Emergency savings management |
-| Installments | Debt and installment tracking |
-| Reports | Financial report generation |
-
 ---
 
 ## Security Features
-
-- Password hashing using bcrypt
+- Password hashing using `password_hash()` (bcrypt)
 - Session-based authentication
 - Prepared statements for SQL injection prevention
-- XSS protection
-- CSRF protection
-
----
-
-## Future Enhancements
-
-- Interactive dashboard charts
-- Email notification reminders
-- Responsive mobile interface
-- Multi-currency support
-- CSV/Excel import
-- Investment analytics
-- REST API integration
+- Input sanitization for XSS protection
 
 ---
 
 ## Author
-
-**Fadhil Cahya Hilmi**
-
-GitHub: `@hilmicy`
+**Fadhil Cahya Hilmi**  
+GitHub: [@HilmiCy](https://github.com/HilmiCy)
 
 ---
 
 ## License
-
-This project is licensed under the MIT License.  
-You are free to use, modify, and distribute this software in accordance with the license terms.
-
-See the [License.md](License.md) file for more information.
-
----
-
-## Support
-
-If you find this project useful, consider giving it a star on GitHub.
+This project is licensed under the MIT License. See [License.md](License.md) for details.
