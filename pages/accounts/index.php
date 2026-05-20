@@ -377,7 +377,7 @@ include '../../includes/sidebar.php';
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
-                                        <button class="dropdown-item" onclick="editAccount(<?= $acc['id'] ?>, '<?= htmlspecialchars($acc['name']) ?>', <?= $acc['balance'] ?>)">
+                                        <button class="dropdown-item" onclick="editAccount(<?= $acc['id'] ?>, '<?= htmlspecialchars($acc['name']) ?>', <?= $acc['balance'] ?>, '<?= $acc['currency'] ?>')">
                                             <i class="fas fa-pencil-alt me-2 text-primary"></i> Ubah Nama/Saldo
                                         </button>
                                     </li>
@@ -391,7 +391,7 @@ include '../../includes/sidebar.php';
                             </div>
                         </div>
                         <div class="account-name"><?= htmlspecialchars($acc['name']) ?></div>
-                        <div class="account-balance"><?= formatRupiah($acc['balance']) ?></div>
+                        <div class="account-balance"><?= formatCurrency($acc['balance'], $acc['currency']) ?></div>
                     </div>
                 </div>
                 <?php endforeach; ?>
@@ -456,11 +456,21 @@ include '../../includes/sidebar.php';
                         <label class="form-label fw-bold">Nama Akun</label>
                         <input type="text" name="name" id="add_account_name" class="form-control" placeholder="Contoh: Bank BCA, Cash, OVO, Dana" required>
                         <small class="text-muted">Masukkan nama akun yang mudah diingat</small>
-                    </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Saldo Awal</label>
                         <input type="text" name="balance_display" id="balance_display" class="form-control currency-input" placeholder="0" value="0">
                         <input type="hidden" name="balance" id="balance_hidden">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Mata Uang</label>
+                        <select name="currency" class="form-select">
+                            <option value="IDR">IDR (Rupiah)</option>
+                            <option value="USD">USD (Dollar)</option>
+                            <option value="EUR">EUR (Euro)</option>
+                            <option value="SGD">SGD (Singapore Dollar)</option>
+                            <option value="JPY">JPY (Yen)</option>
+                        </select>
+                    </div>
                         <small class="text-muted">Masukkan saldo awal akun ini</small>
                     </div>
                 </div>
@@ -499,6 +509,16 @@ include '../../includes/sidebar.php';
                         <input type="text" id="edit_balance_display" class="form-control currency-input">
                         <input type="hidden" name="balance" id="edit_balance_hidden">
                         <small class="text-muted">Perubahan saldo akan mempengaruhi laporan keuangan</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Mata Uang</label>
+                        <select name="currency" id="edit_account_currency" class="form-select">
+                            <option value="IDR">IDR (Rupiah)</option>
+                            <option value="USD">USD (Dollar)</option>
+                            <option value="EUR">EUR (Euro)</option>
+                            <option value="SGD">SGD (Singapore Dollar)</option>
+                            <option value="JPY">JPY (Yen)</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer modal-footer-custom">
@@ -765,11 +785,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Global Helpers for onclick
-function editAccount(id, name, balance) {
+function editAccount(id, name, balance, currency) {
     document.getElementById('edit_account_id').value = id;
     document.getElementById('edit_account_name').value = name;
     document.getElementById('edit_balance_display').value = new Intl.NumberFormat('id-ID').format(balance);
     document.getElementById('edit_balance_hidden').value = balance;
+    document.getElementById('edit_account_currency').value = currency || 'IDR';
     var modalEl = document.getElementById('editAccountModal');
     var modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
     modal.show();

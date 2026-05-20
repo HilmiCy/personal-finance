@@ -5,6 +5,7 @@ require_once '../../includes/functions.php';
 require_once '../../classes/Database.php';
 require_once '../../classes/Asset.php';
 require_once '../../classes/AssetTransaction.php';
+require_once '../../classes/CurrencyService.php';
 
 if (!isLoggedIn()) {
     header('Location: ../../login.php');
@@ -17,6 +18,9 @@ $current_page = 'assets';
 $db = Database::getInstance()->getConnection();
 $asset = new Asset();
 $assetTransaction = new AssetTransaction();
+
+// Get exchange rates for auto-price
+$rates = CurrencyService::getExchangeRates();
 
 // Get all assets
 $assets = $asset->getAll($_SESSION['user_id']);
@@ -106,6 +110,9 @@ include '../../includes/sidebar.php';
                     <p class="welcome-subtitle">Kelola seluruh investasi Anda secara profesional</p>
                 </div>
                 <div class="col-md-6 text-md-end mt-3 mt-md-0 header-actions">
+                    <a href="monitoring.php" class="btn-action-minimal me-2">
+                        <i class="fas fa-chart-line"></i> Monitoring Kurs
+                    </a>
                     <button class="btn-action-minimal me-2" data-bs-toggle="modal" data-bs-target="#converterModal">
                         <i class="fas fa-calculator"></i> Konverter
                     </button>
@@ -179,12 +186,12 @@ include '../../includes/sidebar.php';
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
                                     <li>
-                                        <button class="dropdown-item" onclick="editAsset(<?= $a['id'] ?>, '<?= htmlspecialchars($a['name']) ?>', '<?= $a['type'] ?>', '<?= htmlspecialchars($a['symbol'] ?: '') ?>')">
+                                        <button class="dropdown-item" onclick="editAsset(<?= $a['id'] ?>, '<?= htmlspecialchars($a['name']) ?>', '<?= $a['type'] ?>', '<?= htmlspecialchars($a['symbol'] ?: '') ?>', '<?= $a['currency'] ?>')">
                                             <i class="fas fa-pencil-alt me-2 text-primary"></i> Edit Aset
                                         </button>
                                     </li>
                                     <li>
-                                        <button class="dropdown-item" onclick="viewTransactions(<?= $a['id'] ?>, '<?= htmlspecialchars($a['name']) ?>')">
+                                        <button class="dropdown-item" onclick="viewTransactions(<?= $a['id'] ?>, '<?= htmlspecialchars($a['name']) ?>', '<?= $a['currency'] ?>')">
                                             <i class="fas fa-history me-2 text-info"></i> Riwayat
                                         </button>
                                     </li>
@@ -205,11 +212,11 @@ include '../../includes/sidebar.php';
                             </div>
                             <div>
                                 <div class="asset-stat-label">Nilai</div>
-                                <div class="asset-stat-value"><?= formatRupiah($current_value) ?></div>
+                                <div class="asset-stat-value"><?= formatCurrency($current_value, $a['currency']) ?></div>
                             </div>
                             <div>
                                 <div class="asset-stat-label">Modal</div>
-                                <div class="asset-stat-value"><?= formatRupiah($a['total_buy']) ?></div>
+                                <div class="asset-stat-value"><?= formatCurrency($a['total_buy'], $a['currency']) ?></div>
                             </div>
                             <div>
                                 <div class="asset-stat-label">Profit/Loss</div>
@@ -220,10 +227,10 @@ include '../../includes/sidebar.php';
                         </div>
                         
                         <div class="d-flex gap-2">
-                            <button class="btn-buy-asset" onclick="openTransactionModal(<?= $a['id'] ?>, '<?= htmlspecialchars($a['name']) ?>', <?= $a['current_price'] ?>, 'buy')">
+                            <button class="btn-buy-asset" onclick="openTransactionModal(<?= $a['id'] ?>, '<?= htmlspecialchars($a['name']) ?>', '<?= htmlspecialchars($a['symbol'] ?: '') ?>', 'buy', '<?= $a['currency'] ?>')">
                                 <i class="fas fa-plus-circle me-1"></i> BELI
                             </button>
-                            <button class="btn-sell-asset" onclick="openTransactionModal(<?= $a['id'] ?>, '<?= htmlspecialchars($a['name']) ?>', <?= $a['current_price'] ?>, 'sell')" <?= $a['total_quantity'] <= 0 ? 'disabled' : '' ?>>
+                            <button class="btn-sell-asset" onclick="openTransactionModal(<?= $a['id'] ?>, '<?= htmlspecialchars($a['name']) ?>', '<?= htmlspecialchars($a['symbol'] ?: '') ?>', 'sell', '<?= $a['currency'] ?>')" <?= $a['total_quantity'] <= 0 ? 'disabled' : '' ?>>
                                 <i class="fas fa-minus-circle me-1"></i> JUAL
                             </button>
                         </div>
@@ -257,9 +264,18 @@ include '../../includes/sidebar.php';
             </div>
             <form action="add.php" method="POST">
                 <div class="modal-body modal-body-custom">
+                    <div class="mb-3 position-relative">
+                        <label class="form-label fw-bold">Cari Aset (Crypto / Fiat)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
+                            <input type="text" id="asset_search_input" class="form-control border-start-0" placeholder="Ketik nama atau simbol (cth: Bitcoin, BTC, USD)...">
+                        </div>
+                        <div id="search_results" class="list-group position-absolute w-100 shadow-lg mt-1" style="z-index: 2000; max-height: 250px; overflow-y: auto; display: none; background: white;"></div>
+                    </div>
+                    <hr class="my-3">
                     <div class="mb-3">
                         <label class="form-label fw-bold">Nama Aset</label>
-                        <input type="text" name="name" id="add_asset_name" class="form-control" placeholder="Contoh: Bitcoin, Saham BBCA" required>
+                        <input type="text" name="name" id="add_asset_name" class="form-control" placeholder="Pilih dari pencarian di atas" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Tipe Aset</label>
@@ -275,6 +291,15 @@ include '../../includes/sidebar.php';
                     <div class="mb-3">
                         <label class="form-label fw-bold">Symbol (Opsional)</label>
                         <input type="text" name="symbol" id="add_asset_symbol" class="form-control" placeholder="Contoh: BTC, BBCA, USD">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Mata Uang Basis</label>
+                        <select name="currency" class="form-select">
+                            <option value="IDR">IDR (Rupiah)</option>
+                            <option value="USD">USD (Dollar)</option>
+                            <option value="EUR">EUR (Euro)</option>
+                        </select>
+                        <small class="text-muted">Mata uang yang digunakan untuk harga aset ini.</small>
                     </div>
                 </div>
                 <div class="modal-footer border-0">
@@ -316,6 +341,14 @@ include '../../includes/sidebar.php';
                         <label class="form-label fw-bold">Symbol</label>
                         <input type="text" name="symbol" id="edit_asset_symbol_input" class="form-control">
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Mata Uang Basis</label>
+                        <select name="currency" id="edit_asset_currency_input" class="form-select">
+                            <option value="IDR">IDR (Rupiah)</option>
+                            <option value="USD">USD (Dollar)</option>
+                            <option value="EUR">EUR (Euro)</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn-secondary-custom" data-bs-dismiss="modal">Batal</button>
@@ -336,6 +369,7 @@ include '../../includes/sidebar.php';
             </div>
             <form id="addTransactionForm" action="transactions/add.php" method="POST">
                 <input type="hidden" name="asset_id" id="transaction_asset_id">
+                <input type="hidden" name="asset_currency" id="transaction_asset_currency">
                 <div class="modal-body modal-body-custom">
                     <div class="mb-3">
                         <label class="form-label fw-bold">Aset</label>
@@ -348,17 +382,30 @@ include '../../includes/sidebar.php';
                             <option value="sell">JUAL</option>
                         </select>
                     </div>
+                    <div class="mb-3" id="auto_price_container" style="display: none;">
+                        <div class="form-check form-switch p-3 bg-light rounded-3 border">
+                            <input class="form-check-input ms-0 me-2" type="checkbox" id="auto_price_toggle">
+                            <label class="form-check-label fw-bold" for="auto_price_toggle">Gunakan Harga Pasar Otomatis</label>
+                            <div class="small text-muted mt-1">Mengambil harga terbaru dari API global.</div>
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Mata Uang Pembelian</label>
-                        <select id="buy_currency" class="form-select">
+                        <select id="buy_currency" name="buy_currency" class="form-select">
                             <option value="idr">IDR (Rupiah)</option>
+                            <option value="usdt">USDT (Tether)</option>
                             <option value="usd">USD (Dollar)</option>
                         </select>
+                    </div>
+                    <div id="buy_amount_container" class="mb-3">
+                        <label class="form-label fw-bold">Total Pembelian (<span id="buy_amount_label">IDR</span>)</label>
+                        <input type="text" id="buy_total_amount" class="form-control currency-input" placeholder="Masukkan total uang yang dikeluarkan">
+                        <small class="text-muted">Opsional: Masukkan total uang untuk menghitung jumlah unit otomatis.</small>
                     </div>
                     <div id="usd_fields" style="display: none;">
                         <div class="mb-3">
                             <label class="form-label fw-bold">Kurs (1 USD ke IDR)</label>
-                            <input type="text" id="trans_exchange_rate" class="form-control currency-input" value="16.000">
+                            <input type="text" name="exchange_rate" id="trans_exchange_rate" class="form-control currency-input" value="16.000">
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold">Harga per Unit (USD)</label>
@@ -451,6 +498,91 @@ include '../../includes/sidebar.php';
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+const exchangeRates = <?= json_encode($rates) ?>;
+
+function parseLoc(str) { 
+    if (typeof str === 'number') return str;
+    if (typeof str !== 'string') return 0;
+    // Format IDR: '.' is thousands, ',' is decimal. 
+    let clean = str.replace(/\./g, '').replace(/,/g, '.');
+    clean = clean.replace(/[^0-9.]/g, '');
+    return parseFloat(clean) || 0; 
+}
+
+function formatNumberId(num) {
+    return num.toLocaleString('id-ID', { maximumFractionDigits: 2 });
+}
+
+// Centralized Sync and Calculation Function
+function syncAssetForm(triggerSource) {
+    const buyCurrencySelect = document.getElementById('buy_currency');
+    if (!buyCurrencySelect) return;
+    
+    const buyCurrency = buyCurrencySelect.value;
+    const assetCurrency = document.getElementById('transaction_asset_currency').value || 'IDR';
+    const exchangeRate = parseLoc(document.getElementById('trans_exchange_rate').value) || 16000;
+    const priceUsdInput = document.getElementById('price_usd');
+    const priceIdrDisplay = document.getElementById('price_per_unit_display');
+    const priceIdrHidden = document.getElementById('price_per_unit_hidden');
+    const buyTotalAmountInput = document.getElementById('buy_total_amount');
+    const buyTotalAmount = parseLoc(buyTotalAmountInput.value);
+    const quantityInput = document.getElementById('trans_quantity');
+    const quantity = parseFloat(quantityInput.value) || 0;
+
+    if (triggerSource === 'usd' || triggerSource === 'rate') {
+        const usd = parseLoc(priceUsdInput.value);
+        const idr = usd * exchangeRate;
+        priceIdrDisplay.value = formatNumberId(idr);
+        
+        // price_per_unit_hidden MUST be in buyCurrency
+        if (buyCurrency === 'usd' || buyCurrency === 'usdt') {
+            priceIdrHidden.value = usd;
+        } else {
+            priceIdrHidden.value = idr;
+        }
+    } else if (triggerSource === 'idr') {
+        const idr = parseLoc(priceIdrDisplay.value);
+        if (buyCurrency === 'usd' || buyCurrency === 'usdt') {
+            const usd = idr / exchangeRate;
+            priceUsdInput.value = formatNumberId(usd);
+            priceIdrHidden.value = usd;
+        } else {
+            // Bought with IDR
+            priceIdrHidden.value = idr;
+        }
+    }
+
+    // Auto-calculate logic
+    if (triggerSource === 'total' || triggerSource === 'idr' || triggerSource === 'usd' || triggerSource === 'rate') {
+        // Calculate Quantity from Total Amount
+        if (buyTotalAmount > 0) {
+            let currentPrice = 0;
+            if (buyCurrency === 'usd' || buyCurrency === 'usdt') {
+                currentPrice = parseLoc(priceUsdInput.value);
+            } else {
+                currentPrice = parseLoc(priceIdrDisplay.value);
+            }
+            
+            if (currentPrice > 0) {
+                quantityInput.value = (buyTotalAmount / currentPrice).toFixed(8);
+            }
+        }
+    } else if (triggerSource === 'quantity') {
+        // Calculate Total Amount from Quantity
+        let currentPrice = 0;
+        if (buyCurrency === 'usd' || buyCurrency === 'usdt') {
+            currentPrice = parseLoc(priceUsdInput.value);
+        } else {
+            currentPrice = parseLoc(priceIdrDisplay.value);
+        }
+
+        if (currentPrice > 0 && quantity > 0) {
+            const total = quantity * currentPrice;
+            buyTotalAmountInput.value = formatNumberId(total);
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     var swalBaseConfig = {
         customClass: { popup: 'swal2-popup', title: 'swal2-title', confirmButton: 'swal2-confirm', cancelButton: 'swal2-cancel' },
@@ -477,31 +609,58 @@ document.addEventListener('DOMContentLoaded', function() {
     <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
 
-    function parseLoc(str) { return parseInt(str.replace(/[^0-9]/g, ''), 10) || 0; }
+    // Error Alerts
+    <?php if (isset($_SESSION['error'])): ?>
+    Swal.fire(getSwalConfig({ title: 'Gagal!', text: <?= json_encode($_SESSION['error']) ?>, icon: 'error' }));
+    <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+
+    // Add listener for quantity field
+    document.getElementById('trans_quantity').addEventListener('input', function() {
+        syncAssetForm('quantity');
+    });
 
     // Currency Input Handling
     document.querySelectorAll('.currency-input').forEach(function(input) {
         input.addEventListener('input', function() {
-            var num = parseLoc(this.value);
-            if (this.id === 'price_per_unit_display') document.getElementById('price_per_unit_hidden').value = num;
-            this.value = num > 0 ? num.toLocaleString('id-ID') : '';
+            var val = this.value;
             
-            // Converter & USD Purchase Logic
-            if (this.id === 'val_usd' || this.id === 'val_idr' || this.id === 'exchange_rate') {
-                var rate = parseLoc(document.getElementById('exchange_rate').value);
-                if (this.id === 'val_usd') {
-                    document.getElementById('val_idr').value = (parseLoc(this.value) * rate).toLocaleString('id-ID');
-                } else if (this.id === 'val_idr') {
-                    document.getElementById('val_usd').value = rate > 0 ? Math.round(parseLoc(this.value) / rate).toLocaleString('id-ID') : '0';
+            // Prevent replacing while user types a comma
+            if (val.endsWith(',')) return;
+            
+            var num = parseLoc(val);
+            
+            // Intelligent formatting for display
+            if (val !== '') {
+                if (!val.includes(',')) {
+                    this.value = num.toLocaleString('id-ID'); // integers
+                } else {
+                    let parts = val.split(',');
+                    let intPart = parseLoc(parts[0]);
+                    let decPart = parts[1].replace(/[^0-9]/g, '');
+                    this.value = intPart.toLocaleString('id-ID') + ',' + decPart;
                 }
             }
             
-            if (this.id === 'price_usd' || this.id === 'trans_exchange_rate') {
-                var rate = parseLoc(document.getElementById('trans_exchange_rate').value);
-                var usd = parseLoc(document.getElementById('price_usd').value);
-                var idr = usd * rate;
-                document.getElementById('price_per_unit_display').value = idr.toLocaleString('id-ID');
-                document.getElementById('price_per_unit_hidden').value = idr;
+            // Sync logic
+            if (this.id === 'price_per_unit_display') {
+                syncAssetForm('idr');
+            } else if (this.id === 'price_usd') {
+                syncAssetForm('usd');
+            } else if (this.id === 'trans_exchange_rate') {
+                syncAssetForm('rate');
+            } else if (this.id === 'buy_total_amount') {
+                syncAssetForm('total');
+            }
+            
+            // Converter Logic (Independent)
+            if (this.id === 'val_usd' || this.id === 'val_idr' || this.id === 'exchange_rate') {
+                var rate = parseLoc(document.getElementById('exchange_rate').value);
+                if (this.id === 'val_usd') {
+                    document.getElementById('val_idr').value = formatNumberId(parseLoc(this.value) * rate);
+                } else if (this.id === 'val_idr') {
+                    document.getElementById('val_usd').value = rate > 0 ? formatNumberId(parseLoc(this.value) / rate) : '0';
+                }
             }
             
             if (this.id === 'calc_price') updateCalc();
@@ -516,19 +675,106 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Purchase Currency Toggle
-    var buyCurrency = document.getElementById('buy_currency');
+    const buyCurrency = document.getElementById('buy_currency');
     if (buyCurrency) {
         buyCurrency.addEventListener('change', function() {
-            document.getElementById('usd_fields').style.display = this.value === 'usd' ? 'block' : 'none';
+            const val = this.value;
+            const isUsd = val === 'usd';
+            const isUsdt = val === 'usdt';
+            
+            document.getElementById('usd_fields').style.display = (isUsd || isUsdt) ? 'block' : 'none';
+            document.getElementById('buy_amount_label').textContent = val.toUpperCase();
+            
+            // Update pricing labels
+            const priceLabel = document.querySelector('label[for="price_usd"]') || document.getElementById('price_usd').previousElementSibling;
+            if (priceLabel) priceLabel.textContent = `Harga per Unit (${val.toUpperCase()})`;
+            
+            // Trigger auto price update if toggle is on
+            const toggle = document.getElementById('auto_price_toggle');
+            if (toggle && toggle.checked) {
+                toggle.onchange();
+            }
         });
     }
+
+    // Asset Search Logic
+    let allSupportedAssets = [];
+    const searchInput = document.getElementById('asset_search_input');
+    const resultsContainer = document.getElementById('search_results');
+
+    // Auto set currency to USD for crypto
+    const assetTypeSelect = document.getElementById('add_asset_type');
+    if (assetTypeSelect) {
+        assetTypeSelect.addEventListener('change', function() {
+            const currencySelect = document.querySelector('select[name="currency"]');
+            if (this.value === 'crypto') {
+                currencySelect.value = 'USD';
+            } else if (this.value === 'stock' || this.value === 'reksadana') {
+                currencySelect.value = 'IDR';
+            }
+        });
+    }
+
+    // Fetch assets when modal is shown or once
+    fetch('get_supported_assets.php')
+        .then(r => r.json())
+        .then(data => { allSupportedAssets = data; });
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        if (query.length < 2) {
+            resultsContainer.style.display = 'none';
+            return;
+        }
+
+        const filtered = allSupportedAssets.filter(a => 
+            a.name.toLowerCase().includes(query) || a.symbol.toLowerCase().includes(query)
+        ).slice(0, 10);
+
+        if (filtered.length > 0) {
+            resultsContainer.innerHTML = filtered.map(a => `
+                <button type="button" class="list-group-item list-group-item-action py-3 border-0" onclick="selectAsset('${a.name}', '${a.symbol}', '${a.type}')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="fw-bold">${a.name}</span>
+                            <span class="badge bg-light text-dark ms-2">${a.symbol}</span>
+                        </div>
+                        <span class="badge ${a.type === 'crypto' ? 'bg-warning text-dark' : 'bg-primary'}">${a.type.toUpperCase()}</span>
+                    </div>
+                </button>
+            `).join('');
+            resultsContainer.style.display = 'block';
+        } else {
+            resultsContainer.style.display = 'none';
+        }
+    });
+
+    // Close results when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
+            resultsContainer.style.display = 'none';
+        }
+    });
 });
 
-function editAsset(id, name, type, symbol) {
+function selectAsset(name, symbol, type) {
+    document.getElementById('add_asset_name').value = name;
+    document.getElementById('add_asset_symbol').value = symbol;
+    document.getElementById('add_asset_type').value = type;
+    document.getElementById('search_results').style.display = 'none';
+    document.getElementById('asset_search_input').value = name;
+    
+    // Auto focus quantity if exists or just give visual feedback
+    document.getElementById('add_asset_name').classList.add('bg-light');
+    setTimeout(() => document.getElementById('add_asset_name').classList.remove('bg-light'), 500);
+}
+
+function editAsset(id, name, type, symbol, currency) {
     document.getElementById('edit_asset_id').value = id;
     document.getElementById('edit_asset_name_input').value = name;
     document.getElementById('edit_asset_type_input').value = type;
     document.getElementById('edit_asset_symbol_input').value = symbol;
+    document.getElementById('edit_asset_currency_input').value = currency || 'IDR';
     new bootstrap.Modal(document.getElementById('editAssetModal')).show();
 }
 
@@ -547,14 +793,139 @@ function deleteAsset(id, name) {
     });
 }
 
-function openTransactionModal(id, name, price, type) {
+function openTransactionModal(id, name, symbol, type, assetCurrency) {
+    const modal = document.getElementById('addTransactionModal');
     document.getElementById('transaction_asset_id').value = id;
     document.getElementById('transaction_asset_name').value = name;
     document.getElementById('transaction_type').value = type;
-    new bootstrap.Modal(document.getElementById('addTransactionModal')).show();
+    document.getElementById('transaction_asset_currency').value = assetCurrency || 'IDR';
+    
+    // Reset fields
+    document.getElementById('buy_total_amount').value = '';
+    document.getElementById('trans_quantity').value = '';
+    document.getElementById('price_per_unit_display').value = '';
+    document.getElementById('price_per_unit_hidden').value = '';
+    document.getElementById('price_per_unit_display').readOnly = false;
+    document.getElementById('auto_price_toggle').checked = false;
+    document.getElementById('auto_price_container').style.display = 'none';
+
+    const buyCurrencySelect = document.getElementById('buy_currency');
+    const n = name.toLowerCase();
+    const s = (symbol || '').toUpperCase();
+    
+    // WORKFLOW LOCK:
+    // 1. If buying USDT or USD or Fiat, use IDR only
+    if (n.includes('tether') || s === 'USDT' || n.includes('dollar') || s === 'USD') {
+        buyCurrencySelect.value = 'idr';
+        Array.from(buyCurrencySelect.options).forEach(opt => {
+            opt.disabled = opt.value !== 'idr';
+        });
+        document.getElementById('buy_amount_container').style.display = 'block';
+    } 
+    // 2. If buying other CRYPTO, enforce USDT
+    else if (assetCurrency === 'USD' || assetCurrency === 'EUR' || s !== '') {
+        buyCurrencySelect.value = 'usdt';
+        Array.from(buyCurrencySelect.options).forEach(opt => {
+            opt.disabled = opt.value !== 'usdt';
+        });
+        // Check if user has USDT
+        const usdtAsset = <?= json_encode(array_values(array_filter($assets, function($a) { 
+            $n = strtolower($a['name']);
+            $s = strtoupper($a['symbol']);
+            return strpos($n, 'tether') !== false || $s === 'USDT';
+        }))) ?>;
+        
+        const usdtBalance = usdtAsset.length > 0 ? parseFloat(usdtAsset[0].total_quantity) : 0;
+        
+        if (type === 'buy') {
+            document.getElementById('buy_amount_container').innerHTML = `
+                <label class="form-label fw-bold text-primary">Saldo USDT Anda: ${formatNumberId(usdtBalance)} USDT</label>
+                <input type="text" id="buy_total_amount" class="form-control currency-input" placeholder="Total USDT yang digunakan">
+                <small class="text-info">Pembelian crypto wajib menggunakan USDT.</small>
+            `;
+            
+            // Re-bind currency input handling for the new element
+            const newTotalInput = document.getElementById('buy_total_amount');
+            newTotalInput.addEventListener('input', function() {
+                const val = parseLoc(this.value);
+                if (val > usdtBalance) {
+                    this.classList.add('is-invalid');
+                    Swal.fire({
+                        title: 'Saldo USDT Kurang!',
+                        text: `Saldo USDT Anda hanya ${formatNumberId(usdtBalance)}. Silakan beli USDT terlebih dahulu dengan Rupiah.`,
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    this.classList.remove('is-invalid');
+                }
+                syncAssetForm('total');
+            });
+        }
+    } else {
+        buyCurrencySelect.value = 'idr';
+        Array.from(buyCurrencySelect.options).forEach(opt => {
+            opt.disabled = false;
+        });
+    }
+
+    // Trigger change event to show/hide USD fields and update labels
+    buyCurrencySelect.dispatchEvent(new Event('change'));
+
+    // Try to guess symbol from name if empty
+    if (!symbol) {
+        const n = name.toLowerCase();
+        if (n.includes('bitcoin')) symbol = 'BTC';
+        else if (n.includes('ethereum')) symbol = 'ETH';
+        else if (n.includes('tether') || n.includes('usdt')) symbol = 'USDT';
+        else if (n.includes('bittensor') || n.includes('tao')) symbol = 'TAO';
+        else if (n.includes('dollar') || n.includes('usd')) symbol = 'USD';
+    }
+    
+    // Normalize symbol
+    symbol = symbol.replace(/[^A-Za-z]/g, '').toUpperCase();
+    
+    // Auto populate exchange rate from API if available
+    if (exchangeRates['USD']) {
+        const rateToIdr = 1 / exchangeRates['USD'];
+        document.getElementById('trans_exchange_rate').value = formatNumberId(rateToIdr);
+    }
+    
+    // Check if price exists in embedded exchangeRates (from CurrencyService)
+    if (symbol && exchangeRates[symbol]) {
+        document.getElementById('auto_price_container').style.display = 'block';
+        const toggle = document.getElementById('auto_price_toggle');
+        const currentPrice = 1 / exchangeRates[symbol];
+        
+        toggle.onchange = function() {
+            const priceDisplay = document.getElementById('price_per_unit_display');
+            const priceHidden = document.getElementById('price_per_unit_hidden');
+            const buyCurrency = document.getElementById('buy_currency').value;
+            
+            if (this.checked) {
+                const priceIdr = currentPrice;
+                priceDisplay.value = formatNumberId(priceIdr);
+                priceHidden.value = priceIdr;
+                priceDisplay.readOnly = true;
+                
+                if (buyCurrency === 'usd' || buyCurrency === 'usdt') {
+                    const rateStr = document.getElementById('trans_exchange_rate').value;
+                    const rate = parseLoc(rateStr) || 16000;
+                    document.getElementById('price_usd').value = formatNumberId(currentPrice / rate);
+                }
+                syncAssetForm('idr');
+            } else {
+                priceDisplay.readOnly = false;
+                priceDisplay.value = '';
+                priceHidden.value = '';
+            }
+        };
+    }
+
+    new bootstrap.Modal(modal).show();
 }
 
-function viewTransactions(assetId, assetName) {
+function viewTransactions(assetId, assetName, assetCurrency) {
     var modal = new bootstrap.Modal(document.getElementById('transactionsModal'));
     var contentDiv = document.getElementById('transactionsList');
     contentDiv.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary"></div><p class="mt-2">Memuat...</p></div>';
@@ -567,9 +938,10 @@ function viewTransactions(assetId, assetName) {
                 var html = '<div class="list-group">';
                 data.transactions.forEach(function(t) {
                     var isBuy = t.type === 'buy';
+                    var symbol = assetCurrency === 'USD' ? '$' : (assetCurrency === 'EUR' ? '€' : 'Rp');
                     html += '<div class="list-group-item d-flex justify-content-between align-items-center border-0 mb-2 rounded-3" style="background: ' + (isBuy ? '#f0fdf4' : '#fef2f2') + '">';
                     html += '<div><div class="fw-bold ' + (isBuy ? 'text-success' : 'text-danger') + '">' + (isBuy ? 'BELI' : 'JUAL') + '</div><small class="text-muted">' + t.transaction_date + '</small></div>';
-                    html += '<div class="text-end"><div class="fw-bold">' + parseFloat(t.quantity).toLocaleString('id-ID') + ' unit</div><small>@ Rp ' + parseInt(t.price_per_unit).toLocaleString('id-ID') + '</small></div></div>';
+                    html += '<div class="text-end"><div class="fw-bold">' + parseFloat(t.quantity).toLocaleString('id-ID', {maximumFractionDigits: 8}) + ' unit</div><small>@ ' + symbol + ' ' + parseFloat(t.price_per_unit).toLocaleString('id-ID', {maximumFractionDigits: 2}) + '</small></div></div>';
                 });
                 html += '</div>';
                 contentDiv.innerHTML = html;

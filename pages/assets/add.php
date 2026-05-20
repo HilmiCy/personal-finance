@@ -17,7 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'user_id' => $_SESSION['user_id'],
         'name' => $_POST['name'],
         'type' => $_POST['type'],
-        'symbol' => $_POST['symbol'] ?? ''
+        'symbol' => $_POST['symbol'] ?? '',
+        'currency' => $_POST['currency'] ?? 'IDR'
     ];
     
     if ($asset->create($data)) {

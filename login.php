@@ -51,7 +51,7 @@ $page_title = 'Login - Keuangan Pribadi';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title><?= APP_NAME ?> - Kelola Keuangan Pribadi | Masuk</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -61,7 +61,7 @@ $page_title = 'Login - Keuangan Pribadi';
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
             background: linear-gradient(145deg, #e0f2fe 0%, #fef3c7 50%, #fce7f3 100%);
             display: flex;
@@ -261,7 +261,7 @@ $page_title = 'Login - Keuangan Pribadi';
             font-size: 14px;
             border: 1.5px solid #e5e7eb;
             border-radius: 16px;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             transition: all 0.3s ease;
             outline: none;
             background: #f9fafb;

@@ -7,8 +7,11 @@ This application helps users manage personal finances efficiently, including exp
 
 ##  Recent Updates (Major Redesign)
 
-- **Modern UI/UX**: Completely redesigned interface with a sleek, minimalist responsive sidebar and 'Inter' typography.
+- **Modern UI/UX**: Completely redesigned interface with a sleek, minimalist responsive sidebar and 'Plus Jakarta Sans' typography.
 - **Enhanced Reporting**: Comprehensive financial reports integrating transactions, emergency funds, installments, and budgets.
+- **Multi-Currency Support**: Real-time exchange rate conversion for assets and accounts (USD, EUR, etc.) via external API.
+- **Advanced Analytics**: Expense prediction for the next month using Simple Linear Regression (Machine Learning) and automated saving advice.
+- **Enforced Crypto Workflow**: Specialized buy/sell flow for crypto requiring USDT, with automated USDT balance deduction.
 - **Dependency Management**: Now using **Composer** for better library management.
 - **Advanced Export**: Improved PDF export using `dompdf` and Excel export functionality.
 
@@ -26,7 +29,8 @@ This application helps users manage personal finances efficiently, including exp
 ### Portfolio & Asset Management
 - Asset tracking for stocks, crypto, gold, and mutual funds
 - Buy and sell transaction recording
-- Asset price monitoring
+- Asset price monitoring (IHSG, Gold, DXY, Crypto, Fiat)
+- **Interactive Charts**: Real-time TradingView integration for IHSG, Gold, and Crypto (Binance source)
 - Portfolio overview
 
 ### Financial Planning
@@ -45,6 +49,9 @@ This application helps users manage personal finances efficiently, including exp
 - Excel export
 - PDF export (powered by `dompdf`)
 - Transaction filtering and summaries
+- **Advanced Analytics**: Expense prediction based on historical data (Linear Regression)
+- **Multi-Currency**: Automatic conversion for foreign assets and bank accounts
+- **Automated Portfolio**: Automatic balance deduction for cross-asset transactions (e.g., Crypto-USDT)
 
 ---
 

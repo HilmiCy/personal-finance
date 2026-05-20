@@ -18,7 +18,7 @@ if (!isset($current_page)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= APP_NAME ?> - <?= $page_title ?></title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -29,7 +29,7 @@ if (!isset($current_page)) {
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background: #f0f2f5;
             min-height: 100vh;
             overflow-x: hidden;
@@ -76,16 +76,27 @@ if (!isset($current_page)) {
             text-decoration: none;
             background: none !important;
             -webkit-text-fill-color: initial !important;
+            transition: all 0.3s ease;
+            padding: 0 10px;
+        }
+        
+        .sidebar:hover .logo {
+            justify-content: flex-start;
+            padding-left: 20px;
         }
         
         .logo span {
             display: none; /* Hide text in slim mode */
-            margin-left: 10px;
-            white-space: nowrap;
+            margin-left: 12px;
+            font-size: 16px;
+            line-height: 1.2;
+            white-space: normal; /* Allow wrap */
+            text-align: left;
+            max-width: 160px;
         }
 
         .sidebar:hover .logo span {
-            display: inline;
+            display: block;
         }
 
         .user-info-sidebar {

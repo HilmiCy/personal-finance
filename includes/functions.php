@@ -1,7 +1,30 @@
 <?php
+require_once __DIR__ . '/../classes/CurrencyService.php';
+
 function formatRupiah($number) {
     if (!$number) $number = 0;
     return 'Rp ' . number_format($number, 0, ',', '.');
+}
+
+function formatCurrency($number, $currency = 'IDR') {
+    if (!$number) $number = 0;
+    
+    $symbols = [
+        'IDR' => 'Rp ',
+        'USD' => '$ ',
+        'EUR' => '€ ',
+        'SGD' => 'S$ ',
+        'JPY' => '¥ ',
+        'GBP' => '£ '
+    ];
+    
+    $symbol = $symbols[$currency] ?? $currency . ' ';
+    
+    if ($currency === 'IDR') {
+        return $symbol . number_format($number, 0, ',', '.');
+    } else {
+        return $symbol . number_format($number, 2, '.', ',');
+    }
 }
 
 function formatDate($date) {
@@ -16,10 +39,15 @@ function formatDateTime($datetime) {
 
 function getTotalBalance($db, $user_id) {
     try {
-        $stmt = $db->prepare("SELECT COALESCE(SUM(balance), 0) as total FROM accounts WHERE user_id = ?");
+        $stmt = $db->prepare("SELECT balance, currency FROM accounts WHERE user_id = ?");
         $stmt->execute([$user_id]);
-        $result = $stmt->fetch();
-        return (float)$result['total'];
+        $accounts = $stmt->fetchAll();
+        
+        $total_idr = 0;
+        foreach ($accounts as $acc) {
+            $total_idr += CurrencyService::convertToIDR($acc['balance'], $acc['currency']);
+        }
+        return (float)$total_idr;
     } catch (PDOException $e) {
         error_log("Error in getTotalBalance: " . $e->getMessage());
         return 0;
@@ -29,16 +57,22 @@ function getTotalBalance($db, $user_id) {
 function getMonthlyIncome($db, $user_id) {
     try {
         $stmt = $db->prepare("
-            SELECT COALESCE(SUM(amount), 0) as total 
-            FROM transactions 
-            WHERE user_id = ? 
-                AND type = 'income' 
-                AND MONTH(transaction_date) = MONTH(CURRENT_DATE())
-                AND YEAR(transaction_date) = YEAR(CURRENT_DATE())
+            SELECT t.amount, a.currency
+            FROM transactions t
+            JOIN accounts a ON t.account_id = a.id
+            WHERE t.user_id = ? 
+                AND t.type = 'income' 
+                AND MONTH(t.transaction_date) = MONTH(CURRENT_DATE())
+                AND YEAR(t.transaction_date) = YEAR(CURRENT_DATE())
         ");
         $stmt->execute([$user_id]);
-        $result = $stmt->fetch();
-        return (float)$result['total'];
+        $transactions = $stmt->fetchAll();
+        
+        $total_idr = 0;
+        foreach ($transactions as $t) {
+            $total_idr += CurrencyService::convertToIDR($t['amount'], $t['currency']);
+        }
+        return (float)$total_idr;
     } catch (PDOException $e) {
         error_log("Error in getMonthlyIncome: " . $e->getMessage());
         return 0;
@@ -48,16 +82,22 @@ function getMonthlyIncome($db, $user_id) {
 function getMonthlyExpense($db, $user_id) {
     try {
         $stmt = $db->prepare("
-            SELECT COALESCE(SUM(amount), 0) as total 
-            FROM transactions 
-            WHERE user_id = ? 
-                AND type = 'expense' 
-                AND MONTH(transaction_date) = MONTH(CURRENT_DATE())
-                AND YEAR(transaction_date) = YEAR(CURRENT_DATE())
+            SELECT t.amount, a.currency
+            FROM transactions t
+            JOIN accounts a ON t.account_id = a.id
+            WHERE t.user_id = ? 
+                AND t.type = 'expense' 
+                AND MONTH(t.transaction_date) = MONTH(CURRENT_DATE())
+                AND YEAR(t.transaction_date) = YEAR(CURRENT_DATE())
         ");
         $stmt->execute([$user_id]);
-        $result = $stmt->fetch();
-        return (float)$result['total'];
+        $transactions = $stmt->fetchAll();
+        
+        $total_idr = 0;
+        foreach ($transactions as $t) {
+            $total_idr += CurrencyService::convertToIDR($t['amount'], $t['currency']);
+        }
+        return (float)$total_idr;
     } catch (PDOException $e) {
         error_log("Error in getMonthlyExpense: " . $e->getMessage());
         return 0;
@@ -131,11 +171,34 @@ function bulanIndonesia($month) {
 }
 
 
-// Clean number from currency format (remove dots and commas)
+// Clean number from currency format
 function cleanNumber($number) {
-    // Remove all non-numeric characters except decimal point
-    $clean = preg_replace('/[^0-9]/', '', $number);
-    return (float)$clean;
+    if (!$number) return 0;
+    if (is_numeric($number)) return (float)$number;
+    
+    $number = trim($number);
+    
+    // Detect ID-ID format: 1.234.567,89
+    if (strpos($number, ',') !== false) {
+        $clean = str_replace('.', '', $number); // Remove thousands (dots)
+        $clean = str_replace(',', '.', $clean);  // Convert decimal (comma) to dot
+        return (float)preg_replace('/[^0-9.]/', '', $clean);
+    }
+    
+    // If no comma, dots are likely decimals (Standard format: 1234.567)
+    // or it could be ID-ID format without decimals (1.234)
+    // Rule: if it contains a dot and it looks like a standard float, treat it as float.
+    // Standard floats usually don't have multiple dots.
+    if (substr_count($number, '.') === 1) {
+        return (float)preg_replace('/[^0-9.]/', '', $number);
+    }
+    
+    // If multiple dots, it's definitely thousand separators
+    if (substr_count($number, '.') > 1) {
+        return (float)str_replace('.', '', $number);
+    }
+
+    return (float)preg_replace('/[^0-9.]/', '', $number);
 }
 
 // Format number with thousand separator

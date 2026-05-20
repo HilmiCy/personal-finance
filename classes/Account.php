@@ -1,5 +1,6 @@
 <?php
 require_once 'Database.php';
+require_once 'CurrencyService.php';
 
 class Account {
     private $db;
@@ -56,14 +57,15 @@ class Account {
     public function create($data) {
         try {
             $stmt = $this->db->prepare("
-                INSERT INTO accounts (user_id, name, balance) 
-                VALUES (?, ?, ?)
+                INSERT INTO accounts (user_id, name, balance, currency) 
+                VALUES (?, ?, ?, ?)
             ");
             
             $stmt->execute([
                 $data['user_id'],
                 $data['name'],
-                $data['balance'] ?? 0
+                $data['balance'] ?? 0,
+                $data['currency'] ?? 'IDR'
             ]);
 
             return $this->db->lastInsertId();
@@ -77,12 +79,13 @@ class Account {
         try {
             $stmt = $this->db->prepare("
                 UPDATE accounts 
-                SET name = ?, balance = ? 
+                SET name = ?, balance = ?, currency = ? 
                 WHERE id = ? AND user_id = ?
             ");
             return $stmt->execute([
                 $data['name'],
                 $data['balance'],
+                $data['currency'] ?? 'IDR',
                 $id,
                 $user_id
             ]);
@@ -117,12 +120,14 @@ class Account {
     
     public function getTotalBalance($user_id) {
         try {
-            $stmt = $this->db->prepare("
-                SELECT SUM(balance) as total FROM accounts WHERE user_id = ?
-            ");
-            $stmt->execute([$user_id]);
-            $result = $stmt->fetch();
-            return $result['total'] ?? 0;
+            $accounts = $this->getAll($user_id);
+            $total_idr = 0;
+            
+            foreach ($accounts as $account) {
+                $total_idr += CurrencyService::convertToIDR($account['balance'], $account['currency']);
+            }
+            
+            return $total_idr;
         } catch (PDOException $e) {
             error_log("Error in getTotalBalance: " . $e->getMessage());
             return 0;

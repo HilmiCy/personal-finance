@@ -14,7 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $data = [
         'name' => $_POST['name'],
-        'balance' => str_replace(',', '', $_POST['balance'])
+        'balance' => str_replace(',', '', $_POST['balance']),
+        'currency' => $_POST['currency'] ?? 'IDR'
     ];
     
     if ($account->update($_POST['id'], $_SESSION['user_id'], $data)) {

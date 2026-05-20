@@ -79,7 +79,7 @@ if ($report_type == 'monthly') {
     
     // Get account breakdown
     $stmt = $db->prepare("
-    SELECT a.name, a.balance,
+    SELECT a.name, a.balance, a.currency,
         SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE 0 END) as income,
         SUM(CASE WHEN t.type = 'expense' THEN t.amount ELSE 0 END) as expense
     FROM transactions t
@@ -87,10 +87,21 @@ if ($report_type == 'monthly') {
     WHERE t.user_id = ? 
     AND MONTH(t.transaction_date) = ? 
     AND YEAR(t.transaction_date) = ?
-    GROUP BY a.id, a.name, a.balance
+    GROUP BY a.id, a.name, a.balance, a.currency
 ");
     $stmt->execute([$_SESSION['user_id'], $current_month, $current_year]);
-    $account_breakdown = $stmt->fetchAll();
+    $account_rows = $stmt->fetchAll();
+    
+    $account_breakdown = [];
+    foreach ($account_rows as $row) {
+        $account_breakdown[] = [
+            'name' => $row['name'],
+            'balance' => CurrencyService::convertToIDR($row['balance'], $row['currency']),
+            'income' => CurrencyService::convertToIDR($row['income'], $row['currency']),
+            'expense' => CurrencyService::convertToIDR($row['expense'], $row['currency']),
+            'display_balance' => formatCurrency($row['balance'], $row['currency'])
+        ];
+    }
     
     // Get transfers for this month
     $transfers = $account->getTransferHistoryByDate($_SESSION['user_id'], $start_date, $end_date . ' 23:59:59');
@@ -141,23 +152,35 @@ if ($report_type == 'monthly') {
     
     // Get yearly category breakdown
     $stmt = $db->prepare("
-        SELECT c.name, c.type, SUM(t.amount) as total
+        SELECT c.name, c.type, t.amount, a.currency
         FROM transactions t
         JOIN categories c ON t.category_id = c.id
+        JOIN accounts a ON t.account_id = a.id
         WHERE t.user_id = ? 
         AND YEAR(t.transaction_date) = ?
-        GROUP BY c.id, c.name, c.type
-        ORDER BY total DESC
     ");
     $stmt->execute([$_SESSION['user_id'], $current_year]);
-    $yearly_categories = $stmt->fetchAll();
+    $rows = $stmt->fetchAll();
     
-    $income_categories = array_filter($yearly_categories, function($cat) {
-        return $cat['type'] == 'income';
-    });
-    $expense_categories = array_filter($yearly_categories, function($cat) {
-        return $cat['type'] == 'expense';
-    });
+    $income_summary = [];
+    $expense_summary = [];
+    
+    foreach ($rows as $row) {
+        $amount_idr = CurrencyService::convertToIDR($row['amount'], $row['currency']);
+        if ($row['type'] == 'income') {
+            $income_summary[$row['name']] = ($income_summary[$row['name']] ?? 0) + $amount_idr;
+        } else {
+            $expense_summary[$row['name']] = ($expense_summary[$row['name']] ?? 0) + $amount_idr;
+        }
+    }
+    
+    $income_categories = [];
+    foreach ($income_summary as $name => $total) $income_categories[] = ['name' => $name, 'total' => $total];
+    usort($income_categories, function($a, $b) { return $b['total'] <=> $a['total']; });
+    
+    $expense_categories = [];
+    foreach ($expense_summary as $name => $total) $expense_categories[] = ['name' => $name, 'total' => $total];
+    usort($expense_categories, function($a, $b) { return $b['total'] <=> $a['total']; });
     
     // Get transfers for this year
     $transfers = $account->getTransferHistoryByDate($_SESSION['user_id'], $start_date, $end_date . ' 23:59:59');
@@ -1508,7 +1531,7 @@ include '../../includes/sidebar.php';
                                     <td class="text-success"><?= formatRupiah($acc['income']) ?></td>
                                     <td class="text-danger"><?= formatRupiah($acc['expense']) ?></td>
                                     <td class="fw-bold">
-                                        <?= formatRupiah($acc['balance']) ?>
+                                        <?= $acc['display_balance'] ?>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>

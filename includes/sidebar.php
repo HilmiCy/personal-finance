@@ -80,6 +80,13 @@ if (!isset($current_page)) {
                     <span>Laporan</span>
                 </a>
             </li>
+            
+            <li class="nav-item">
+                <a href="/keuangan/pages/analytics/index.php" class="nav-link-sidebar <?= $current_page == 'analytics' ? 'active' : '' ?>" title="Analisis AI">
+                    <i class="fas fa-robot"></i>
+                    <span>Analisis AI</span>
+                </a>
+            </li>
         </ul>
     </div>
 

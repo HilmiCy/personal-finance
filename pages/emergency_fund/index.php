@@ -239,7 +239,7 @@ if (empty($transactions)) {
     .swal2-popup {
         border-radius: 24px !important;
         padding: 2em !important;
-        font-family: 'Inter', sans-serif !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
     .swal2-title {

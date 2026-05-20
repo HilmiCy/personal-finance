@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data = [
         'user_id' => $_SESSION['user_id'],
         'name' => $_POST['name'],
-        'balance' => str_replace(',', '', $_POST['balance'])
+        'balance' => str_replace(',', '', $_POST['balance']),
+        'currency' => $_POST['currency'] ?? 'IDR'
     ];
     
     if ($account->create($data)) {

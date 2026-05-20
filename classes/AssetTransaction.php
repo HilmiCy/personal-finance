@@ -13,7 +13,7 @@ class AssetTransaction {
             $stmt = $this->db->prepare("
                 SELECT * FROM asset_transactions 
                 WHERE asset_id = ? AND user_id = ?
-                ORDER BY transaction_date DESC, created_at DESC
+                ORDER BY transaction_date DESC, id DESC
             ");
             $stmt->execute([$asset_id, $user_id]);
             return $stmt->fetchAll();
@@ -29,8 +29,8 @@ class AssetTransaction {
             
             $stmt = $this->db->prepare("
                 INSERT INTO asset_transactions 
-                (asset_id, user_id, type, quantity, price_per_unit, total_price, transaction_date) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                (asset_id, user_id, type, quantity, price_per_unit, total_price, currency, exchange_rate, transaction_date) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
             
             $result = $stmt->execute([
@@ -40,21 +40,40 @@ class AssetTransaction {
                 $data['quantity'],
                 $data['price_per_unit'],
                 $data['total_price'],
+                $data['currency'] ?? 'IDR',
+                $data['exchange_rate'] ?? 1.0,
                 $data['transaction_date']
             ]);
             
             if ($result) {
-                // Update current price in asset_prices
-                $this->updateCurrentPrice($data['asset_id'], $data['price_per_unit']);
+                // Update current price in asset_prices (Convert to asset base currency if needed)
+                $stmt_asset = $this->db->prepare("SELECT currency FROM assets WHERE id = ?");
+                $stmt_asset->execute([$data['asset_id']]);
+                $asset_currency = $stmt_asset->fetchColumn() ?: 'IDR';
+                
+                $price_to_store = $data['price_per_unit'];
+                $trans_currency = $data['currency'] ?? 'IDR';
+                
+                if ($trans_currency !== $asset_currency) {
+                    if ($trans_currency === 'IDR' && $asset_currency === 'USD') {
+                        $price_to_store = $data['price_per_unit'] / ($data['exchange_rate'] ?: 16000);
+                    } elseif ($trans_currency === 'USD' && $asset_currency === 'IDR') {
+                        $price_to_store = $data['price_per_unit'] * ($data['exchange_rate'] ?: 16000);
+                    }
+                }
+
+                $this->updateCurrentPrice($data['asset_id'], $price_to_store);
                 $this->db->commit();
                 return true;
             } else {
+                $errorInfo = $stmt->errorInfo();
+                error_log("Failed to execute asset_transaction insert: " . implode(" - ", $errorInfo));
                 $this->db->rollBack();
                 return false;
             }
         } catch (PDOException $e) {
             $this->db->rollBack();
-            error_log("Error in create asset transaction: " . $e->getMessage());
+            error_log("PDO Error in create asset transaction: " . $e->getMessage());
             return false;
         }
     }
@@ -77,7 +96,7 @@ class AssetTransaction {
             // Update transaction
             $stmt = $this->db->prepare("
                 UPDATE asset_transactions 
-                SET quantity = ?, price_per_unit = ?, total_price = ?, transaction_date = ?
+                SET quantity = ?, price_per_unit = ?, total_price = ?, currency = ?, exchange_rate = ?, transaction_date = ?
                 WHERE id = ? AND user_id = ?
             ");
             
@@ -85,6 +104,8 @@ class AssetTransaction {
                 $data['quantity'],
                 $data['price_per_unit'],
                 $data['total_price'],
+                $data['currency'] ?? 'IDR',
+                $data['exchange_rate'] ?? 1.0,
                 $data['transaction_date'],
                 $data['id'],
                 $data['user_id']
@@ -161,7 +182,7 @@ class AssetTransaction {
                     SELECT price_per_unit 
                     FROM asset_transactions 
                     WHERE asset_id = ? 
-                    ORDER BY transaction_date DESC, created_at DESC 
+                    ORDER BY transaction_date DESC, id DESC 
                     LIMIT 1
                 ");
                 $stmt->execute([$asset_id]);

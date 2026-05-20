@@ -4,5 +4,21 @@
 .vscode/
 .idea/
 node_modules/
-# Specific to this project if any
-pages/transactions/save_debug.log
+
+# Project Specific
+/cache/*.json
+debug_log.txt
+pages/assets/transactions/debug_log.txt
+pages/transactions/test_*.php
+
+# OS Specific
+.DS_Store
+Thumbs.db
+
+# Backup & Temp
+*.bak
+*~
+*.tmp
+
+# Documentation (Internal)
+GEMINI.md

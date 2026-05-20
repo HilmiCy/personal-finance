@@ -124,6 +124,9 @@ try {
     $category_data = [];
 }
 
+// Get AI Prediction
+$prediction = $transaction->predictNextMonthExpense($_SESSION['user_id']);
+
 include 'includes/header.php';
 include 'includes/sidebar.php';
 ?>
@@ -191,6 +194,57 @@ include 'includes/sidebar.php';
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         color: white;
+    }
+
+    /* Prediction Card */
+    .prediction-card {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        border-radius: 20px;
+        padding: 24px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        border: none;
+    }
+
+    .prediction-card::after {
+        content: '\f0d0';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        right: -20px;
+        bottom: -20px;
+        font-size: 120px;
+        opacity: 0.05;
+        transform: rotate(-15deg);
+    }
+
+    .prediction-label {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.7;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .prediction-value {
+        font-size: 24px;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+
+    .prediction-status {
+        font-size: 13px;
+        padding: 6px 12px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
     }
     
     /* Responsive Adjustments */
@@ -262,18 +316,13 @@ include 'includes/sidebar.php';
         <!-- Welcome Section -->
         <div class="welcome-card animated" style="animation-delay: 0s">
             <div class="row align-items-center">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <h1 class="welcome-title">
                         Selamat datang, <?= htmlspecialchars($_SESSION['user_name']) ?>! 
                     </h1>
                     <p class="welcome-subtitle">
                         Senang bertemu dengan Anda lagi. Berikut adalah ringkasan keuangan Anda hari ini.
                     </p>
-                </div>
-                <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                    <a href="pages/transactions/add.php" class="btn-primary-custom">
-                        <i class="fas fa-plus"></i> Tambah Transaksi
-                    </a>
                 </div>
             </div>
         </div>
@@ -334,6 +383,39 @@ include 'includes/sidebar.php';
                         <?php else: ?>
                             <i class="fas fa-exclamation-circle"></i> Defisit
                         <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Insight Row -->
+        <div class="row g-4 mb-4">
+            <div class="col-12">
+                <div class="prediction-card animated" style="animation-delay: 0.45s">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="prediction-label">
+                                <i class="fas fa-robot"></i> Smart AI Prediction
+                            </div>
+                            <h3 class="prediction-value">
+                                Estimasi Pengeluaran Bulan Depan: 
+                                <span class="text-info"><?= formatRupiah($prediction['amount']) ?></span>
+                            </h3>
+                            <div class="prediction-status">
+                                <?php if($prediction['trend'] == 'up'): ?>
+                                    <i class="fas fa-arrow-trend-up text-danger"></i> Tren pengeluaran meningkat. Pertimbangkan untuk berhemat!
+                                <?php elseif($prediction['trend'] == 'down'): ?>
+                                    <i class="fas fa-arrow-trend-down text-success"></i> Tren pengeluaran menurun. Kerja bagus!
+                                <?php else: ?>
+                                    <i class="fas fa-minus text-info"></i> Tren pengeluaran stabil.
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                            <div class="small opacity-75">
+                                Berdasarkan analisis data <?= $prediction['count'] ?> bulan terakhir
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -501,7 +583,7 @@ include 'includes/sidebar.php';
                     position: 'top',
                     labels: {
                         font: {
-                            family: 'Inter',
+                            family: 'Plus Jakarta Sans',
                             size: 12,
                             weight: '600'
                         },
@@ -527,7 +609,7 @@ include 'includes/sidebar.php';
                             return 'Rp ' + value.toLocaleString('id-ID');
                         },
                         font: {
-                            family: 'Inter',
+                            family: 'Plus Jakarta Sans',
                             size: 11
                         }
                     },
@@ -538,7 +620,7 @@ include 'includes/sidebar.php';
                 x: {
                     ticks: {
                         font: {
-                            family: 'Inter',
+                            family: 'Plus Jakarta Sans',
                             size: 11
                         }
                     },
@@ -578,7 +660,7 @@ include 'includes/sidebar.php';
                     position: 'bottom',
                     labels: {
                         font: {
-                            family: 'Inter',
+                            family: 'Plus Jakarta Sans',
                             size: 10
                         },
                         boxWidth: 10,

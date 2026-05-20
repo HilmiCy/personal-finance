@@ -60,7 +60,7 @@ include '../../includes/header.php';
 
 body {
     background: #f8f9fa;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 /* Cards */

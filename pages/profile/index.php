@@ -287,6 +287,87 @@ include '../../includes/sidebar.php';
         background: #e2e8f0;
         color: #1e293b;
     }
+
+    /* ========== CUSTOM MODAL STYLES ========== */
+    .modal-content-custom {
+        border-radius: 28px !important;
+        border: none !important;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+        overflow: hidden;
+    }
+
+    .modal-header-custom {
+        padding: 25px 30px 15px !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        background: #fff;
+    }
+
+    .modal-body-custom {
+        padding: 20px 30px 30px !important;
+    }
+
+    .modal-footer-custom {
+        padding: 20px 30px 25px !important;
+        border-top: 1px solid #f1f5f9 !important;
+        background: #f8fafc;
+        gap: 12px;
+    }
+
+    .form-control {
+        border-radius: 12px !important;
+        padding: 12px 16px !important;
+        border: 1px solid #e2e8f0 !important;
+        font-size: 14px !important;
+        transition: all 0.2s !important;
+    }
+
+    .form-control:focus {
+        border-color: #6366f1 !important;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1) !important;
+    }
+
+    .btn-secondary-custom {
+        background: #ffffff !important;
+        color: #64748b !important;
+        border: 1px solid #e2e8f0 !important;
+        padding: 12px 24px !important;
+        border-radius: 14px !important;
+        font-weight: 700 !important;
+        font-size: 14px !important;
+        transition: all 0.2s !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+    }
+
+    .btn-secondary-custom:hover {
+        background: #f1f5f9 !important;
+        color: #1e293b !important;
+        border-color: #cbd5e1 !important;
+        transform: translateY(-1px);
+    }
+
+    .btn-primary-custom {
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
+        color: white !important;
+        border: none !important;
+        padding: 12px 24px !important;
+        border-radius: 14px !important;
+        font-weight: 700 !important;
+        font-size: 14px !important;
+        transition: all 0.2s !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2) !important;
+    }
+
+    .btn-primary-custom:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3) !important;
+        opacity: 0.95;
+    }
     
     /* Responsive */
     @media (max-width: 768px) {

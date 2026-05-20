@@ -1,5 +1,6 @@
 <?php
 require_once 'Database.php';
+require_once 'FinancialAnalytics.php';
 
 class Transaction {
     private $db;
@@ -448,18 +449,39 @@ class Transaction {
     public function getSummaryByCategory($user_id, $month, $year, $type) {
     try {
         $stmt = $this->db->prepare("
-            SELECT c.name, SUM(t.amount) as total
+            SELECT c.name, t.amount, a.currency
             FROM transactions t
             JOIN categories c ON t.category_id = c.id
+            JOIN accounts a ON t.account_id = a.id
             WHERE t.user_id = ? 
             AND t.type = ?
             AND MONTH(t.transaction_date) = ?
             AND YEAR(t.transaction_date) = ?
-            GROUP BY c.id, c.name
-            ORDER BY total DESC
         ");
         $stmt->execute([$user_id, $type, $month, $year]);
-        return $stmt->fetchAll();
+        $rows = $stmt->fetchAll();
+        
+        $summary = [];
+        foreach ($rows as $row) {
+            $amount_idr = CurrencyService::convertToIDR($row['amount'], $row['currency']);
+            if (isset($summary[$row['name']])) {
+                $summary[$row['name']] += $amount_idr;
+            } else {
+                $summary[$row['name']] = $amount_idr;
+            }
+        }
+        
+        $result = [];
+        foreach ($summary as $name => $total) {
+            $result[] = ['name' => $name, 'total' => $total];
+        }
+        
+        // Sort by total descending
+        usort($result, function($a, $b) {
+            return $b['total'] <=> $a['total'];
+        });
+        
+        return $result;
     } catch (PDOException $e) {
         error_log("Error in getSummaryByCategory: " . $e->getMessage());
         return [];
@@ -469,22 +491,40 @@ class Transaction {
         try {
             $stmt = $this->db->prepare("
                 SELECT 
-                    SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) as total_income,
-                    SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) as total_expense,
-                    SUM(CASE WHEN type = 'transfer' THEN amount ELSE 0 END) as total_transfer
-                FROM transactions
-                WHERE user_id = ? 
-                AND YEAR(transaction_date) = ? 
-                AND MONTH(transaction_date) = ?
+                    SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE 0 END) as total_income,
+                    SUM(CASE WHEN t.type = 'expense' THEN t.amount ELSE 0 END) as total_expense,
+                    SUM(CASE WHEN t.type = 'transfer' THEN t.amount ELSE 0 END) as total_transfer,
+                    a.currency
+                FROM transactions t
+                JOIN accounts a ON t.account_id = a.id
+                WHERE t.user_id = ? 
+                AND YEAR(t.transaction_date) = ?
+                AND MONTH(t.transaction_date) = ?
+                GROUP BY a.currency
             ");
             $stmt->execute([$user_id, $year, $month]);
-            return $stmt->fetch();
+            $rows = $stmt->fetchAll();
+
+            $total_income_idr = 0;
+            $total_expense_idr = 0;
+            $total_transfer_idr = 0;
+
+            foreach ($rows as $row) {
+                $total_income_idr += CurrencyService::convertToIDR($row['total_income'], $row['currency']);
+                $total_expense_idr += CurrencyService::convertToIDR($row['total_expense'], $row['currency']);
+                $total_transfer_idr += CurrencyService::convertToIDR($row['total_transfer'], $row['currency']);
+            }
+
+            return [
+                'total_income' => $total_income_idr,
+                'total_expense' => $total_expense_idr,
+                'total_transfer' => $total_transfer_idr
+            ];
         } catch (PDOException $e) {
             error_log("Error in getMonthlySummary: " . $e->getMessage());
             return ['total_income' => 0, 'total_expense' => 0, 'total_transfer' => 0];
         }
-    }
-    
+    }    
     /**
  * Get daily summary for chart (income and expense per day)
  * @param int $user_id User ID
@@ -852,29 +892,102 @@ public function getAllWithFiltersPaginated($user_id, $type, $account, $category,
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+    /**
+     * Get top transactions by amount
+     */
     public function getTopTransactions($user_id, $start_date, $end_date, $type, $limit = 5) {
-    try {
-        // Cast limit to integer for safety
-        $limit = (int)$limit;
-        
-        $stmt = $this->db->prepare("
-            SELECT t.*, c.name as category_name, a.name as account_name
-            FROM transactions t
-            JOIN categories c ON t.category_id = c.id
-            JOIN accounts a ON t.account_id = a.id
-            WHERE t.user_id = ? 
-            AND t.transaction_date BETWEEN ? AND ?
-            AND t.type = ?
-            ORDER BY t.amount DESC
-            LIMIT {$limit}
-        ");
-        $stmt->execute([$user_id, $start_date, $end_date, $type]);
-        return $stmt->fetchAll();
-    } catch (PDOException $e) {
-        error_log("Error in getTopTransactions: " . $e->getMessage());
-        return [];
+        try {
+            $limit = (int)$limit;
+            $stmt = $this->db->prepare("
+                SELECT t.*, c.name as category_name, a.name as account_name
+                FROM transactions t
+                JOIN categories c ON t.category_id = c.id
+                JOIN accounts a ON t.account_id = a.id
+                WHERE t.user_id = ? 
+                AND t.transaction_date BETWEEN ? AND ?
+                AND t.type = ?
+                ORDER BY t.amount DESC
+                LIMIT {$limit}
+            ");
+            $stmt->execute([$user_id, $start_date, $end_date, $type]);
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            error_log("Error in getTopTransactions: " . $e->getMessage());
+            return [];
+        }
     }
-}
+
+    /**
+     * Root Cause Analysis: Find categories that contribute most to spending
+     */
+    public function getRootCauseAnalysis($user_id) {
+        try {
+            // Ambil top 3 kategori dengan pengeluaran tertinggi bulan ini
+            $stmt = $this->db->prepare("
+                SELECT c.name, SUM(t.amount) as total
+                FROM transactions t
+                JOIN categories c ON t.category_id = c.id
+                WHERE t.user_id = ? 
+                AND t.type = 'expense'
+                AND MONTH(t.transaction_date) = MONTH(CURRENT_DATE())
+                AND YEAR(t.transaction_date) = YEAR(CURRENT_DATE())
+                GROUP BY c.id, c.name
+                ORDER BY total DESC
+                LIMIT 3
+            ");
+            $stmt->execute([$user_id]);
+            $top_categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Tambahkan saran penghematan untuk tiap kategori
+            foreach ($top_categories as &$cat) {
+                $cat['advice'] = FinancialAnalytics::getSavingAdvice($cat['name'], $cat['total']);
+            }
+
+            return $top_categories;
+        } catch (PDOException $e) {
+            error_log("Error in getRootCauseAnalysis: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Advanced Analytics: Predict next month's expenses
+     * Now delegates calculations to FinancialAnalytics class
+     * @param int $user_id User ID
+     * @return array
+     */
+    public function predictNextMonthExpense($user_id) {
+        try {
+            // 1. Ambil data pengeluaran bulanan 6 bulan terakhir
+            $monthly_data = [];
+            for ($i = 5; $i >= 0; $i--) {
+                $month = date('Y-m', strtotime("-$i months"));
+                $stmt = $this->db->prepare("
+                    SELECT COALESCE(SUM(amount), 0) as total 
+                    FROM transactions 
+                    WHERE user_id = ? AND type = 'expense' 
+                    AND DATE_FORMAT(transaction_date, '%Y-%m') = ?
+                ");
+                $stmt->execute([$user_id, $month]);
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $monthly_data[] = (float)$row['total'];
+            }
+
+            // Delegasikan perhitungan ke class FinancialAnalytics
+            $analysis = FinancialAnalytics::calculateLinearRegression($monthly_data);
+
+            return [
+                'amount' => $analysis['prediction'],
+                'trend' => $analysis['trend'],
+                'slope' => $analysis['slope'],
+                'intercept' => $analysis['intercept'],
+                'count' => count(array_filter($monthly_data))
+            ];
+        } catch (PDOException $e) {
+            error_log("Error in predictNextMonthExpense: " . $e->getMessage());
+            return ['amount' => 0, 'trend' => 'error', 'count' => 0];
+        }
+    }
 
 }
 ?>
