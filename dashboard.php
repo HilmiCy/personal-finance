@@ -105,6 +105,7 @@ for ($i = 5; $i >= 0; $i--) {
 
 // Get category breakdown for current month
 $category_data = [];
+$category_colors = ['#6366f1', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6'];
 try {
     $stmt = $db->prepare("
         SELECT c.name, SUM(t.amount) as total
@@ -142,7 +143,7 @@ include 'includes/sidebar.php';
     }
     
     .btn-primary-custom {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
         color: white;
         padding: 10px 24px;
         border-radius: 12px;
@@ -394,10 +395,15 @@ include 'includes/sidebar.php';
                     </div>
                     <?php if(!empty($category_data) && count($category_data) > 0): ?>
                         <canvas id="categoryChart" height="230"></canvas>
-                        <div class="mt-3">
-                            <?php foreach($category_data as $cat): ?>
+                        <div class="mt-4">
+                            <?php foreach($category_data as $index => $cat): 
+                                $color = $category_colors[$index % count($category_colors)];
+                            ?>
                             <div class="category-item">
-                                <span class="category-name"><?= htmlspecialchars($cat['name']) ?></span>
+                                <div class="category-name">
+                                    <span class="category-dot" style="background-color: <?= $color ?>; color: <?= $color ?>;"></span>
+                                    <?= htmlspecialchars($cat['name']) ?>
+                                </div>
                                 <span class="category-amount"><?= formatRupiah($cat['total']) ?></span>
                             </div>
                             <?php endforeach; ?>
@@ -420,7 +426,7 @@ include 'includes/sidebar.php';
                         <i class="fas fa-history"></i>
                         Transaksi Terbaru
                     </div>
-                    <a href="pages/transactions/index.php" class="btn btn-sm" style="background: #f3f4f6; color: #4b5563; text-decoration: none; padding: 6px 14px; border-radius: 10px;">
+                    <a href="pages/transactions/index.php" class="btn btn-sm" style="background: var(--bg-hover); color: var(--text-muted); text-decoration: none; padding: 6px 14px; border-radius: 10px; border: 1px solid var(--border-color);">
                         Lihat Semua <i class="fas fa-arrow-right ms-1"></i>
                     </a>
                 </div>
@@ -428,11 +434,11 @@ include 'includes/sidebar.php';
                     <table class="table table-custom">
                         <thead>
                             <tr>
-                                <th>Tanggal</th>
-                                <th>Deskripsi</th>
-                                <th>Kategori</th>
-                                <th>Akun</th>
-                                <th>Jumlah</th>
+                                <th><i class="fas fa-calendar-alt me-2"></i>Tanggal</th>
+                                <th><i class="fas fa-info-circle me-2"></i>Deskripsi</th>
+                                <th><i class="fas fa-tag me-2"></i>Kategori</th>
+                                <th><i class="fas fa-wallet me-2"></i>Akun</th>
+                                <th><i class="fas fa-money-bill-wave me-2"></i>Jumlah</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -440,30 +446,27 @@ include 'includes/sidebar.php';
                                 <?php foreach($recent_transactions as $trans): ?>
                                 <tr>
                                     <td data-label="Tanggal">
-                                        <?php 
-                                        if(isset($trans['transaction_date']) && !empty($trans['transaction_date'])):
-                                            echo date('d/m/Y', strtotime($trans['transaction_date']));
-                                        else:
-                                            echo '-';
-                                        endif;
-                                        ?>
+                                        <div class="fw-bold text-muted" style="font-size: 0.85rem;"><?= date('d/m/Y', strtotime($trans['transaction_date'])) ?></div>
                                     </td>
                                     <td data-label="Deskripsi">
-                                        <strong><?= htmlspecialchars($trans['description'] ?? '-') ?></strong>
+                                        <div class="fw-bold"><?= htmlspecialchars($trans['description'] ?? '-') ?></div>
                                     </td>
                                     <td data-label="Kategori">
-                                        <span class="badge" style="background: #f3f4f6; color: #4b5563;">
+                                        <span class="badge" style="background: var(--bg-hover); color: var(--text-main); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px;">
+                                            <i class="fas fa-tag me-1" style="color: var(--accent-primary);"></i>
                                             <?= htmlspecialchars($trans['category_name'] ?? '-') ?>
                                         </span>
                                     </td>
-                                    <td data-label="Akun"><?= htmlspecialchars($trans['account_name'] ?? '-') ?></td>
+                                    <td data-label="Akun">
+                                        <span class="badge" style="background: rgba(99, 102, 241, 0.1); color: var(--accent-primary); border: 1px solid rgba(99, 102, 241, 0.2); padding: 6px 12px; border-radius: 8px;">
+                                            <i class="fas fa-<?= getAccountIcon($trans['account_name']) ?> me-1"></i>
+                                            <?= htmlspecialchars($trans['account_name'] ?? '-') ?>
+                                        </span>
+                                    </td>
                                     <td data-label="Jumlah">
-                                        <span class="transaction-type <?= isset($trans['type']) && $trans['type'] == 'income' ? 'income-badge' : 'expense-badge' ?>">
-                                            <i class="fas fa-<?= isset($trans['type']) && $trans['type'] == 'income' ? 'plus' : 'minus' ?>"></i>
-                                            <?php 
-                                            $amount = isset($trans['amount']) ? $trans['amount'] : 0;
-                                            echo 'Rp ' . number_format($amount, 0, ',', '.');
-                                            ?>
+                                        <span class="transaction-type <?= isset($trans['type']) && $trans['type'] == 'income' ? 'income-badge' : 'expense-badge' ?>" style="font-weight: 800; font-size: 1rem;">
+                                            <i class="fas fa-<?= isset($trans['type']) && $trans['type'] == 'income' ? 'plus-circle' : 'minus-circle' ?> me-1"></i>
+                                            <?= formatRupiah($trans['amount'] ?? 0) ?>
                                         </span>
                                     </td>
                                 </tr>
@@ -594,13 +597,7 @@ include 'includes/sidebar.php';
             labels: <?= json_encode(array_column($category_data, 'name')) ?>,
             datasets: [{
                 data: <?= json_encode(array_column($category_data, 'total')) ?>,
-                backgroundColor: [
-                    '#667eea',
-                    '#f59e0b',
-                    '#10b981',
-                    '#ef4444',
-                    '#8b5cf6'
-                ],
+                backgroundColor: <?= json_encode($category_colors) ?>,
                 borderWidth: 0,
                 hoverOffset: 10
             }]
