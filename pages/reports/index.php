@@ -318,42 +318,17 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    /* ========== WELCOME CARD ========== */
-    .welcome-card {
-    background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
-    border-radius: 20px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-    
-    .welcome-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin: 0;
-    }
-    
-    .welcome-subtitle {
-        margin: 8px 0 0 0;
-        opacity: 0.9;
-        font-size: 0.9rem;
-    }
-    
-    /* ========== REPORT TABS ========== */
+    /* ========== REPORTS SPECIFIC STYLES ========== */
     .report-tabs {
-        background: white;
+        background: var(--bg-card);
         border-radius: 16px;
         padding: 8px;
         margin-bottom: 24px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        box-shadow: var(--shadow-card);
         display: inline-flex;
         gap: 10px;
         flex-wrap: wrap;
+        border: 1px solid var(--border-color);
     }
     
     .report-tab {
@@ -369,36 +344,30 @@ include '../../includes/sidebar.php';
     }
     
     .report-tab.active {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
         color: white;
     }
     
     .report-tab:not(.active) {
-        color: #4b5563;
-        background: #f3f4f6;
+        color: var(--text-muted);
+        background: var(--bg-hover);
     }
     
-    .report-tab:not(.active):hover {
-        background: #e5e7eb;
-        color: #1f2937;
-        text-decoration: none;
-    }
-    
-    /* ========== DATE NAVIGATION ========== */
     .date-navigation {
-        background: white;
+        background: var(--bg-card);
         border-radius: 20px;
         padding: 20px;
         margin-bottom: 24px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        box-shadow: var(--shadow-card);
+        border: 1px solid var(--border-color);
     }
     
     .btn-month {
-        background: #f3f4f6;
+        background: var(--bg-hover);
         padding: 8px 20px;
         border-radius: 10px;
         text-decoration: none;
-        color: #4b5563;
+        color: var(--text-main);
         transition: all 0.3s ease;
         display: inline-flex;
         align-items: center;
@@ -406,73 +375,53 @@ include '../../includes/sidebar.php';
         font-weight: 500;
     }
     
-    .btn-month:hover {
-        background: #e5e7eb;
-        color: #1f2937;
-        text-decoration: none;
-    }
-    
     .current-month {
         font-size: 20px;
         font-weight: 700;
-        color: #1f2937;
+        color: var(--text-main);
     }
     
-    .current-month i {
-        color: #667eea;
-        margin-right: 8px;
-    }
-    
-    /* ========== REPORT CARDS ========== */
     .report-card {
-        background: white;
+        background: var(--bg-card);
         border-radius: 20px;
         padding: 24px;
         margin-bottom: 24px;
         transition: all 0.3s ease;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        box-shadow: var(--shadow-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
     }
     
     .report-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
     
     .report-title {
         font-size: 18px;
         font-weight: 700;
-        color: #1f2937;
+        color: var(--text-main);
         margin-bottom: 20px;
         display: flex;
         align-items: center;
         gap: 10px;
-        border-left: 4px solid #667eea;
+        border-left: 4px solid var(--accent-primary);
         padding-left: 15px;
     }
     
-    .report-title i {
-        color: #667eea;
-    }
-    
-    /* ========== STAT BOXES ========== */
     .stat-box {
         text-align: center;
         padding: 20px;
         border-radius: 16px;
-        background: #f9fafb;
+        background: var(--bg-hover);
         transition: all 0.3s ease;
         height: 100%;
-        border: 1px solid #e5e7eb;
-    }
-    
-    .stat-box:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border-color);
     }
     
     .stat-box .label {
         font-size: 13px;
-        color: #6b7280;
+        color: var(--text-muted);
         margin-bottom: 8px;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -482,25 +431,12 @@ include '../../includes/sidebar.php';
     .stat-box .value {
         font-size: 24px;
         font-weight: 800;
+        color: var(--text-main);
     }
     
-    .stat-box.income .value { color: #10b981; }
-    .stat-box.expense .value { color: #ef4444; }
-    .stat-box.balance .value { color: #667eea; }
-    .stat-box.emergency .value { color: #f59e0b; }
-    .stat-box.installment .value { color: #8b5cf6; }
-    .stat-box.net-worth .value { color: #1a2a6c; }
-    
-    /* ========== INFO CARD ========== */
-    .info-card {
-        background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-        border-left: 4px solid #6366f1;
-    }
-    
-    .warning-card {
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        border-left: 4px solid #f59e0b;
-    }
+    .stat-box.income .value { color: #10b981 !important; }
+    .stat-box.expense .value { color: #ef4444 !important; }
+    .stat-box.balance .value { color: var(--accent-primary) !important; }
     
     .dark-card {
         background: linear-gradient(135deg, #1a2a6c 0%, #2c3e50 100%);
@@ -508,143 +444,34 @@ include '../../includes/sidebar.php';
         border-left: 4px solid #3498db;
     }
     
-    .dark-card .report-title {
-        color: white;
-        border-left-color: #3498db;
+    .dark-card .report-title { color: white; border-left-color: #3498db; }
+    .dark-card .text-muted { color: rgba(255,255,255,0.7) !important; }
+    
+    .ratio-card {
+        background: var(--bg-sidebar);
+        border-radius: 16px;
+        padding: 15px;
+        height: 100%;
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: var(--text-main);
     }
     
-    .dark-card .text-muted {
-        color: #bdc3c7 !important;
-    }
-    
-    /* ========== CATEGORY ITEMS ========== */
     .category-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 12px 0;
-        border-bottom: 1px solid #f3f4f6;
+        border-bottom: 1px solid var(--border-color);
     }
     
-    .category-item:last-child {
-        border-bottom: none;
-    }
-    
-    .category-name {
-        font-weight: 500;
-        color: #4b5563;
-        font-size: 14px;
-    }
-    
-    .category-amount {
-        font-weight: 700;
-        font-size: 14px;
-    }
-    
-    .category-amount.income { color: #10b981; }
-    .category-amount.expense { color: #ef4444; }
-    
-    /* ========== PROGRESS BAR ========== */
-    .progress-bar-custom {
-        height: 8px;
-        border-radius: 10px;
-        background: #e5e7eb;
-        margin-top: 8px;
-        overflow: hidden;
-    }
-    
-    .progress-fill {
-        height: 100%;
-        border-radius: 10px;
-        transition: width 0.3s ease;
-    }
-    
-    .progress-fill.income { background: #10b981; }
-    .progress-fill.expense { background: #ef4444; }
-    .progress-fill.emergency { background: #f59e0b; }
-    
-    /* ========== TABLES ========== */
-    .table-report {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    
-    .table-report th {
-        background: #f9fafb;
-        padding: 12px;
-        font-weight: 600;
-        color: #4b5563;
-        font-size: 13px;
-        border-bottom: 1px solid #e5e7eb;
-    }
-    
-    .table-report td {
-        padding: 12px;
-        border-bottom: 1px solid #f3f4f6;
-        font-size: 14px;
-    }
-    
-    .table-report tr:hover td {
-        background: #f9fafb;
-    }
-    
-    /* ========== BADGES ========== */
-    .badge-income {
-        background: #d1fae5;
-        color: #065f46;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-    
-    .badge-expense {
-        background: #fee2e2;
-        color: #991b1b;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-    
-    .badge-transfer {
-        background: #e0e7ff;
-        color: #4338ca;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-    
-    /* ========== EMPTY STATE ========== */
-    .empty-state {
-        text-align: center;
-        padding: 40px;
-        color: #9ca3af;
-    }
-    
-    .empty-state i {
-        font-size: 48px;
-        margin-bottom: 16px;
-    }
-    
-    /* ========== EXPORT BUTTONS ========== */
-    .export-buttons {
-        display: flex;
-        gap: 10px;
-        justify-content: flex-end;
-        flex-wrap: wrap;
-    }
+    .category-name { font-weight: 500; color: var(--text-main); font-size: 14px; }
     
     .btn-export {
-        background: #f3f4f6;
-        color: #4b5563;
+        background: var(--bg-hover);
+        color: var(--text-main);
         border: none;
         padding: 8px 16px;
         border-radius: 10px;
@@ -656,146 +483,12 @@ include '../../includes/sidebar.php';
         align-items: center;
         gap: 6px;
     }
-    
-    .btn-export:hover {
-        background: #e5e7eb;
-        transform: translateY(-2px);
-    }
-    
-    /* ========== LOADING OVERLAY ========== */
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.7);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-    }
-    
-    .loading-spinner {
-        background: white;
-        padding: 20px 40px;
-        border-radius: 20px;
-        text-align: center;
-    }
-    
-    .loading-spinner i {
-        font-size: 48px;
-        color: #667eea;
-        animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    /* ========== ANIMATIONS ========== */
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .animated {
-        animation: fadeInUp 0.5s ease forwards;
-        opacity: 0;
-    }
-    
-    /* ========== RATIO CARD ========== */
-    .ratio-card {
-        background: #fff;
-        border-radius: 16px;
-        padding: 15px;
-        height: 100%;
-        border: 1px solid #e5e7eb;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    
-    .ratio-value {
-        font-size: 20px;
-        font-weight: 800;
-        margin: 5px 0;
-    }
-    
-    .ratio-label {
-        font-size: 12px;
-        color: #6b7280;
-        font-weight: 600;
-    }
-    
-    /* ========== RESPONSIVE ========== */
+
+    /* Responsive */
     @media (max-width: 768px) {
-        .container-fluid {
-            padding: 15px !important;
-        }
-        
-        .welcome-title {
-            font-size: 1.2rem !important;
-        }
-        
-        .welcome-subtitle {
-            font-size: 0.8rem !important;
-        }
-        
-        .stat-box .value {
-            font-size: 18px !important;
-        }
-        
-        .report-title {
-            font-size: 16px;
-        }
-        
-        .current-month {
-            font-size: 16px;
-        }
-        
-        .btn-month {
-            padding: 6px 12px;
-            font-size: 12px;
-        }
-        
-        .report-tab {
-            padding: 8px 16px;
-            font-size: 12px;
-        }
-        
-        .table-report th,
-        .table-report td {
-            padding: 8px;
-            font-size: 12px;
-        }
-        
-        .export-buttons {
-            justify-content: center;
-            margin-top: 10px;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .report-tabs {
-            width: 100%;
-            justify-content: center;
-        }
-        
-        .stat-box {
-            padding: 15px;
-        }
-        
-        .stat-box .value {
-            font-size: 16px !important;
-        }
+        .container-fluid { padding: 15px !important; }
+        .welcome-title { font-size: 1.2rem !important; color: var(--text-main) !important; }
+        .welcome-subtitle { font-size: 0.8rem !important; }
     }
 </style>
 

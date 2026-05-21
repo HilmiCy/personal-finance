@@ -49,17 +49,19 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
+    /* ========== ANALYTICS SPECIFIC STYLES ========== */
     .analytics-card {
-        background: white;
+        background: var(--bg-card);
         border-radius: 24px;
         padding: 30px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        border: 1px solid #f3f4f6;
+        box-shadow: var(--shadow-card);
+        border: 1px solid var(--border-color);
         margin-bottom: 24px;
+        color: var(--text-main);
     }
 
     .ai-badge {
-        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
         color: white;
         padding: 5px 15px;
         border-radius: 50px;
@@ -72,7 +74,7 @@ include '../../includes/sidebar.php';
     .prediction-highlight {
         font-size: 36px;
         font-weight: 800;
-        color: #1f2937;
+        color: var(--text-main);
         margin: 15px 0;
     }
 
@@ -85,17 +87,18 @@ include '../../includes/sidebar.php';
         font-weight: 600;
     }
 
-    .trend-up { background: #fee2e2; color: #dc2626; }
-    .trend-down { background: #d1fae5; color: #059669; }
-    .trend-stable { background: #f1f5f9; color: #64748b; }
+    .trend-up { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+    .trend-down { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+    .trend-stable { background: var(--bg-hover); color: var(--text-muted); }
 
     .formula-box {
-        background: #f8fafc;
+        background: var(--bg-main);
         border-radius: 15px;
         padding: 20px;
         font-family: 'Courier New', Courier, monospace;
         font-size: 14px;
-        border-left: 5px solid #6366f1;
+        border-left: 5px solid var(--accent-primary);
+        color: var(--text-main);
     }
 
     .insight-item {

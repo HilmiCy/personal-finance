@@ -25,83 +25,27 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    /* ========== CARD STYLES ========== */
-    .card {
-        border-radius: 20px !important;
-        border: none !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
-        transition: transform 0.2s, box-shadow 0.2s !important;
-        margin-bottom: 20px !important;
-        overflow: hidden !important;
-        background: white !important;
-    }
-    
-    /* ========== WELCOME CARD ========== */
-    .welcome-card {
-        background: #ffffff;
-        border-radius: 20px;
-        padding: 24px;
-        margin-bottom: 24px;
-        color: #1f2937;
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
-    
-    .welcome-title {
-        font-size: 1.6rem;
-        font-weight: 700;
-        margin: 0;
-        color: #1f2937;
-    }
-    
-    .welcome-subtitle {
-        margin: 8px 0 0 0;
-        color: #6b7280;
-        font-size: 0.95rem;
-    }
-    
-    /* Button Styles */
-    .btn-primary-custom {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white !important;
-        border: none;
-        padding: 10px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-    }
-    
-    .btn-primary-custom:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-    }
-    
-    /* ========== CATEGORY SECTIONS ========== */
+    /* ========== CATEGORY SPECIFIC STYLES ========== */
     .category-card {
-        background: white;
+        background: var(--bg-card);
         border-radius: 20px;
         padding: 24px;
-        border: 1px solid #f3f4f6;
+        border: 1px solid var(--border-color);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         height: 100%;
+        color: var(--text-main);
+        box-shadow: var(--shadow-card);
     }
     
     .category-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     }
     
     .category-header {
         padding-bottom: 15px;
         margin-bottom: 20px;
-        border-bottom: 1px solid #f3f4f6;
+        border-bottom: 1px solid var(--border-color);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -114,135 +58,42 @@ include '../../includes/sidebar.php';
         display: flex;
         align-items: center;
         gap: 10px;
-        color: #1f2937;
+        color: var(--text-main);
     }
     
-    .header-income i { color: #10b981; }
-    .header-expense i { color: #ef4444; }
-    
-    .category-pill {
-        background: #f3f4f6;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 11px;
-        font-weight: 700;
-        color: #6b7280;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    
-    .category-pill.income { background: #d1fae5; color: #059669; }
-    .category-pill.expense { background: #fee2e2; color: #dc2626; }
-    
-    /* Category List Item */
     .category-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 12px 16px;
         margin-bottom: 10px;
-        background: #f9fafb;
+        background: var(--bg-hover);
         border-radius: 14px;
         transition: all 0.2s ease;
         border: 1px solid transparent;
     }
     
     .category-item:hover {
-        background: #ffffff;
-        border-color: #e5e7eb;
+        background: var(--bg-sidebar);
+        border-color: var(--border-color);
         transform: translateX(4px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
     }
     
     .category-name {
         font-size: 14px;
         font-weight: 600;
-        color: #374151;
+        color: var(--text-main);
         display: flex;
         align-items: center;
         gap: 12px;
     }
-    
-    .category-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-    }
-    .dot-income { background: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
-    .dot-expense { background: #ef4444; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1); }
-    
-    .dropdown-minimal .btn-link {
-        color: #9ca3af;
-        padding: 0;
-        font-size: 16px;
-        text-decoration: none;
-    }
 
-    .dropdown-minimal .btn-link:hover { color: #4b5563; }
-    
-    /* Animations */
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    
-    @keyframes fadeInScale {
-        from { opacity: 0; transform: scale(0.95); }
-        to { opacity: 1; transform: scale(1); }
-    }
-    
-    @keyframes iconPop {
-        0% { transform: scale(0); opacity: 0; }
-        80% { transform: scale(1.1); }
-        100% { transform: scale(1); opacity: 1; }
-    }
-    
-    .animated { animation: fadeInUp 0.5s ease-out forwards; }
-    
-    /* SweetAlert2 Professional Style */
-    .swal2-popup {
-        background: rgba(255, 255, 255, 0.98) !important;
-        backdrop-filter: blur(20px) !important;
-        border-radius: 24px !important;
-        padding: 2em !important;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2) !important;
-    }
-    
-    .swal2-title { color: #1f2937 !important; font-weight: 700 !important; }
-    .swal2-confirm {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        border-radius: 12px !important;
-        padding: 10px 24px !important;
-        font-weight: 600 !important;
-        color: white !important;
-    }
-
-    /* Modal Styling */
-    .modal-content-custom { border-radius: 24px !important; border: none !important; box-shadow: 0 20px 60px rgba(0,0,0,0.15) !important; }
-    .modal-header-custom { padding: 24px !important; border-bottom: 1px solid #f3f4f6 !important; }
-    .modal-body-custom { padding: 32px !important; }
-    
-    /* Form Controls */
-    .form-control, .form-select {
-        border-radius: 12px !important;
-        border: 1px solid #e5e7eb !important;
-        padding: 12px 16px !important;
-    }
-
-    /* Responsive */
+    /* Responsive Adjustments */
     @media (max-width: 768px) {
-        #sidebar {
-            margin-left: -250px !important;
-            position: fixed !important;
-            z-index: 1000 !important;
-            height: 100vh !important;
-        }
-        
+        #sidebar { margin-left: -250px !important; position: fixed !important; z-index: 1000 !important; height: 100vh !important; }
         #sidebar.active { margin-left: 0 !important; }
         #content, .main-content { width: 100% !important; }
         .container-fluid { padding: 16px !important; }
-        
-        .welcome-title { font-size: 1.3rem; }
         .btn-primary-custom { width: 100%; justify-content: center; }
     }
 </style>

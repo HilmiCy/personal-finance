@@ -101,9 +101,18 @@ if (!isset($current_page)) {
         </div>
     </div>
 
-    <!-- Profile & Logout Section -->
+    <!-- Theme Toggle & Profile Section -->
     <div class="sidebar-footer" style="padding-bottom: 10px;">
         <ul class="nav-menu">
+            <li class="nav-item">
+                <div class="theme-switch-wrapper" onclick="document.getElementById('checkbox').click()">
+                    <div class="theme-switch">
+                        <input type="checkbox" id="checkbox" onchange="toggleTheme(this.checked)">
+                        <div class="slider"></div>
+                    </div>
+                    <span class="theme-switch-label">Dark Mode</span>
+                </div>
+            </li>
             <li class="nav-item">
                 <a href="/keuangan/pages/profile/index.php" class="nav-link-sidebar <?= $current_page == 'profile.php' ? 'active' : '' ?>" title="Profil">
                     <i class="fas fa-user-circle"></i>

@@ -134,8 +134,6 @@ include 'includes/sidebar.php';
 <style>
     /* ========== DASHBOARD CUSTOM STYLES ========== */
     
-    /* Override or add specific dashboard styles here */
-    
     .container-fluid {
         width: 100% !important;
         max-width: 100% !important;
@@ -143,39 +141,6 @@ include 'includes/sidebar.php';
         margin: 0 !important;
     }
     
-    /* Welcome Card Gradient & Pattern */
-    .welcome-card {
-        background: #ffffff;
-        color: #1f2937;
-        position: relative;
-        overflow: hidden;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
-    
-    .welcome-card::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -10%;
-        width: 300px;
-        height: 300px;
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-        border-radius: 50%;
-    }
-    
-    .welcome-title {
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 8px;
-        color: #1f2937;
-    }
-    
-    .welcome-subtitle {
-        color: #6b7280;
-        font-size: 1rem;
-    }
-
     .btn-primary-custom {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
@@ -252,18 +217,6 @@ include 'includes/sidebar.php';
         .container-fluid {
             padding: 15px !important;
         }
-        
-        .welcome-title {
-            font-size: 1.4rem !important;
-        }
-        
-        .welcome-subtitle {
-            font-size: 0.9rem !important;
-        }
-
-        .stat-card {
-            padding: 20px;
-        }
 
         /* Mobile Table Transformation */
         .table-custom thead {
@@ -285,19 +238,19 @@ include 'includes/sidebar.php';
             left: 16px;
             width: calc(40% - 20px);
             font-weight: 600;
-            color: #6b7280;
+            color: var(--text-muted);
             font-size: 12px;
             text-align: left;
         }
         
         .table-custom tbody tr {
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid var(--border-color);
             display: block;
             margin-bottom: 10px;
-            background: #fff;
+            background: var(--bg-card);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow-card);
         }
         
         .table-custom tbody tr:last-child {
