@@ -212,6 +212,17 @@ include 'includes/sidebar.php';
         align-items: center;
         gap: 6px;
     }
+
+    /* Fix Glitch on Transactions Card */
+    .transactions-card {
+        background: var(--bg-card);
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-card);
+        overflow: hidden;
+        /* Remove backdrop-filter if it causes glitches */
+        backdrop-filter: none !important;
+    }
     
     /* Responsive Adjustments */
     @media (max-width: 768px) {
@@ -349,7 +360,7 @@ include 'includes/sidebar.php';
                     <div class="row align-items-center">
                         <div class="col-md-8">
                             <div class="prediction-label">
-                                <i class="fas fa-robot"></i> Smart AI Prediction
+                                <i class="fas fa-robot"></i> Smart AI Prediction (<?= $prediction['algorithm'] ?? 'XGBoost' ?>)
                             </div>
                             <h3 class="prediction-value">
                                 Estimasi Pengeluaran Bulan Depan: 
@@ -367,7 +378,8 @@ include 'includes/sidebar.php';
                         </div>
                         <div class="col-md-4 text-md-end mt-3 mt-md-0">
                             <div class="small opacity-75">
-                                Berdasarkan analisis data <?= $prediction['count'] ?> bulan terakhir
+                                Analisis data <?= $prediction['count'] ?> bulan terakhir<br>
+                                <span class="badge bg-light text-dark mt-2" style="font-size: 10px; opacity: 0.8;">Powered by Python Microservice</span>
                             </div>
                         </div>
                     </div>
@@ -452,20 +464,20 @@ include 'includes/sidebar.php';
                                         <div class="fw-bold"><?= htmlspecialchars($trans['description'] ?? '-') ?></div>
                                     </td>
                                     <td data-label="Kategori">
-                                        <span class="badge" style="background: var(--bg-hover); color: var(--text-main); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px;">
-                                            <i class="fas fa-tag me-1" style="color: var(--accent-primary);"></i>
+                                        <span class="<?= $trans['type'] == 'income' ? 'income-badge' : 'expense-badge' ?>" style="font-size: 11px; padding: 4px 10px;">
+                                            <i class="fas fa-tag me-1" style="opacity: 0.8;"></i>
                                             <?= htmlspecialchars($trans['category_name'] ?? '-') ?>
                                         </span>
                                     </td>
                                     <td data-label="Akun">
-                                        <span class="badge" style="background: rgba(99, 102, 241, 0.1); color: var(--accent-primary); border: 1px solid rgba(99, 102, 241, 0.2); padding: 6px 12px; border-radius: 8px;">
+                                        <span class="badge-account">
                                             <i class="fas fa-<?= getAccountIcon($trans['account_name']) ?> me-1"></i>
                                             <?= htmlspecialchars($trans['account_name'] ?? '-') ?>
                                         </span>
                                     </td>
                                     <td data-label="Jumlah">
-                                        <span class="transaction-type <?= isset($trans['type']) && $trans['type'] == 'income' ? 'income-badge' : 'expense-badge' ?>" style="font-weight: 800; font-size: 1rem;">
-                                            <i class="fas fa-<?= isset($trans['type']) && $trans['type'] == 'income' ? 'plus-circle' : 'minus-circle' ?> me-1"></i>
+                                        <span class="<?= $trans['type'] == 'income' ? 'income-badge' : 'expense-badge' ?>" style="font-weight: 800; font-size: 1rem; min-width: 120px; justify-content: flex-end;">
+                                            <i class="fas fa-<?= $trans['type'] == 'income' ? 'plus-circle' : 'minus-circle' ?> me-1"></i>
                                             <?= formatRupiah($trans['amount'] ?? 0) ?>
                                         </span>
                                     </td>

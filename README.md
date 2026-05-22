@@ -7,10 +7,18 @@ This application helps users manage personal finances efficiently, including exp
 
 ##  Recent Updates (Major Redesign)
 
-- **Modern UI/UX**: Completely redesigned interface with a sleek, minimalist responsive sidebar and 'Plus Jakarta Sans' typography.
+- **Advanced AI Analytics (XGBoost)**: State-of-the-art expense prediction using XGBoost Machine Learning, including:
+    - **On-Demand Training**: Train the model directly from the dashboard.
+    - **Accuracy Metrics**: Real-time reporting of model performance (RMSE, MAPE).
+    - **Anomaly Detection**: Automatic detection of spending outliers.
+    - **Financial Health & Risk**: Intelligent classification of financial status and risk levels.
+- **Full Dark Mode Support**: Integrated a dynamic theme switching system (Light/Dark) with instant toggle and persistent user preferences via localStorage.
+- **Modern UI/UX Refinement**: Completely redesigned interface with a sleek, minimalist responsive sidebar, 'Plus Jakarta Sans' typography, and enhanced card-based layouts.
+- **Color-Coded Financials**: Improved visual hierarchy with theme-aware color-coding for income (green), expenses (red), and transfers (indigo) across all modules.
+- **Redesigned Transaction Details**: Professional new modal UI for transaction details with dynamic type-based gradients and cleaner data grouping.
 - **Enhanced Reporting**: Comprehensive financial reports integrating transactions, emergency funds, installments, and budgets.
 - **Multi-Currency Support**: Real-time exchange rate conversion for assets and accounts (USD, EUR, etc.) via external API.
-- **Advanced Analytics**: Expense prediction for the next month using Simple Linear Regression (Machine Learning) and automated saving advice.
+- **Advanced Analytics**: Expense prediction for the next month using **XGBoost AI** and automated saving advice.
 - **Enforced Crypto Workflow**: Specialized buy/sell flow for crypto requiring USDT, with automated USDT balance deduction.
 - **Dependency Management**: Now using **Composer** for better library management.
 - **Advanced Export**: Improved PDF export using `dompdf` and Excel export functionality.
@@ -49,7 +57,7 @@ This application helps users manage personal finances efficiently, including exp
 - Excel export
 - PDF export (powered by `dompdf`)
 - Transaction filtering and summaries
-- **Advanced Analytics**: Expense prediction based on historical data (Linear Regression)
+- **Advanced Analytics**: AI-powered expense prediction using **XGBoost** (replaces Simple Linear Regression)
 - **Multi-Currency**: Automatic conversion for foreign assets and bank accounts
 - **Automated Portfolio**: Automatic balance deduction for cross-asset transactions (e.g., Crypto-USDT)
 

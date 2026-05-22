@@ -119,9 +119,9 @@ include '../../includes/sidebar.php';
             <!-- Income Categories -->
             <div class="col-md-6">
                 <div class="category-card animated" style="animation-delay: 0.1s">
-                    <div class="category-header header-income">
-                        <h3><i class="fas fa-arrow-up"></i> Pemasukan</h3>
-                        <span class="category-pill income"><?= count($income_categories) ?> Item</span>
+                    <div class="category-header">
+                        <h3 class="text-success"><i class="fas fa-arrow-up"></i> Pemasukan</h3>
+                        <span class="income-badge" style="font-size: 11px; padding: 4px 12px;"><?= count($income_categories) ?> Item</span>
                     </div>
                     
                     <?php if (count($income_categories) > 0): ?>
@@ -129,14 +129,16 @@ include '../../includes/sidebar.php';
                             <?php foreach ($income_categories as $cat): ?>
                             <div class="category-item">
                                 <div class="category-name">
-                                    <span class="category-dot dot-income"></span>
-                                    <?= htmlspecialchars($cat['name']) ?>
+                                    <span class="category-dot" style="background-color: #10b981; color: #10b981;"></span>
+                                    <span class="income-badge" style="padding: 4px 12px; border-radius: 8px;">
+                                        <?= htmlspecialchars($cat['name']) ?>
+                                    </span>
                                 </div>
                                 <div class="dropdown dropdown-minimal">
                                     <button class="btn btn-link" data-bs-toggle="dropdown">
                                         <i class="fas fa-ellipsis-v"></i>
                                     </button>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                    <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
                                             <button class="dropdown-item" onclick="editCategory(<?= $cat['id'] ?>, '<?= htmlspecialchars($cat['name']) ?>', 'income')">
                                                 <i class="fas fa-pencil-alt me-2 text-primary"></i> Edit
@@ -165,9 +167,9 @@ include '../../includes/sidebar.php';
             <!-- Expense Categories -->
             <div class="col-md-6">
                 <div class="category-card animated" style="animation-delay: 0.2s">
-                    <div class="category-header header-expense">
-                        <h3><i class="fas fa-arrow-down"></i> Pengeluaran</h3>
-                        <span class="category-pill expense"><?= count($expense_categories) ?> Item</span>
+                    <div class="category-header">
+                        <h3 class="text-danger"><i class="fas fa-arrow-down"></i> Pengeluaran</h3>
+                        <span class="expense-badge" style="font-size: 11px; padding: 4px 12px;"><?= count($expense_categories) ?> Item</span>
                     </div>
                     
                     <?php if (count($expense_categories) > 0): ?>
@@ -175,14 +177,16 @@ include '../../includes/sidebar.php';
                             <?php foreach ($expense_categories as $cat): ?>
                             <div class="category-item">
                                 <div class="category-name">
-                                    <span class="category-dot dot-expense"></span>
-                                    <?= htmlspecialchars($cat['name']) ?>
+                                    <span class="category-dot" style="background-color: #ef4444; color: #ef4444;"></span>
+                                    <span class="expense-badge" style="padding: 4px 12px; border-radius: 8px;">
+                                        <?= htmlspecialchars($cat['name']) ?>
+                                    </span>
                                 </div>
                                 <div class="dropdown dropdown-minimal">
                                     <button class="btn btn-link" data-bs-toggle="dropdown">
                                         <i class="fas fa-ellipsis-v"></i>
                                     </button>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                    <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
                                             <button class="dropdown-item" onclick="editCategory(<?= $cat['id'] ?>, '<?= htmlspecialchars($cat['name']) ?>', 'expense')">
                                                 <i class="fas fa-pencil-alt me-2 text-primary"></i> Edit

@@ -3,7 +3,7 @@
     --bg-body: #f0f2f5;
     --bg-sidebar: #ffffff;
     --bg-main: #f8fafc;
-    --bg-card: rgba(255, 255, 255, 0.95);
+    --bg-card: #ffffff;
     --text-main: #1f2937;
     --text-muted: #6b7280;
     --text-light: #94a3b8;
@@ -22,7 +22,7 @@ body.dark-mode {
     --bg-body: #0f172a;
     --bg-sidebar: #1e293b;
     --bg-main: #0f172a;
-    --bg-card: rgba(30, 41, 59, 0.95);
+    --bg-card: #1e293b;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
     --text-light: #64748b;
@@ -57,7 +57,7 @@ body {
     position: fixed;
     left: 0;
     top: 0;
-    width: 70px; /* Slim by default */
+    width: 70px;
     height: 100vh;
     background: var(--bg-sidebar);
     box-shadow: var(--shadow-sidebar);
@@ -70,7 +70,7 @@ body {
 }
 
 .sidebar:hover {
-    width: 260px; /* Expand on hover */
+    width: 260px;
 }
 
 .sidebar-header {
@@ -91,8 +91,6 @@ body {
     justify-content: center;
     width: 100%;
     text-decoration: none;
-    background: none !important;
-    -webkit-text-fill-color: initial !important;
     transition: all 0.3s ease;
     padding: 0 10px;
 }
@@ -103,7 +101,7 @@ body {
 }
 
 .logo span {
-    display: none; /* Hide text in slim mode */
+    display: none;
     margin-left: 12px;
     font-size: 16px;
     line-height: 1.2;
@@ -146,12 +144,6 @@ body {
     color: white;
     font-size: 18px;
     font-weight: 600;
-}
-
-.user-details {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
 }
 
 .user-name-sidebar {
@@ -328,7 +320,6 @@ body {
 /* ========== CARD COMPONENTS ========== */
 .card {
     background: var(--bg-card);
-    backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 24px;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
@@ -340,7 +331,6 @@ body {
 
 .stat-card {
     background: var(--bg-card);
-    backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 24px;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
@@ -388,7 +378,6 @@ body {
 
 .welcome-card {
     background: var(--bg-card);
-    backdrop-filter: blur(10px);
     border-radius: 24px;
     padding: 32px;
     margin-bottom: 30px;
@@ -414,7 +403,7 @@ body {
     margin-bottom: 0;
     color: var(--text-main);
     border-collapse: separate;
-    border-spacing: 0 8px;
+    border-spacing: 0 4px;
 }
 
 .table-custom thead th {
@@ -429,14 +418,12 @@ body {
 }
 
 .table-custom tbody tr {
-    background: var(--bg-card);
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    background: var(--bg-sidebar);
+    transition: background 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 
 .table-custom tbody tr:hover {
-    transform: scale(1.005);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     background: var(--bg-hover);
 }
 
@@ -477,7 +464,64 @@ body {
     border-radius: 50%;
     display: inline-block;
     margin-right: 10px;
-    box-shadow: 0 0 10px currentColor;
+}
+
+/* ========== BADGES ========== */
+.income-badge {
+    background: #d1fae5;
+    color: #059669;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(5, 150, 105, 0.1);
+}
+
+.expense-badge {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(220, 38, 38, 0.1);
+}
+
+body.dark-mode .income-badge {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border-color: rgba(52, 211, 153, 0.2);
+}
+
+body.dark-mode .expense-badge {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border-color: rgba(248, 113, 113, 0.2);
+}
+
+.badge-account {
+    background: rgba(99, 102, 241, 0.1);
+    color: #6366f1;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+body.dark-mode .badge-account {
+    background: rgba(129, 140, 248, 0.15);
+    color: #a5b4fc;
+    border-color: rgba(165, 180, 252, 0.3);
 }
 
 /* ========== BUTTONS ========== */
@@ -510,8 +554,7 @@ body {
     transition: all 0.2s ease;
     text-decoration: none;
     display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    align-items: center; gap: 8px;
 }
 
 .btn-action-minimal:hover {
@@ -618,13 +661,13 @@ input:checked + .slider:before {
 
 /* ========== ANIMATION ========== */
 .animated {
-    animation: fadeInUp 0.6s ease-out;
+    animation: fadeInUp 0.6s ease-out forwards;
 }
 
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;

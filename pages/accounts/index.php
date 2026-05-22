@@ -25,6 +25,88 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
+    /* ========== ACCOUNTS SPECIFIC STYLES ========== */
+    .account-card {
+        background: var(--bg-card);
+        border-radius: 20px;
+        padding: 24px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100%;
+        position: relative;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        box-shadow: var(--shadow-card);
+    }
+    
+    .account-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        border-color: var(--accent-primary);
+    }
+    
+    .account-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--bg-hover);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: var(--accent-primary);
+        margin-bottom: 16px;
+    }
+    
+    .account-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 4px;
+    }
+    
+    .account-balance {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--text-main);
+        letter-spacing: -0.5px;
+    }
+
+    .summary-balance-card {
+        background: var(--bg-card);
+        border-radius: 20px;
+        padding: 24px;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-card);
+        margin-bottom: 30px;
+    }
+
+    .history-card {
+        background: var(--bg-card);
+        border-radius: 20px;
+        overflow: hidden;
+        margin-top: 30px;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-card);
+    }
+    
+    .history-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .history-item {
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border-color);
+        transition: all 0.2s ease;
+    }
+    
+    .history-item:hover {
+        background: var(--bg-hover);
+    }
+
     /* Responsive Adjustments */
     @media (max-width: 768px) {
         #sidebar {
@@ -79,14 +161,14 @@ include '../../includes/sidebar.php';
         <!-- Summary -->
         <div class="row mb-4">
             <div class="col-12">
-                <div class="card animated" style="animation-delay: 0.1s; border: 1px solid #e5e7eb !important;">
-                    <div class="card-body d-flex align-items-center justify-content-between flex-wrap">
+                <div class="summary-balance-card animated" style="animation-delay: 0.1s">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap">
                         <div>
-                            <div style="font-size: 14px; color: #6b7280; font-weight: 600; text-transform: uppercase;">Total Saldo</div>
-                            <div class="account-balance" style="font-size: 2rem; color: #10b981;"><?= formatRupiah($total_balance) ?></div>
+                            <div style="font-size: 14px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Total Saldo Terkonsolidasi</div>
+                            <div class="account-balance" style="font-size: 2.5rem; color: #10b981; margin-top: 5px;"><?= formatRupiah($total_balance) ?></div>
                         </div>
-                        <div class="text-muted d-none d-md-block">
-                            <i class="fas fa-shield-alt fa-3x opacity-25"></i>
+                        <div class="text-muted d-none d-md-block" style="opacity: 0.15;">
+                            <i class="fas fa-shield-alt fa-4x"></i>
                         </div>
                     </div>
                 </div>

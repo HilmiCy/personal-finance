@@ -106,6 +106,46 @@ include '../../includes/sidebar.php';
         color: var(--text-muted);
         margin-bottom: 8px;
     }
+
+    /* Enhanced Filter Buttons */
+    .btn-apply-filter {
+        background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 12px;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-apply-filter:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        color: white;
+    }
+
+    .btn-reset-filter {
+        background: var(--bg-hover);
+        color: var(--text-muted);
+        border: 1px solid var(--border-color);
+        padding: 10px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .btn-reset-filter:hover {
+        background: #fee2e2;
+        color: #dc2626;
+        border-color: #fecaca;
+    }
     
     .summary-card {
         background: var(--bg-card);
@@ -132,36 +172,107 @@ include '../../includes/sidebar.php';
         color: var(--text-main);
     }
 
-    /* Modal Styles Refined */
-    .modal-content-glass {
+    /* Redesigned Detail Modal */
+    .modal-detail {
+        max-width: 450px;
+    }
+    
+    .modal-content-custom {
         background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        border-radius: 32px;
+        border-radius: 24px;
         border: 1px solid var(--border-color);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         overflow: hidden;
     }
     
-    .modal-body-glass {
-        padding: 28px;
-        background: var(--bg-main);
+    .detail-header-gradient {
+        padding: 30px 24px;
+        text-align: center;
+        position: relative;
+        color: white;
     }
     
-    .detail-card {
-        background: var(--bg-card);
-        border-radius: 24px;
+    .header-income { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+    .header-expense { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+    .header-transfer { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
+    
+    .detail-amount-display {
+        font-size: 32px;
+        font-weight: 800;
+        margin: 10px 0;
+        letter-spacing: -0.5px;
+    }
+    
+    .detail-type-text {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        opacity: 0.9;
+    }
+    
+    .detail-info-container {
         padding: 24px;
+        background: var(--bg-card);
+    }
+    
+    .info-group {
         margin-bottom: 20px;
-        border: 1px solid var(--border-color);
     }
     
-    .info-row {
-        border-bottom: 1px solid var(--border-color);
+    .info-label-sm {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+        display: block;
     }
     
-    .info-value {
+    .info-value-md {
+        font-size: 15px;
+        font-weight: 600;
         color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
+
+    .info-value-md i {
+        color: var(--accent-primary);
+        width: 18px;
+        text-align: center;
+    }
+    
+    .detail-footer-custom {
+        padding: 16px 24px;
+        background: var(--bg-hover);
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        gap: 12px;
+    }
+
+    .btn-detail-action {
+        flex: 1;
+        padding: 12px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.2s;
+        border: none;
+    }
+
+    .btn-detail-edit { background: var(--accent-primary); color: white; }
+    .btn-detail-edit:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3); color: white; }
+    
+    .btn-detail-close { background: var(--bg-sidebar); color: var(--text-muted); border: 1px solid var(--border-color); }
+    .btn-detail-close:hover { background: var(--bg-active); color: var(--text-main); }
+
 
     .btn-detail {
         background: rgba(2, 132, 199, 0.1);
@@ -171,7 +282,10 @@ include '../../includes/sidebar.php';
         font-size: 12px;
         font-weight: 600;
         border: none;
+        transition: all 0.2s;
     }
+
+    .btn-detail:hover { background: #0284c7; color: white; }
 
     .btn-edit {
         background: rgba(79, 70, 229, 0.1);
@@ -181,7 +295,10 @@ include '../../includes/sidebar.php';
         font-size: 12px;
         font-weight: 600;
         border: none;
+        transition: all 0.2s;
     }
+
+    .btn-edit:hover { background: #4f46e5; color: white; }
 
     .btn-delete {
         background: rgba(220, 38, 38, 0.1);
@@ -191,7 +308,10 @@ include '../../includes/sidebar.php';
         font-size: 12px;
         font-weight: 600;
         border: none;
+        transition: all 0.2s;
     }
+
+    .btn-delete:hover { background: #dc2626; color: white; }
 
     /* ========== RESPONSIVE ========== */
     @media (max-width: 768px) {
@@ -202,6 +322,11 @@ include '../../includes/sidebar.php';
         .table-custom tbody tr {
             border-bottom: 1px solid var(--border-color);
             background: var(--bg-card);
+        }
+
+        .btn-apply-filter, .btn-reset-filter {
+            width: 100%;
+            justify-content: center;
         }
     }
 </style>
@@ -336,11 +461,11 @@ include '../../includes/sidebar.php';
                 
                 <div class="row mt-4">
                     <div class="col-12 d-flex gap-2">
-                        <button type="submit" class="btn-filter">
-                            <i class="fas fa-search"></i> Terapkan Filter
+                        <button type="submit" class="btn-apply-filter">
+                            <i class="fas fa-filter"></i> Terapkan Filter
                         </button>
-                        <a href="index.php" class="btn-reset">
-                            <i class="fas fa-redo"></i> Reset
+                        <a href="index.php" class="btn-reset-filter">
+                            <i class="fas fa-undo"></i> Reset
                         </a>
                     </div>
                 </div>
@@ -390,64 +515,56 @@ include '../../includes/sidebar.php';
                                 <?php foreach ($transactions as $trans): ?>
                                 <tr>
                                     <td data-label="Tanggal">
-                                        <strong><?= formatDate($trans['transaction_date']) ?></strong>
+                                        <div class="fw-bold text-muted" style="font-size: 0.85rem;"><?= formatDate($trans['transaction_date']) ?></div>
                                     </td>
                                     <td data-label="Deskripsi">
-                                        <strong><?= htmlspecialchars($trans['description']) ?></strong>
+                                        <div class="fw-bold"><?= htmlspecialchars($trans['description']) ?></div>
                                     </td>
                                     <td data-label="Kategori">
-                                        <span class="badge" style="background: #f3f4f6; color: #4b5563; padding: 5px 10px;">
-                                            <i class="fas fa-tag"></i> <?= htmlspecialchars($trans['category_name'] ?? '-') ?>
+                                        <span class="<?= $trans['type'] == 'income' ? 'income-badge' : ($trans['type'] == 'expense' ? 'expense-badge' : 'badge-account') ?>" style="font-size: 11px; padding: 4px 10px;">
+                                            <i class="fas fa-tag me-1" style="opacity: 0.8;"></i>
+                                            <?= htmlspecialchars($trans['category_name'] ?? '-') ?>
                                         </span>
                                     </td>
                                     <td data-label="Akun">
-                                        <span class="badge" style="background: #e0e7ff; color: #4f46e5; padding: 5px 10px;">
-                                            <i class="fas fa-wallet"></i> <?= htmlspecialchars($trans['account_name']) ?>
+                                        <span class="badge-account">
+                                            <i class="fas fa-wallet me-1"></i>
+                                            <?= htmlspecialchars($trans['account_name']) ?>
                                         </span>
                                     </td>
                                     <td data-label="Tipe">
                                         <?php if ($trans['type'] == 'income'): ?>
-                                            <span class="badge-income">
+                                            <span class="income-badge" style="padding: 4px 12px; border-radius: 20px;">
                                                 <i class="fas fa-arrow-up"></i> Pemasukan
                                             </span>
                                         <?php elseif ($trans['type'] == 'expense'): ?>
-                                            <span class="badge-expense">
+                                            <span class="expense-badge" style="padding: 4px 12px; border-radius: 20px;">
                                                 <i class="fas fa-arrow-down"></i> Pengeluaran
                                             </span>
                                         <?php else: ?>
-                                            <span class="badge-transfer">
+                                            <span class="badge-account" style="padding: 4px 12px; border-radius: 20px;">
                                                 <i class="fas fa-exchange-alt"></i> Transfer
                                             </span>
                                         <?php endif; ?>
                                     </td>
                                     <td data-label="Jumlah">
-                                        <?php if ($trans['type'] == 'income'): ?>
-                                            <span class="transaction-type income-badge">
-                                                <i class="fas fa-plus-circle"></i>
-                                                <?= formatRupiah($trans['amount']) ?>
-                                            </span>
-                                        <?php elseif ($trans['type'] == 'expense'): ?>
-                                            <span class="transaction-type expense-badge">
-                                                <i class="fas fa-minus-circle"></i>
-                                                <?= formatRupiah($trans['amount']) ?>
-                                            </span>
-                                        <?php else: ?>
-                                            <span class="transaction-type transfer-badge">
-                                                <i class="fas fa-exchange-alt"></i>
-                                                <?= formatRupiah($trans['amount']) ?>
-                                            </span>
-                                        <?php endif; ?>
+                                        <span class="<?= $trans['type'] == 'income' ? 'income-badge' : ($trans['type'] == 'expense' ? 'expense-badge' : 'badge-account') ?>" style="font-weight: 800; font-size: 1rem; min-width: 120px; justify-content: flex-end;">
+                                            <i class="fas fa-<?= $trans['type'] == 'income' ? 'plus-circle' : ($trans['type'] == 'expense' ? 'minus-circle' : 'exchange-alt') ?> me-1"></i>
+                                            <?= formatRupiah($trans['amount']) ?>
+                                        </span>
                                     </td>
                                     <td data-label="Aksi">
-                                        <button class="btn-detail" onclick="openDetailModal(<?= $trans['id'] ?>)">
-                                            <i class="fas fa-eye"></i> Detail
-                                        </button>
-                                        <button class="btn-edit" onclick="openEditModal(<?= $trans['id'] ?>)">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </button>
-                                        <button class="btn-delete" onclick="deleteTransaction(<?= $trans['id'] ?>)">
-                                            <i class="fas fa-trash"></i> Hapus
-                                        </button>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn-detail" onclick="openDetailModal(<?= $trans['id'] ?>)" title="Detail">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn-edit" onclick="openEditModal(<?= $trans['id'] ?>)" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn-delete" onclick="deleteTransaction(<?= $trans['id'] ?>)" title="Hapus">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
@@ -712,83 +829,72 @@ include '../../includes/sidebar.php';
     </div>
 </div>
 
-<!-- MODAL DETAIL TRANSAKSI GLASSMORPHISM -->
+<!-- MODAL DETAIL TRANSAKSI REDESIGNED -->
 <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-detail">
-        <div class="modal-content modal-content-glass">
-            <div class="modal-header-glass d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="detail-icon" id="detail_icon">
-                        <i class="fas fa-info-circle"></i>
-                    </div>
-                    <h5 class="modal-title">Detail Transaksi</h5>
-                </div>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content modal-content-custom">
+            <div id="detail_header_bg" class="detail-header-gradient">
+                <div class="detail-type-text" id="detail_type_label">Transaksi</div>
+                <div class="detail-amount-display" id="detail_amount">Rp 0</div>
+                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body-glass">
-                <!-- Header Amount -->
-                <div class="detail-card text-center">
-                    <div class="detail-label justify-content-center">
-                        <i class="fas fa-chart-line"></i>
-                        <span>TOTAL TRANSAKSI</span>
-                    </div>
-                    <div class="detail-amount" id="detail_amount">
-                        Rp 0
-                    </div>
-                </div>
-                
-                <!-- Info Detail -->
-                <div class="detail-card">
-                    <div class="info-row">
-                        <div class="info-label">
-                            <i class="fas fa-calendar-alt"></i> Tanggal
+            
+            <div class="detail-info-container">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="info-group">
+                            <span class="info-label-sm">Tanggal</span>
+                            <div class="info-value-md" id="detail_date">
+                                <i class="fas fa-calendar-alt"></i> -
+                            </div>
                         </div>
-                        <div class="info-value" id="detail_date">-</div>
                     </div>
-                    <div class="info-row">
-                        <div class="info-label">
-                            <i class="fas fa-tag"></i> Tipe
+                    <div class="col-6">
+                        <div class="info-group">
+                            <span class="info-label-sm">Kategori</span>
+                            <div class="info-value-md" id="detail_category">
+                                <i class="fas fa-tag"></i> -
+                            </div>
                         </div>
-                        <div class="info-value" id="detail_type_badge">-</div>
                     </div>
-                    <div class="info-row">
-                        <div class="info-label">
-                            <i class="fas fa-folder"></i> Kategori
+                    <div class="col-12">
+                        <div class="info-group">
+                            <span class="info-label-sm">Akun</span>
+                            <div class="info-value-md" id="detail_account">
+                                <i class="fas fa-wallet"></i> -
+                            </div>
                         </div>
-                        <div class="info-value" id="detail_category">-</div>
                     </div>
-                    <div class="info-row">
-                        <div class="info-label">
-                            <i class="fas fa-wallet"></i> Akun
+                    <div class="col-12" id="detail_transfer_row" style="display: none;">
+                        <div class="info-group">
+                            <span class="info-label-sm">Transfer Ke</span>
+                            <div class="info-value-md" id="detail_transfer_account">
+                                <i class="fas fa-exchange-alt"></i> -
+                            </div>
                         </div>
-                        <div class="info-value" id="detail_account">-</div>
                     </div>
-                    <div class="info-row" id="detail_transfer_row" style="display: none;">
-                        <div class="info-label">
-                            <i class="fas fa-exchange-alt"></i> Transfer ke
+                    <div class="col-12">
+                        <div class="info-group">
+                            <span class="info-label-sm">Deskripsi</span>
+                            <div class="info-value-md" id="detail_description" style="font-weight: 500; color: var(--text-muted);">
+                                <i class="fas fa-align-left"></i> -
+                            </div>
                         </div>
-                        <div class="info-value" id="detail_transfer_account">-</div>
                     </div>
-                    <div class="info-row">
-                        <div class="info-label">
-                            <i class="fas fa-align-left"></i> Deskripsi
+                    <div class="col-12 mt-2">
+                        <div class="p-2 rounded bg-light" style="font-size: 11px; color: var(--text-light); text-align: center;">
+                            Dibuat pada: <span id="detail_created_at">-</span>
                         </div>
-                        <div class="info-value" id="detail_description">-</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">
-                            <i class="fas fa-clock"></i> Dibuat
-                        </div>
-                        <div class="info-value" id="detail_created_at">-</div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer-glass">
-                <button type="button" class="btn-glass" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-2"></i> Tutup
+            
+            <div class="detail-footer-custom">
+                <button type="button" class="btn-detail-action btn-detail-close" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Tutup
                 </button>
-                <button type="button" class="btn-edit-glass" id="detail_edit_btn">
-                    <i class="fas fa-edit me-2"></i> Edit
+                <button type="button" class="btn-detail-action btn-detail-edit" id="detail_edit_btn">
+                    <i class="fas fa-edit"></i> Edit Transaksi
                 </button>
             </div>
         </div>
@@ -1173,130 +1279,77 @@ function deleteTransaction(id) {
     });
 }
     
-    // Open Detail Modal
+    // Open Detail Modal Redesigned
     function openDetailModal(id) {
-        console.log("Open detail modal called with ID:", id);
-        
-        if (!id) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'ID transaksi tidak valid',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
+        if (!id) return;
         
         Swal.fire({
             title: 'Loading...',
             text: 'Mengambil detail transaksi',
             allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
+            didOpen: () => { Swal.showLoading(); }
         });
         
         fetch(`get_detail.php?id=${id}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('HTTP error ' + response.status);
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 Swal.close();
-                console.log("Detail data received:", data);
                 
                 if (data.success && data.transaction) {
                     const trans = data.transaction;
                     
-                    // Format amount
-                    const formattedAmount = formatRupiah(trans.amount);
-                    document.getElementById('detail_amount').innerHTML = formattedAmount;
-                    document.getElementById('detail_date').innerHTML = trans.transaction_date || '-';
-                    document.getElementById('detail_category').innerHTML = trans.category_name || '-';
-                    document.getElementById('detail_account').innerHTML = trans.account_name || '-';
-                    document.getElementById('detail_description').innerHTML = trans.description || '-';
-                    document.getElementById('detail_created_at').innerHTML = trans.created_at || '-';
+                    // Header Amount & Type
+                    const amountEl = document.getElementById('detail_amount');
+                    const headerBg = document.getElementById('detail_header_bg');
+                    const typeLabel = document.getElementById('detail_type_label');
                     
-                    // Set type badge dan icon
-                    const typeBadge = document.getElementById('detail_type_badge');
-                    const detailIcon = document.getElementById('detail_icon');
-                    const amountSpan = document.getElementById('detail_amount');
+                    amountEl.innerHTML = formatRupiah(trans.amount);
+                    headerBg.className = 'detail-header-gradient'; // Reset
                     
                     if (trans.type === 'income') {
-                        typeBadge.innerHTML = '<span class="detail-badge detail-badge-income"><i class="fas fa-arrow-up"></i> Pemasukan</span>';
-                        detailIcon.className = 'detail-icon detail-icon-income';
-                        detailIcon.innerHTML = '<i class="fas fa-arrow-up"></i>';
-                        amountSpan.className = 'detail-amount detail-amount-income';
+                        headerBg.classList.add('header-income');
+                        typeLabel.innerHTML = '<i class="fas fa-arrow-up me-1"></i> Pemasukan';
                     } else if (trans.type === 'expense') {
-                        typeBadge.innerHTML = '<span class="detail-badge detail-badge-expense"><i class="fas fa-arrow-down"></i> Pengeluaran</span>';
-                        detailIcon.className = 'detail-icon detail-icon-expense';
-                        detailIcon.innerHTML = '<i class="fas fa-arrow-down"></i>';
-                        amountSpan.className = 'detail-amount detail-amount-expense';
+                        headerBg.classList.add('header-expense');
+                        typeLabel.innerHTML = '<i class="fas fa-arrow-down me-1"></i> Pengeluaran';
                     } else {
-                        typeBadge.innerHTML = '<span class="detail-badge detail-badge-transfer"><i class="fas fa-exchange-alt"></i> Transfer</span>';
-                        detailIcon.className = 'detail-icon detail-icon-transfer';
-                        detailIcon.innerHTML = '<i class="fas fa-exchange-alt"></i>';
-                        amountSpan.className = 'detail-amount detail-amount-transfer';
+                        headerBg.classList.add('header-transfer');
+                        typeLabel.innerHTML = '<i class="fas fa-exchange-alt me-1"></i> Transfer Saldo';
                     }
                     
-                    // Tampilkan transfer account jika ada
-                    const transferRow = document.getElementById('detail_transfer_row');
-                    const transferAccount = document.getElementById('detail_transfer_account');
+                    // Info Details
+                    document.getElementById('detail_date').innerHTML = `<i class="fas fa-calendar-alt"></i> ${trans.transaction_date || '-'}`;
+                    document.getElementById('detail_category').innerHTML = `<i class="fas fa-tag"></i> ${trans.category_name || '-'}`;
+                    document.getElementById('detail_account').innerHTML = `<i class="fas fa-wallet"></i> ${trans.account_name || '-'}`;
+                    document.getElementById('detail_description').innerHTML = `<i class="fas fa-align-left"></i> ${trans.description || 'Tidak ada deskripsi'}`;
+                    document.getElementById('detail_created_at').innerHTML = trans.created_at || '-';
                     
+                    // Transfer Row
+                    const transferRow = document.getElementById('detail_transfer_row');
                     if (trans.type === 'transfer' && trans.to_account_id) {
-                        transferRow.style.display = 'flex';
-                        // Fetch account name untuk transfer
+                        transferRow.style.display = 'block';
                         fetch(`get_account_name.php?id=${trans.to_account_id}`)
                             .then(res => res.json())
                             .then(accData => {
-                                if (accData.success && transferAccount) {
-                                    transferAccount.innerHTML = accData.account_name;
-                                } else {
-                                    transferAccount.innerHTML = 'Akun Tujuan';
-                                }
-                            })
-                            .catch(() => {
-                                transferAccount.innerHTML = 'Akun Tujuan';
+                                document.getElementById('detail_transfer_account').innerHTML = 
+                                    `<i class="fas fa-exchange-alt"></i> ${accData.success ? accData.account_name : 'Akun Tujuan'}`;
                             });
                     } else {
                         transferRow.style.display = 'none';
                     }
                     
-                    // Set edit button untuk langsung edit
-                    const editBtn = document.getElementById('detail_edit_btn');
-                    if (editBtn) {
-                        editBtn.onclick = function() {
-                            const modal = bootstrap.Modal.getInstance(document.getElementById('detailModal'));
-                            if (modal) modal.hide();
-                            setTimeout(() => {
-                                openEditModal(id);
-                            }, 300);
-                        };
-                    }
+                    // Edit Button Link
+                    document.getElementById('detail_edit_btn').onclick = function() {
+                        bootstrap.Modal.getInstance(document.getElementById('detailModal'))?.hide();
+                        setTimeout(() => openEditModal(id), 300);
+                    };
                     
-                    // Show modal
-                    const detailModal = new bootstrap.Modal(document.getElementById('detailModal'));
-                    detailModal.show();
-                } else {
-                    Swal.fire({
-                        title: 'Gagal!',
-                        text: data.message || 'Gagal mengambil detail transaksi',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
+                    new bootstrap.Modal(document.getElementById('detailModal')).show();
                 }
             })
             .catch(error => {
                 Swal.close();
                 console.error('Error:', error);
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Terjadi kesalahan saat mengambil detail: ' + error.message,
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
             });
     }
     
