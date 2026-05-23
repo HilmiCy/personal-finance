@@ -281,13 +281,18 @@ include 'includes/sidebar.php';
         <!-- Welcome Section -->
         <div class="welcome-card animated" style="animation-delay: 0s">
             <div class="row align-items-center">
-                <div class="col-md-12">
+                <div class="col-md-8">
                     <h1 class="welcome-title">
                         Selamat datang, <?= htmlspecialchars($_SESSION['user_name']) ?>! 
                     </h1>
                     <p class="welcome-subtitle">
                         Senang bertemu dengan Anda lagi. Berikut adalah ringkasan keuangan Anda hari ini.
                     </p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <a href="pages/tools/savings_calculator.php" class="btn-primary-custom">
+                        <i class="fas fa-calculator"></i> Kalkulator Tabungan
+                    </a>
                 </div>
             </div>
         </div>

@@ -5,8 +5,9 @@ This application helps users manage personal finances efficiently, including exp
 
 ---
 
-##  Recent Updates (Major Redesign)
+##  Recent Updates (May 2026)
 
+- **Savings Calculator (Smart Planner)**: New planning tool to calculate daily and monthly savings targets to reach financial goals on time.
 - **Advanced AI Analytics (XGBoost)**: State-of-the-art expense prediction using XGBoost Machine Learning, including:
     - **On-Demand Training**: Train the model directly from the dashboard.
     - **Accuracy Metrics**: Real-time reporting of model performance (RMSE, MAPE).

@@ -87,6 +87,13 @@ if (!isset($current_page)) {
                     <span>Analisis AI</span>
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a href="/keuangan/pages/tools/savings_calculator.php" class="nav-link-sidebar <?= strpos($current_page, 'savings_calculator') !== false ? 'active' : '' ?>" title="Kalkulator Tabungan">
+                    <i class="fas fa-calculator"></i>
+                    <span>Kalkulator</span>
+                </a>
+            </li>
         </ul>
     </div>
 
