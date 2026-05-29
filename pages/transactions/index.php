@@ -65,273 +65,64 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    /* ========== TRANSACTIONS SPECIFIC STYLES ========== */
-    .filter-section {
-        background: var(--bg-card);
-        border-radius: 20px;
-        padding: 24px;
-        margin-bottom: 30px;
-        border: 1px solid var(--border-color);
-        box-shadow: var(--shadow-card);
-    }
-    
-    .filter-title {
-        font-size: 16px;
-        font-weight: 600;
-        color: var(--text-main);
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .form-control, .form-select {
-        border-radius: 12px;
-        border: 1px solid var(--border-color);
-        padding: 10px 14px;
-        transition: all 0.2s;
-        background-color: var(--bg-sidebar);
-        color: var(--text-main);
-    }
-    
-    .form-control:focus, .form-select:focus {
-        border-color: var(--accent-primary);
-        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
-        background-color: var(--bg-sidebar);
-        color: var(--text-main);
-    }
-    
-    .form-label {
-        font-weight: 600;
-        color: var(--text-muted);
-        margin-bottom: 8px;
-    }
+    .filter-section { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 30px; box-shadow: var(--card-shadow); }
+    .filter-title { font-size: 16px; font-weight: 600; color: var(--fg); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+    .summary-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 24px; text-align: center; margin-bottom: 20px; box-shadow: var(--card-shadow); }
+    .stat-icon-circle { width: 50px; height: 50px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 20px; }
+    .transactions-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--card-shadow); }
 
-    /* Enhanced Filter Buttons */
-    .btn-apply-filter {
-        background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-        color: white;
-        border: none;
-        padding: 10px 24px;
-        border-radius: 12px;
-        font-weight: 700;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
+    .btn-apply-filter { background: var(--primary); color: white; border: none; padding: 10px 24px; border-radius: var(--radius-full); font-weight: 700; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; }
+    .btn-apply-filter:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); color: white; }
+    .btn-reset-filter { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 10px 24px; border-radius: var(--radius-full); font-weight: 600; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+    .btn-reset-filter:hover { background: #fce8e6; color: var(--danger); border-color: #fce8e6; }
 
-    .btn-apply-filter:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
-        color: white;
-    }
+    .header-income { background: #d1fae5; }
+    .header-expense { background: #fee2e2; }
+    .header-transfer { background: #dbeafe; }
 
-    .btn-reset-filter {
-        background: var(--bg-hover);
-        color: var(--text-muted);
-        border: 1px solid var(--border-color);
-        padding: 10px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-    }
+    .detail-header-gradient { padding: 24px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+    .detail-body { padding: 24px; }
+    .detail-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { font-size: 13px; color: var(--muted); font-weight: 600; }
+    .detail-value { font-size: 14px; font-weight: 600; color: var(--fg); text-align: right; }
 
-    .btn-reset-filter:hover {
-        background: #fee2e2;
-        color: #dc2626;
-        border-color: #fecaca;
-    }
-    
-    .summary-card {
-        background: var(--bg-card);
-        border-radius: 20px;
-        padding: 24px;
-        text-align: center;
-        margin-bottom: 20px;
-        border: 1px solid var(--border-color);
-        box-shadow: var(--shadow-card);
-    }
-    
-    .summary-label {
-        font-size: 14px;
-        color: var(--text-muted);
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-    }
-    
-    .summary-value {
-        font-size: 24px;
-        font-weight: 800;
-        color: var(--text-main);
-    }
+    .btn-detail-edit { background: var(--primary); color: white; border: none; padding: 12px 28px; border-radius: var(--radius-full); font-weight: 700; font-size: 14px; transition: var(--transition); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-detail-edit:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); color: white; }
+    .btn-detail-close { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 12px 28px; border-radius: var(--radius-full); font-weight: 600; font-size: 14px; transition: var(--transition); }
+    .btn-detail-close:hover { background: var(--surface); color: var(--fg); }
 
-    /* Redesigned Detail Modal */
-    .modal-detail {
-        max-width: 450px;
-    }
-    
-    .modal-content-custom {
-        background: var(--bg-card);
-        border-radius: 24px;
-        border: 1px solid var(--border-color);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        overflow: hidden;
-    }
-    
-    .detail-header-gradient {
-        padding: 30px 24px;
-        text-align: center;
-        position: relative;
-        color: white;
-    }
-    
-    .header-income { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
-    .header-expense { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
-    .header-transfer { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
-    
-    .detail-amount-display {
-        font-size: 32px;
-        font-weight: 800;
-        margin: 10px 0;
-        letter-spacing: -0.5px;
-    }
-    
-    .detail-type-text {
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        opacity: 0.9;
-    }
-    
-    .detail-info-container {
-        padding: 24px;
-        background: var(--bg-card);
-    }
-    
-    .info-group {
-        margin-bottom: 20px;
-    }
-    
-    .info-label-sm {
-        font-size: 11px;
-        font-weight: 700;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 6px;
-        display: block;
-    }
-    
-    .info-value-md {
-        font-size: 15px;
-        font-weight: 600;
-        color: var(--text-main);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .info-value-md i {
-        color: var(--accent-primary);
-        width: 18px;
-        text-align: center;
-    }
-    
-    .detail-footer-custom {
-        padding: 16px 24px;
-        background: var(--bg-hover);
-        border-top: 1px solid var(--border-color);
-        display: flex;
-        gap: 12px;
-    }
-
-    .btn-detail-action {
-        flex: 1;
-        padding: 12px;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 14px;
+    /* Action Buttons in Table */
+    .btn-detail, .btn-edit, .btn-delete {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        transition: all 0.2s;
         border: none;
+        transition: var(--transition);
+        font-size: 14px;
+        cursor: pointer;
     }
 
-    .btn-detail-edit { background: var(--accent-primary); color: white; }
-    .btn-detail-edit:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3); color: white; }
-    
-    .btn-detail-close { background: var(--bg-sidebar); color: var(--text-muted); border: 1px solid var(--border-color); }
-    .btn-detail-close:hover { background: var(--bg-active); color: var(--text-main); }
+    .btn-detail { background: rgba(66, 133, 244, 0.1); color: var(--info); }
+    .btn-detail:hover { background: var(--info); color: white; }
 
+    .btn-edit { background: rgba(251, 188, 5, 0.1); color: var(--warning); }
+    .btn-edit:hover { background: var(--warning); color: white; }
 
-    .btn-detail {
-        background: rgba(2, 132, 199, 0.1);
-        color: #0284c7;
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 600;
-        border: none;
-        transition: all 0.2s;
-    }
+    .btn-delete { background: rgba(234, 67, 53, 0.1); color: var(--danger); }
+    .btn-delete:hover { background: var(--danger); color: white; }
 
-    .btn-detail:hover { background: #0284c7; color: white; }
-
-    .btn-edit {
-        background: rgba(79, 70, 229, 0.1);
-        color: #4f46e5;
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 600;
-        border: none;
-        transition: all 0.2s;
-    }
-
-    .btn-edit:hover { background: #4f46e5; color: white; }
-
-    .btn-delete {
-        background: rgba(220, 38, 38, 0.1);
-        color: #dc2626;
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 600;
-        border: none;
-        transition: all 0.2s;
-    }
-
-    .btn-delete:hover { background: #dc2626; color: white; }
-
-    /* ========== RESPONSIVE ========== */
     @media (max-width: 768px) {
-        .table-custom tbody td:before {
-            color: var(--text-muted);
-        }
-        
-        .table-custom tbody tr {
-            border-bottom: 1px solid var(--border-color);
-            background: var(--bg-card);
-        }
-
-        .btn-apply-filter, .btn-reset-filter {
-            width: 100%;
-            justify-content: center;
-        }
+        .filter-section { padding: 16px; }
+        .btn-apply-filter, .btn-reset-filter { width: 100%; justify-content: center; }
+        .btn-detail-edit, .btn-detail-close { width: 100%; justify-content: center; }
     }
 </style>
 
-<div id="content" class="main-content">
+<div class="main-content">
     <div class="container-fluid">
         <!-- Header -->
         <div class="welcome-card animated">
@@ -876,7 +667,7 @@ include '../../includes/sidebar.php';
                     <div class="col-12">
                         <div class="info-group">
                             <span class="info-label-sm">Deskripsi</span>
-                            <div class="info-value-md" id="detail_description" style="font-weight: 500; color: var(--text-muted);">
+                            <div class="info-value-md" id="detail_description" style="font-weight: 500; color: var(--muted);">
                                 <i class="fas fa-align-left"></i> -
                             </div>
                         </div>

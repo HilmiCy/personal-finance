@@ -382,19 +382,19 @@ include '../../includes/sidebar.php';
     }
     
     .report-card {
-        background: var(--bg-card);
+        background: #ffffff;
         border-radius: 20px;
         padding: 24px;
         margin-bottom: 24px;
         transition: all 0.3s ease;
-        box-shadow: var(--shadow-card);
-        border: 1px solid var(--border-color);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,0,0,0.05);
         color: var(--text-main);
     }
     
     .report-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        transform: translateY(-4px);
+        box-shadow: 0 15px 45px rgba(0,0,0,0.1);
     }
     
     .report-title {
@@ -411,12 +411,18 @@ include '../../includes/sidebar.php';
     
     .stat-box {
         text-align: center;
-        padding: 20px;
-        border-radius: 16px;
-        background: var(--bg-hover);
+        padding: 24px;
+        border-radius: 20px;
+        background: #ffffff;
         transition: all 0.3s ease;
         height: 100%;
-        border: 1px solid var(--border-color);
+        border: 1px solid rgba(0,0,0,0.05);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .stat-box:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 45px rgba(0,0,0,0.1);
     }
     
     .stat-box .label {
@@ -489,6 +495,24 @@ include '../../includes/sidebar.php';
         .container-fluid { padding: 15px !important; }
         .welcome-title { font-size: 1.2rem !important; color: var(--text-main) !important; }
         .welcome-subtitle { font-size: 0.8rem !important; }
+    }
+
+    /* Loading Overlay Fix */
+    .loading-overlay {
+        position: fixed !important;
+        top: 0 !important; 
+        left: 0 !important; 
+        width: 100% !important; 
+        height: 100% !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px) !important;
+        display: none !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 99999 !important;
+    }
+    .loading-overlay.active {
+        display: flex !important;
     }
 </style>
 
@@ -1015,8 +1039,8 @@ include '../../includes/sidebar.php';
                             foreach ($top_income as $cat): 
                             ?>
                             <div class="category-item">
-                                <span class="category-name"><?= htmlspecialchars($cat['name']) ?></span>
-                                <span class="category-amount income"><?= formatRupiah($cat['total']) ?></span>
+                                <span class="category-name"><?= htmlspecialchars($cat['name'] ?? 'Lainnya') ?></span>
+                                <span class="category-amount income"><?= formatRupiah($cat['total'] ?? 0) ?></span>
                             </div>
                             <div class="progress-bar-custom">
                                 <div class="progress-fill income" style="width: <?= ($cat['total'] / ($total_income > 0 ? $total_income : 1)) * 100 ?>%"></div>
@@ -1047,8 +1071,8 @@ include '../../includes/sidebar.php';
                             foreach ($top_expense as $cat): 
                             ?>
                             <div class="category-item">
-                                <span class="category-name"><?= htmlspecialchars($cat['name']) ?></span>
-                                <span class="category-amount expense"><?= formatRupiah($cat['total']) ?></span>
+                                <span class="category-name"><?= htmlspecialchars($cat['name'] ?? 'Lainnya') ?></span>
+                                <span class="category-amount expense"><?= formatRupiah($cat['total'] ?? 0) ?></span>
                             </div>
                             <div class="progress-bar-custom">
                                 <div class="progress-fill expense" style="width: <?= ($cat['total'] / ($total_expense > 0 ? $total_expense : 1)) * 100 ?>%"></div>
