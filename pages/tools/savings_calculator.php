@@ -13,198 +13,214 @@ if (!isLoggedIn()) {
 ?>
 
 <style>
-    .card {
-        border-radius: 20px !important;
-        border: none !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
-        transition: transform 0.2s, box-shadow 0.2s !important;
-        margin-bottom: 20px !important;
-        overflow: hidden !important;
-        background: white !important;
+    /* ========== SAVINGS CALCULATOR SPECIFIC STYLES ========== */
+    .tool-card { 
+        background: rgba(255, 255, 255, 0.95); 
+        border: 1px solid rgba(0, 0, 0, 0.08); 
+        border-radius: 32px; 
+        padding: 35px; 
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04); 
+        transition: var(--transition); 
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        margin-bottom: 30px;
     }
     
-    .card-body {
-        padding: 24px !important;
-    }
+    .tool-card:hover { transform: translateY(-5px); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.07); }
     
-    .welcome-card {
-        background: #ffffff;
-        border-radius: 20px;
-        padding: 24px;
-        margin-bottom: 24px;
-        color: #1f2937;
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
+    .form-label { font-size: 13px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
     
-    .welcome-title {
-        font-size: 1.6rem;
-        font-weight: 700;
-        margin: 0;
-        color: #1f2937;
+    .input-group-custom {
+        background: var(--surface);
+        border: 1px solid rgba(0,0,0,0.05);
+        border-radius: 16px;
+        padding: 8px 20px;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
-    
-    .welcome-subtitle {
-        margin: 8px 0 0 0;
-        color: #6b7280;
-        font-size: 0.95rem;
-    }
-    
-    .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        border: none !important;
-        border-radius: 12px !important;
-        padding: 10px 24px !important;
-        font-weight: 600 !important;
-    }
+    .input-group-custom:focus-within { background: white; border-color: var(--info); box-shadow: 0 0 0 4px rgba(66, 133, 244, 0.1); }
+    .input-group-custom input { border: none; background: transparent; padding: 10px 0; font-weight: 700; color: var(--fg); width: 100%; outline: none; }
+    .input-group-custom span { font-weight: 800; color: var(--muted); font-size: 14px; }
 
-    .result-card {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-left: 5px solid #667eea !important;
-    }
-
-    .result-value {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #764ba2;
-    }
-
-    .info-icon {
-        width: 40px;
-        height: 40px;
-        background: rgba(102, 126, 234, 0.1);
-        border-radius: 10px;
+    .btn-calculate {
+        background: #1e293b !important;
+        color: #ffffff !important;
+        border: none;
+        padding: 18px;
+        border-radius: 16px;
+        font-weight: 800;
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        transition: var(--transition);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #667eea;
-        margin-bottom: 15px;
+        gap: 12px;
+        width: 100%;
+        margin-top: 10px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        cursor: pointer;
     }
-
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+    .btn-calculate:hover { 
+        background: #000000 !important; 
+        transform: translateY(-3px); 
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2); 
+        color: #ffffff !important;
     }
     
-    .animated {
-        animation: fadeInUp 0.5s ease-out forwards;
+    .btn-reset-custom {
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        padding: 14px;
+        border-radius: 16px;
+        font-weight: 700;
+        font-size: 13px;
+        transition: var(--transition);
+        width: 100%;
+        margin-top: 12px;
+    }
+    .btn-reset-custom:hover { background: var(--surface); color: var(--fg); }
+
+    .result-item-card {
+        background: white;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: 24px;
+        padding: 25px;
+        height: 100%;
+        transition: var(--transition);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+    }
+    .result-item-card:hover { transform: scale(1.03); box-shadow: 0 12px 30px rgba(0,0,0,0.05); }
+    
+    .info-icon-circle { 
+        width: 48px; height: 48px; 
+        background: var(--surface); 
+        border-radius: 14px; 
+        display: flex; align-items: center; justify-content: center; 
+        color: var(--info); font-size: 20px; margin-bottom: 20px; 
+        border: 1px solid var(--border);
+    }
+    
+    .result-value { font-size: 24px; font-weight: 850; color: var(--fg); letter-spacing: -0.02em; }
+    .result-label { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+
+    .tips-card {
+        background: rgba(66, 133, 244, 0.05);
+        border-radius: 24px;
+        padding: 25px 30px;
+        border-left: 8px solid var(--info);
+        margin-top: 30px;
     }
 </style>
 
-<div id="content" class="main-content">
+<div class="main-content">
     <div class="container-fluid">
         <!-- Header -->
         <div class="welcome-card animated">
             <div class="row align-items-center">
                 <div class="col-md-12">
-                    <h1 class="welcome-title"><i class="fas fa-calculator me-2"></i> Kalkulator Tabungan</h1>
-                    <p class="welcome-subtitle">Rencanakan tabungan Anda untuk mencapai target finansial tepat waktu</p>
+                    <h1 class="welcome-title">Kalkulator Tabungan</h1>
+                    <p class="welcome-subtitle">Capai tujuan finansial Anda dengan perencanaan yang presisi</p>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <!-- Input Card -->
-            <div class="col-md-5 animated" style="animation-delay: 0.1s;">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold mb-4">Input Target</h5>
-                        <form id="calcForm">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Target Uang yang Dibutuhkan</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">Rp</span>
-                                    <input type="text" class="form-control money" id="target_amount" placeholder="Contoh: 5.000.000" required>
-                                </div>
+            <div class="col-lg-5 animated" style="animation-delay: 0.1s;">
+                <div class="tool-card">
+                    <h5 style="font-weight: 850; font-size: 18px; margin-bottom: 30px; color: var(--fg);">Atur Target Anda</h5>
+                    <form id="calcForm">
+                        <div class="mb-4">
+                            <label class="form-label">Target Dana</label>
+                            <div class="input-group-custom">
+                                <span>Rp</span>
+                                <input type="text" class="money" id="target_amount" placeholder="0" required>
                             </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Target Tanggal Terkumpul</label>
-                                <input type="date" class="form-control" id="target_date" required min="<?= date('Y-m-d') ?>">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Batas Waktu</label>
+                            <div class="input-group-custom">
+                                <input type="date" id="target_date" required min="<?= date('Y-m-d') ?>">
                             </div>
+                        </div>
 
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">Sudah Ada Tabungan? (Opsional)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">Rp</span>
-                                    <input type="text" class="form-control money" id="current_savings" placeholder="Contoh: 500.000">
-                                </div>
-                                <small class="text-muted">Masukkan jika Anda sudah mulai menabung</small>
+                        <div class="mb-5">
+                            <label class="form-label">Dana Tersedia (Opsional)</label>
+                            <div class="input-group-custom">
+                                <span>Rp</span>
+                                <input type="text" class="money" id="current_savings" placeholder="0">
                             </div>
+                            <div style="font-size: 11px; font-weight: 700; color: var(--muted); margin-top: 10px; padding-left: 5px;">* Masukkan jika Anda sudah memiliki simpanan awal</div>
+                        </div>
 
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-calculator me-2"></i> Hitung Sekarang
-                            </button>
-                            <button type="button" id="resetBtn" class="btn btn-outline-secondary w-100 mt-2" style="border-radius: 12px;">
-                                <i class="fas fa-undo me-2"></i> Reset
-                            </button>
-                        </form>
-                    </div>
+                        <button type="submit" class="btn-calculate">
+                            <i class="fas fa-magic"></i> Hitung Tabungan
+                        </button>
+                        <button type="button" id="resetBtn" class="btn-reset-custom">
+                            <i class="fas fa-rotate-left me-2"></i> Mulai Ulang
+                        </button>
+                    </form>
                 </div>
             </div>
 
-            <!-- Result Card -->
-            <div class="col-md-7 animated" style="animation-delay: 0.2s;">
+            <!-- Result Area -->
+            <div class="col-lg-7 animated" style="animation-delay: 0.2s;">
                 <div id="resultArea" style="display: none;">
-                    <div class="card result-card">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold mb-4">Hasil Kalkulasi</h5>
-                            
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <div class="p-3 bg-white rounded-3 shadow-sm h-100">
-                                        <div class="info-icon">
-                                            <i class="fas fa-calendar-day"></i>
-                                        </div>
-                                        <div class="text-muted small mb-1">Tabungan Per Hari</div>
-                                        <div class="result-value" id="daily_result">Rp 0</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="p-3 bg-white rounded-3 shadow-sm h-100">
-                                        <div class="info-icon">
-                                            <i class="fas fa-calendar-alt"></i>
-                                        </div>
-                                        <div class="text-muted small mb-1">Tabungan Per Bulan</div>
-                                        <div class="result-value" id="monthly_result">Rp 0</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="p-3 bg-white rounded-3 shadow-sm h-100">
-                                        <div class="info-icon">
-                                            <i class="fas fa-hourglass-half"></i>
-                                        </div>
-                                        <div class="text-muted small mb-1">Sisa Waktu</div>
-                                        <div class="fw-bold" id="time_left">0 Hari</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="p-3 bg-white rounded-3 shadow-sm h-100">
-                                        <div class="info-icon">
-                                            <i class="fas fa-bullseye"></i>
-                                        </div>
-                                        <div class="text-muted small mb-1">Total Kekurangan</div>
-                                        <div class="fw-bold text-danger" id="total_needed">Rp 0</div>
-                                    </div>
+                    <div class="tool-card" style="background: rgba(255,255,255,0.7);">
+                        <h5 style="font-weight: 850; font-size: 18px; margin-bottom: 30px; color: var(--fg);">Hasil Analisis</h5>
+                        
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="result-item-card">
+                                    <div class="info-icon-circle"><i class="fas fa-calendar-day"></i></div>
+                                    <div class="result-label">Simpanan Per Hari</div>
+                                    <div class="result-value text-primary" id="daily_result">Rp 0</div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="result-item-card">
+                                    <div class="info-icon-circle" style="color: #34a853;"><i class="fas fa-calendar-week"></i></div>
+                                    <div class="result-label">Simpanan Per Bulan</div>
+                                    <div class="result-value text-success" id="monthly_result">Rp 0</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="result-item-card">
+                                    <div class="info-icon-circle" style="color: #fbbc05;"><i class="fas fa-hourglass-start"></i></div>
+                                    <div class="result-label">Sisa Waktu</div>
+                                    <div class="result-value" id="time_left" style="font-size: 18px;">0 Hari</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="result-item-card">
+                                    <div class="info-icon-circle" style="color: #ea4335;"><i class="fas fa-exclamation-circle"></i></div>
+                                    <div class="result-label">Total Kekurangan</div>
+                                    <div class="result-value text-danger" id="total_needed" style="font-size: 20px;">Rp 0</div>
+                                </div>
+                            </div>
+                        </div>
 
-                            <div class="mt-4 p-3 bg-white rounded-3 shadow-sm border-start border-4 border-info">
-                                <h6 class="fw-bold mb-2"><i class="fas fa-lightbulb text-warning me-2"></i> Tips Menabung</h6>
-                                <p class="small text-muted mb-0" id="tips_text">
-                                    Tetapkan prioritas dan kurangi pengeluaran yang tidak perlu untuk mencapai target tepat waktu.
-                                </p>
-                            </div>
+                        <div class="tips-card">
+                            <h6 style="font-weight: 850; color: var(--fg); margin-bottom: 10px;"><i class="fas fa-lightbulb text-warning me-2"></i> Strategi Anda</h6>
+                            <p style="font-size: 14px; line-height: 1.6; color: var(--muted); font-weight: 600; margin: 0;" id="tips_text">
+                                Melakukan kalkulasi...
+                            </p>
                         </div>
                     </div>
                 </div>
 
                 <div id="emptyArea" class="text-center py-5">
-                    <i class="fas fa-calculator fa-4x text-muted mb-3 opacity-20"></i>
-                    <h5 class="text-muted">Masukkan data di sebelah kiri untuk melihat hasil kalkulasi</h5>
+                    <div style="width: 100px; height: 100px; background: var(--surface); border-radius: 30px; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; font-size: 40px; color: var(--muted); opacity: 0.5;">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h5 style="font-weight: 800; color: var(--muted);">Lengkapi data di kiri</h5>
+                    <p class="small text-muted fw-bold">Hasil perhitungan akan muncul di sini secara otomatis</p>
                 </div>
             </div>
         </div>

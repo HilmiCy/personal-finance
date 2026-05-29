@@ -54,16 +54,12 @@ $page_title = 'Login - Keuangan Pribadi';
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(145deg, #e0f2fe 0%, #fef3c7 50%, #fce7f3 100%);
+            background: #f8fafd;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -71,543 +67,249 @@ $page_title = 'Login - Keuangan Pribadi';
             position: relative;
         }
 
-        /* Decorative elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at top, rgba(66, 133, 244, 0.05), transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+            }
+
         .bg-circle {
             position: fixed;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
-            filter: blur(60px);
+            filter: blur(80px);
             pointer-events: none;
         }
+        .circle-1 { width: 400px; height: 400px; top: -200px; left: -200px; background: rgba(66,133,244,0.08); }
+        .circle-2 { width: 500px; height: 500px; bottom: -250px; right: -250px; background: rgba(52,168,83,0.06); }
+        .circle-3 { width: 300px; height: 300px; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(251,188,5,0.05); }
 
-        .circle-1 {
-            width: 400px;
-            height: 400px;
-            top: -200px;
-            left: -200px;
-            background: #fbbf24;
-        }
-
-        .circle-2 {
-            width: 500px;
-            height: 500px;
-            bottom: -250px;
-            right: -250px;
-            background: #34d399;
-        }
-
-        .circle-3 {
-            width: 300px;
-            height: 300px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #60a5fa;
-            opacity: 0.3;
-        }
-
-        /* Main Container */
         .login-container {
-            width: 100%;
-            max-width: 1000px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 48px;
+            width: 100%; max-width: 1000px;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: var(--radius-xl, 32px);
             overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            display: flex;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.08);
+            display: flex; flex-wrap: wrap;
+            position: relative; z-index: 1;
+            border: 1px solid rgba(232,234,237,0.6);
         }
 
-        /* Left Side - Branding */
         .brand-side {
-            flex: 1;
-            min-width: 280px;
-            background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+            flex: 1; min-width: 280px;
+            background: #202124;
             padding: 48px 32px;
             color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            display: flex; flex-direction: column; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        .brand-side::after {
+            content: '\f0d0';
+            font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; right: -20px; bottom: -30px;
+            font-size: 160px; opacity: 0.04; color: white;
         }
 
-        .logo-area {
-            margin-bottom: 32px;
-        }
-
+        .logo-area { margin-bottom: 32px; }
         .logo-icon {
-            width: 70px;
-            height: 70px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 64px; height: 64px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-md, 20px);
+            display: flex; align-items: center; justify-content: center;
             margin-bottom: 24px;
         }
+        .logo-icon i { font-size: 32px; color: #8ab4f8; }
 
-        .logo-icon i {
-            font-size: 36px;
-        }
+        .brand-side h1 { font-size: 26px; font-weight: 700; margin-bottom: 12px; line-height: 1.3; }
+        .tagline { font-size: 14px; opacity: 0.7; margin-bottom: 32px; line-height: 1.6; }
 
-        .brand-side h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            line-height: 1.3;
-        }
-
-        .tagline {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 32px;
-            line-height: 1.5;
-        }
-
-        .features {
-            list-style: none;
-            margin-bottom: 40px;
-        }
-
+        .features { list-style: none; margin-bottom: 40px; }
         .features li {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-            font-size: 14px;
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 16px; font-size: 14px;
         }
-
-        .features li i {
-            width: 20px;
-            font-size: 14px;
-            opacity: 0.9;
-        }
+        .features li i { width: 20px; font-size: 14px; opacity: 0.6; }
 
         .btn-register {
-            display: inline-block;
-            padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1.5px solid rgba(255, 255, 255, 0.4);
-            border-radius: 40px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            text-align: center;
-            transition: all 0.3s ease;
+            display: inline-block; padding: 12px 24px;
+            background: transparent;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius-full, 9999px);
+            color: white; text-decoration: none;
+            font-weight: 600; font-size: 14px; text-align: center;
+            transition: all 0.4s cubic-bezier(.22,1,.36,1);
         }
-
         .btn-register:hover {
-            background: white;
-            color: #059669;
+            background: white; color: #202124;
             transform: translateY(-2px);
         }
 
-        /* Right Side - Form */
         .form-side {
-            flex: 1;
-            min-width: 280px;
+            flex: 1; min-width: 280px;
             padding: 48px 40px;
-            background: white;
+            background: transparent;
         }
 
-        .form-header {
-            margin-bottom: 32px;
-        }
+        .form-header { margin-bottom: 32px; }
+        .form-header h2 { font-size: 26px; font-weight: 700; color: #202124; margin-bottom: 8px; }
+        .form-header p { color: #5f6368; font-size: 14px; }
 
-        .form-header h2 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 8px;
-        }
-
-        .form-header p {
-            color: #6b7280;
-            font-size: 14px;
-        }
-
-        /* Form Styles */
-        .input-group {
-            margin-bottom: 24px;
-        }
-
+        .input-group { margin-bottom: 24px; }
         .input-label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #374151;
+            display: block; margin-bottom: 8px;
+            font-size: 13px; font-weight: 600; color: #5f6368;
         }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
+        .input-wrapper { position: relative; display: flex; align-items: center; }
         .input-icon {
-            position: absolute;
-            left: 16px;
-            color: #9ca3af;
-            font-size: 16px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 14px 16px 14px 48px;
-            font-size: 14px;
-            border: 1.5px solid #e5e7eb;
-            border-radius: 16px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            position: absolute; left: 16px;
+            color: #9aa0a6; font-size: 16px;
             transition: all 0.3s ease;
-            outline: none;
-            background: #f9fafb;
         }
-
+        .form-control {
+            width: 100%; padding: 14px 16px 14px 48px;
+            font-size: 14px;
+            border: 1.5px solid #e8eaed;
+            border-radius: var(--radius-sm, 12px);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all 0.3s ease; outline: none;
+            background: #f1f3f4;
+        }
         .form-control:focus {
-            border-color: #10b981;
+            border-color: #4285f4;
             background: white;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            box-shadow: 0 0 0 3px rgba(66,133,244,0.12);
         }
+        .form-control:focus + .input-icon,
+        .input-wrapper:focus-within .input-icon { color: #4285f4; }
 
         .password-toggle {
-            position: absolute;
-            right: 16px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #9ca3af;
-            font-size: 16px;
-            padding: 0;
+            position: absolute; right: 16px;
+            background: none; border: none; cursor: pointer;
+            color: #9aa0a6; font-size: 16px; padding: 0;
         }
-
-        .password-toggle:hover {
-            color: #10b981;
-        }
+        .password-toggle:hover { color: #4285f4; }
 
         .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 28px;
         }
-
         .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            color: #6b7280;
+            display: flex; align-items: center; gap: 8px;
+            cursor: pointer; font-size: 13px; color: #5f6368;
         }
-
-        .checkbox-label input {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-            accent-color: #10b981;
-        }
-
-        .forgot-link {
-            color: #10b981;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .forgot-link:hover {
-            text-decoration: underline;
-        }
+        .checkbox-label input { width: 16px; height: 16px; cursor: pointer; accent-color: #4285f4; }
+        .forgot-link { color: #4285f4; text-decoration: none; font-size: 13px; font-weight: 500; }
+        .forgot-link:hover { text-decoration: underline; }
 
         .btn-login {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-            color: white;
-            border: none;
-            border-radius: 40px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            width: 100%; padding: 14px;
+            background: #202124;
+            color: white; border: none;
+            border-radius: var(--radius-full, 9999px);
+            font-size: 15px; font-weight: 700; cursor: pointer;
+            transition: all 0.4s cubic-bezier(.22,1,.36,1);
             margin-bottom: 24px;
         }
-
         .btn-login:hover {
+            background: #2d2f33;
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
         }
+        .btn-login:active { transform: translateY(0); }
 
-        .btn-login:active {
-            transform: translateY(0);
+        .divider { text-align: center; margin-bottom: 24px; position: relative; }
+        .divider::before, .divider::after {
+            content: ''; position: absolute; top: 50%;
+            width: calc(50% - 60px); height: 1px; background: #e8eaed;
         }
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+        .divider span { background: transparent; padding: 0 16px; color: #9aa0a6; font-size: 12px; }
 
-        .divider {
-            text-align: center;
-            margin-bottom: 24px;
-            position: relative;
-        }
+        .register-mobile { display: none; text-align: center; font-size: 13px; color: #5f6368; }
+        .register-mobile a { color: #4285f4; text-decoration: none; font-weight: 600; }
 
-        .divider::before,
-        .divider::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: calc(50% - 60px);
-            height: 1px;
-            background: #e5e7eb;
-        }
-
-        .divider::before {
-            left: 0;
-        }
-
-        .divider::after {
-            right: 0;
-        }
-
-        .divider span {
-            background: white;
-            padding: 0 16px;
-            color: #9ca3af;
-            font-size: 12px;
-        }
-
-        .register-mobile {
-            display: none;
-            text-align: center;
-            font-size: 13px;
-            color: #6b7280;
-        }
-
-        .register-mobile a {
-            color: #10b981;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        /* Alert */
         .alert {
-            padding: 12px 16px;
-            border-radius: 16px;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 13px;
-            background: #fef2f2;
-            border-left: 3px solid #ef4444;
-            color: #dc2626;
+            padding: 12px 16px; border-radius: var(--radius-sm, 12px);
+            margin-bottom: 24px; display: flex; align-items: center; gap: 12px;
+            font-size: 13px; background: #fce8e6; color: #ea4335;
         }
+        .alert i { font-size: 16px; }
 
-        /* Modern Loading Animation */
         .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(5, 150, 105, 0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(32,33,36,0.92);
+            backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center;
             z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
+            opacity: 0; visibility: hidden;
             transition: all 0.4s ease;
         }
+        .loading-overlay.active { opacity: 1; visibility: visible; }
 
-        .loading-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .loading-card {
-            text-align: center;
-            animation: bounceIn 0.5s ease;
-        }
-
+        .loading-card { text-align: center; animation: bounceIn 0.5s ease; }
         @keyframes bounceIn {
-            0% {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            70% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            0% { transform: scale(0.8); opacity: 0; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Money Wave Spinner */
         .money-spinner {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 24px;
-            position: relative;
+            width: 100px; height: 100px; margin: 0 auto 24px; position: relative;
         }
-
         .money-spinner i {
-            position: absolute;
-            font-size: 40px;
-            color: white;
+            position: absolute; font-size: 40px; color: #8ab4f8;
             animation: floatMoney 1.2s ease-in-out infinite;
         }
-
-        .money-spinner i:nth-child(1) {
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            animation-delay: 0s;
-        }
-
-        .money-spinner i:nth-child(2) {
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            animation-delay: 0.3s;
-        }
-
-        .money-spinner i:nth-child(3) {
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-            animation-delay: 0.6s;
-        }
-
-        .money-spinner i:nth-child(4) {
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-            animation-delay: 0.9s;
-        }
-
+        .money-spinner i:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); animation-delay: 0s; }
+        .money-spinner i:nth-child(2) { bottom: 0; left: 50%; transform: translateX(-50%); animation-delay: 0.3s; }
+        .money-spinner i:nth-child(3) { top: 50%; left: 0; transform: translateY(-50%); animation-delay: 0.6s; }
+        .money-spinner i:nth-child(4) { top: 50%; right: 0; transform: translateY(-50%); animation-delay: 0.9s; }
         @keyframes floatMoney {
-            0%, 100% {
-                transform: translateY(-50%) scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-50%) scale(1.2);
-                opacity: 0.7;
-            }
+            0%, 100% { transform: translateY(-50%) scale(1); opacity: 1; }
+            50% { transform: translateY(-50%) scale(1.2); opacity: 0.7; }
         }
 
-        /* Success Animation */
         .success-circle {
-            width: 100px;
-            height: 100px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 24px;
-            animation: scaleUp 0.5s ease;
+            width: 100px; height: 100px;
+            background: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 24px; animation: scaleUp 0.5s ease;
         }
+        @keyframes scaleUp { from { transform: scale(0); } to { transform: scale(1); } }
+        .success-circle i { font-size: 50px; color: #34a853; }
 
-        @keyframes scaleUp {
-            from {
-                transform: scale(0);
-            }
-            to {
-                transform: scale(1);
-            }
-        }
+        .loading-card h3 { color: white; font-size: 24px; margin-bottom: 12px; font-weight: 700; }
+        .loading-card p { color: rgba(255,255,255,0.7); font-size: 14px; }
 
-        .success-circle i {
-            font-size: 50px;
-            color: #10b981;
-        }
-
-        .loading-card h3 {
-            color: white;
-            font-size: 24px;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .loading-card p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-        }
-
-        .loading-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 24px;
-        }
-
+        .loading-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
         .loading-dots span {
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            animation: dotPulse 1.4s ease-in-out infinite;
+            width: 8px; height: 8px; background: #8ab4f8;
+            border-radius: 50%; animation: dotPulse 1.4s ease-in-out infinite;
         }
-
-        .loading-dots span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .loading-dots span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes dotPulse {
-            0%, 100% {
-                transform: scale(0.5);
-                opacity: 0.5;
-            }
-            50% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            0%, 100% { transform: scale(0.5); opacity: 0.5; }
+            50% { transform: scale(1); opacity: 1; }
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
-            .login-container {
-                flex-direction: column;
-                border-radius: 32px;
-            }
-
-            .brand-side {
-                padding: 32px 24px;
-                text-align: center;
-            }
-
-            .logo-icon {
-                margin: 0 auto 20px;
-            }
-
-            .features {
-                text-align: left;
-                max-width: 260px;
-                margin: 0 auto 28px;
-            }
-
-            .btn-register {
-                display: none;
-            }
-
-            .register-mobile {
-                display: block;
-            }
-
-            .form-side {
-                padding: 32px 24px;
-            }
-
-            .form-header h2 {
-                font-size: 24px;
-            }
+            .login-container { flex-direction: column; border-radius: 28px; }
+            .brand-side { padding: 32px 24px; text-align: center; }
+            .logo-icon { margin: 0 auto 20px; }
+            .features { text-align: left; max-width: 260px; margin: 0 auto 28px; }
+            .btn-register { display: none; }
+            .register-mobile { display: block; }
+            .form-side { padding: 32px 24px; }
+            .form-header h2 { font-size: 24px; }
         }
     </style>
 </head>

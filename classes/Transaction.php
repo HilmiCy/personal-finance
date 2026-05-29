@@ -514,7 +514,7 @@ class Transaction {
     public function getSummaryByCategory($user_id, $month, $year, $type) {
         try {
             $stmt = $this->db->prepare("
-                SELECT c.name as category, SUM(t.amount) as total 
+                SELECT c.name, SUM(t.amount) as total 
                 FROM transactions t 
                 JOIN categories c ON t.category_id = c.id 
                 WHERE t.user_id = ? AND t.type = ? 

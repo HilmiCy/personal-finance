@@ -25,80 +25,86 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    /* ========== CATEGORY SPECIFIC STYLES ========== */
-    .category-card {
-        background: var(--bg-card);
+    /* ========== CATEGORIES SPECIFIC STYLES ========== */
+    .category-card { 
+        background: #ffffff; 
+        border: 1px solid #cbd5e1; 
+        border-radius: 32px; 
+        padding: 35px; 
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
+        height: 100%; 
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.04);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+    .category-card:hover { 
+        transform: translateY(-8px); 
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+        border-color: var(--info); 
+    }
+    
+    .category-header { 
+        padding-bottom: 25px; 
+        margin-bottom: 25px; 
+        border-bottom: 1px solid #f1f5f9; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+    }
+    
+    .category-header h3 { 
+        font-size: 11px; 
+        font-weight: 800; 
+        margin: 0; 
+        display: flex; 
+        align-items: center; 
+        gap: 10px; 
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+    
+    .category-list {
+        background: #f8fafc;
+        padding: 20px;
         border-radius: 20px;
-        padding: 24px;
-        border: 1px solid var(--border-color);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        height: 100%;
-        color: var(--text-main);
-        box-shadow: var(--shadow-card);
-    }
-    
-    .category-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-    }
-    
-    .category-header {
-        padding-bottom: 15px;
-        margin-bottom: 20px;
-        border-bottom: 1px solid var(--border-color);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .category-header h3 {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--text-main);
+        border: 1px solid #f1f5f9;
     }
     
     .category-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 12px 16px;
-        margin-bottom: 10px;
-        background: var(--bg-hover);
-        border-radius: 14px;
-        transition: all 0.2s ease;
-        border: 1px solid transparent;
+        padding: 16px 20px;
+        background: #ffffff;
+        border-radius: 16px;
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    .category-item:last-child { margin-bottom: 0; }
+    .category-item:hover { 
+        transform: translateY(-3px) translateX(5px); 
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        border-color: #cbd5e1;
     }
     
-    .category-item:hover {
-        background: var(--bg-sidebar);
-        border-color: var(--border-color);
-        transform: translateX(4px);
-    }
+    .category-name { display: flex; align-items: center; gap: 12px; }
+    .category-dot { width: 10px; height: 10px; border-radius: 50%; }
     
-    .category-name {
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--text-main);
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-        #sidebar { margin-left: -250px !important; position: fixed !important; z-index: 1000 !important; height: 100vh !important; }
-        #sidebar.active { margin-left: 0 !important; }
-        #content, .main-content { width: 100% !important; }
-        .container-fluid { padding: 16px !important; }
-        .btn-primary-custom { width: 100%; justify-content: center; }
+    .badge-count {
+        font-size: 11px;
+        font-weight: 800;
+        padding: 6px 16px;
+        border-radius: 9999px;
+        background: var(--surface);
+        color: var(--muted);
+        border: 1px solid rgba(0,0,0,0.05);
     }
 </style>
 
-<div id="content" class="main-content">
+<div class="main-content">
     <div class="container-fluid">
         <!-- Header -->
         <div class="welcome-card animated">

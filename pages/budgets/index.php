@@ -42,151 +42,91 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    /* ========== BUDGETS SPECIFIC STYLES ========== */
-    .btn-month {
-        background: var(--bg-card);
-        border: 1px solid var(--border-color);
-        padding: 8px 20px;
-        border-radius: 10px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        color: var(--text-muted);
-        display: inline-block;
-    }
-    
-    .btn-month:hover {
-        background: var(--bg-hover);
-        transform: translateY(-1px);
-        color: var(--text-main);
-    }
-    
-    .budget-card {
-        background: var(--bg-card);
-        border-radius: 20px;
-        padding: 24px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        height: 100%;
-        position: relative;
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-        box-shadow: var(--shadow-card);
-    }
-    
-    .budget-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        border-color: var(--accent-primary);
-    }
-    
-    .budget-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 20px;
-    }
-    
-    .budget-category {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: var(--text-main);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .budget-amount {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-    }
-    
-    .budget-label {
-        font-size: 13px;
-        color: var(--text-muted);
-        font-weight: 500;
-    }
-    
-    .budget-value {
-        font-weight: 700;
-        color: var(--text-main);
-    }
-    
-    .progress {
-        height: 10px;
-        border-radius: 10px;
-        background: var(--bg-hover);
-        margin-bottom: 15px;
-        overflow: hidden;
-    }
-    
-    .budget-status-pill {
+    .btn-month { 
+        background: var(--card-bg); 
+        border: 1px solid var(--card-border); 
+        padding: 12px 24px; 
+        border-radius: 14px; 
+        font-weight: 700; 
+        transition: var(--transition); 
+        text-decoration: none; 
+        color: var(--fg); 
+        font-size: 14px;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-    
-    .status-safe { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-    .status-warning { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
-    .status-danger { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
-
-    .summary-stats {
-        background: var(--bg-card);
-        border-radius: 20px;
-        padding: 24px;
-        text-align: center;
-        border: 1px solid var(--border-color);
-        transition: all 0.3s ease;
-        box-shadow: var(--shadow-card);
-    }
-    
-    .summary-stats:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
-    
-    .stat-number {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: var(--text-main);
-    }
-    
-    .month-navigation {
-        background: var(--bg-card);
-        border-radius: 20px;
-        padding: 16px 24px;
-        margin-bottom: 24px;
-        border: 1px solid var(--border-color);
-        box-shadow: var(--shadow-card);
-    }
-    
-    .current-month-display {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: var(--text-main);
-        display: flex;
-        align-items: center;
-        justify-content: center;
         gap: 10px;
     }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        #sidebar { margin-left: -250px !important; position: fixed !important; z-index: 1000 !important; height: 100vh !important; }
-        #sidebar.active { margin-left: 0 !important; }
-        #content, .main-content { width: 100% !important; }
-        .container-fluid { padding: 16px !important; }
-        .btn-primary-custom { width: 100%; justify-content: center; }
-        .month-nav-row { flex-direction: column; gap: 15px; }
-        .btn-month { width: 100%; text-align: center; }
+    .btn-month:hover { background: var(--fg); color: white; transform: translateY(-2px); }
+    
+    .budget-card { 
+        background: rgba(255, 255, 255, 0.95); 
+        border: 1px solid rgba(0, 0, 0, 0.08); 
+        border-radius: 32px; 
+        padding: 35px; 
+        transition: var(--transition); 
+        height: 100%; 
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+        position: relative;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
     }
+    .budget-card:hover { transform: translateY(-5px); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.07); }
+    
+    .budget-category { 
+        font-size: 11px; 
+        font-weight: 800; 
+        color: var(--muted); 
+        text-transform: uppercase; 
+        letter-spacing: 1.5px; 
+        display: flex; 
+        align-items: center; 
+        gap: 10px; 
+        margin-bottom: 25px;
+    }
+    .budget-category i { color: var(--info); font-size: 16px; }
+    
+    .budget-label { font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 4px; display: block; }
+    .budget-value { font-size: 22px; font-weight: 800; color: var(--fg); letter-spacing: -0.02em; }
+    
+    .progress { height: 8px; border-radius: 10px; background: rgba(0, 0, 0, 0.04); margin: 25px 0; overflow: hidden; }
+    .progress-bar { border-radius: 10px; transition: width 1s cubic-bezier(0.22, 1, 0.36, 1); }
+    
+    .budget-status-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 9999px; font-size: 12px; font-weight: 700; border: 1px solid rgba(0,0,0,0.05); }
+    .status-safe { background: rgba(52,168,83,0.08); color: #10b981; }
+    .status-warning { background: rgba(251,188,5,0.08); color: #f59e0b; }
+    .status-danger { background: rgba(234,67,53,0.08); color: #ea4335; }
+    
+    .summary-stats { 
+        background: rgba(255, 255, 255, 0.95); 
+        border-radius: 32px; 
+        padding: 35px; 
+        text-align: center; 
+        border: 1px solid rgba(0, 0, 0, 0.08); 
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04); 
+        transition: var(--transition);
+        backdrop-filter: blur(10px);
+        height: 100%;
+    }
+    .summary-stats:hover { transform: translateY(-4px); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.07); }
+    .stat-number { font-size: 26px; font-weight: 800; color: var(--fg); letter-spacing: -0.03em; }
+    .stat-title { font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    
+    .month-navigation { 
+        background: rgba(255, 255, 255, 0.95); 
+        border-radius: 32px; 
+        padding: 25px 35px; 
+        margin-bottom: 35px; 
+        border: 1px solid rgba(0, 0, 0, 0.08); 
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04); 
+        backdrop-filter: blur(10px);
+    }
+    .current-month-display { font-size: 20px; font-weight: 800; color: var(--fg); letter-spacing: -0.02em; display: flex; align-items: center; justify-content: center; gap: 12px; }
+    .current-month-display i { color: var(--info); }
 </style>
 
-<div id="content" class="main-content">
+<div class="main-content">
     <div class="container-fluid">
         <!-- Header -->
         <div class="welcome-card animated">
@@ -247,7 +187,7 @@ include '../../includes/sidebar.php';
             </div>
             <div class="col-12 col-md-4">
                 <div class="summary-stats animated" style="animation-delay: 0.25s">
-                    <div class="stat-icon-circle" style="background: rgba(102, 126, 234, 0.1); color: #667eea;">
+                    <div class="stat-icon-circle" style="background: rgba(66, 133, 244, 0.1); color: #4285f4;">
                         <i class="fas fa-wallet"></i>
                     </div>
                     <div class="stat-title">Sisa Saldo</div>
@@ -320,7 +260,7 @@ include '../../includes/sidebar.php';
             <?php else: ?>
                 <div class="col-12 text-center py-5">
                     <div class="card p-5">
-                        <i class="fas fa-chart-pie fa-4x mb-3 opacity-20" style="color: #667eea;"></i>
+                        <i class="fas fa-chart-pie fa-4x mb-3 opacity-20" style="color: #4285f4;"></i>
                         <p class="text-muted">Belum ada anggaran untuk bulan ini.</p>
                         <div class="d-flex justify-content-center">
                             <button class="btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addBudgetModal">

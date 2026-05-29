@@ -33,63 +33,84 @@ include '../../includes/sidebar.php';
 <style>
     /* ========== ASSETS SPECIFIC STYLES ========== */
     .summary-stats { 
-        background: var(--bg-card); 
-        border-radius: 20px; 
-        padding: 24px; 
+        background: rgba(255, 255, 255, 0.95); 
+        border: 1px solid rgba(0, 0, 0, 0.08); 
+        border-radius: 32px; 
+        padding: 30px 25px; 
         text-align: center; 
-        border: 1px solid var(--border-color); 
-        transition: all 0.3s ease; 
-        box-shadow: var(--shadow-card);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04); 
+        transition: var(--transition); 
+        height: 100%;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
     }
-    .summary-stats:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
-    .stat-icon-circle { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 20px; }
-    .stat-title { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
-    .stat-number { font-size: 1.4rem; font-weight: 800; color: var(--text-main); }
+    .summary-stats:hover { transform: translateY(-5px); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.07); }
+    
+    .stat-icon-circle { 
+        width: 52px; height: 52px; 
+        border-radius: 16px; 
+        display: flex; align-items: center; justify-content: center; 
+        margin: 0 auto 20px; 
+        font-size: 22px; 
+        background: var(--surface);
+        border: 1px solid var(--border);
+    }
+    
+    .stat-title { font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+    .stat-number { font-size: 22px; font-weight: 800; color: var(--fg); letter-spacing: -0.02em; }
     
     .asset-card { 
-        background: var(--bg-card); 
-        border-radius: 20px; 
-        padding: 24px; 
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        background: rgba(255, 255, 255, 0.95); 
+        border: 1px solid rgba(0, 0, 0, 0.08); 
+        border-radius: 32px; 
+        padding: 35px; 
+        transition: var(--transition); 
         height: 100%; 
-        position: relative; 
-        border: 1px solid var(--border-color); 
-        color: var(--text-main);
-        box-shadow: var(--shadow-card);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
     }
-    .asset-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); border-color: var(--accent-primary); }
-    .asset-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-    .asset-name { font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
-    .asset-type-pill { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 5px; }
+    .asset-card:hover { transform: translateY(-8px); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08); border-color: rgba(66, 133, 244, 0.3); }
     
-    .type-crypto { background: #fef3c7; color: #d97706; }
-    .type-stock { background: #d1fae5; color: #059669; }
-    .type-gold { background: #fed7aa; color: #c2410c; }
-    .type-reksadana { background: #e0e7ff; color: #4f46e5; }
-    .type-currency { background: #e2e8f0; color: #475569; }
-    
-    body.dark-mode .type-crypto { background: rgba(217, 119, 6, 0.2); color: #fbbf24; }
-    body.dark-mode .type-stock { background: rgba(5, 150, 105, 0.2); color: #34d399; }
-    
-    .asset-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; padding: 15px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
-    .asset-stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
-    .asset-stat-value { font-size: 14px; font-weight: 700; color: var(--text-main); }
-    
-    .btn-buy-asset { flex: 1; background: #10b981; color: white; border: none; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 12px; transition: all 0.2s ease; }
-    .btn-sell-asset { flex: 1; background: #ef4444; color: white; border: none; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 12px; transition: all 0.2s ease; }
-    
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-        #sidebar { margin-left: -250px !important; position: fixed !important; z-index: 1000 !important; height: 100vh !important; }
-        #sidebar.active { margin-left: 0 !important; }
-        #content, .main-content { width: 100% !important; }
-        .container-fluid { padding: 16px !important; }
-        .btn-primary-custom, .btn-action-minimal { width: 100%; justify-content: center; margin-bottom: 10px; }
-        .header-actions { display: flex; flex-direction: column; }
+    .asset-name { font-size: 18px; font-weight: 800; color: var(--fg); margin-bottom: 5px; }
+    .asset-type-pill { 
+        display: inline-flex; align-items: center; padding: 6px 14px; 
+        border-radius: 9999px; font-size: 10px; font-weight: 800; 
+        text-transform: uppercase; letter-spacing: 1px;
+        background: var(--surface);
+        color: var(--muted);
+        border: 1px solid rgba(0,0,0,0.05);
     }
+    
+    .asset-stats-grid { 
+        display: grid; grid-template-columns: 1fr 1fr; 
+        gap: 20px; margin: 30px 0; padding: 25px 0; 
+        border-top: 1px solid rgba(0,0,0,0.04); 
+        border-bottom: 1px solid rgba(0,0,0,0.04); 
+    }
+    .asset-stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin-bottom: 6px; }
+    .asset-stat-value { font-size: 15px; font-weight: 750; color: var(--fg); }
+    
+    .btn-buy-asset, .btn-sell-asset { 
+        flex: 1; padding: 12px; border-radius: 14px; font-weight: 800; 
+        font-size: 13px; transition: var(--transition); border: none;
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-buy-asset { background: var(--fg); color: white; }
+    .btn-buy-asset:hover { background: #000; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+    
+    .btn-sell-asset { background: var(--surface); color: var(--fg); border: 1px solid rgba(0,0,0,0.05); }
+    .btn-sell-asset:hover { background: var(--border); transform: translateY(-2px); }
+    
+    .asset-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    
+    .dropdown-minimal .btn-link { color: var(--muted); padding: 0; font-size: 18px; text-decoration: none; }
+    .dropdown-minimal .btn-link:hover { color: var(--fg); }
 </style>
 
-<div id="content" class="main-content">
+<div class="main-content">
     <div class="container-fluid">
         <!-- Header -->
         <div class="welcome-card animated">
@@ -116,7 +137,7 @@ include '../../includes/sidebar.php';
         <div class="row g-4 mb-4">
             <div class="col-6 col-md-3">
                 <div class="summary-stats animated" style="animation-delay: 0.1s">
-                    <div class="stat-icon-circle" style="background: rgba(102, 126, 234, 0.1); color: #667eea;">
+                    <div class="stat-icon-circle" style="background: rgba(66, 133, 244, 0.1); color: #4285f4;">
                         <i class="fas fa-box"></i>
                     </div>
                     <div class="stat-title">Total Aset</div>
@@ -229,7 +250,7 @@ include '../../includes/sidebar.php';
             <?php else: ?>
                 <div class="col-12 text-center py-5">
                     <div class="card p-5">
-                        <i class="fas fa-chart-line fa-4x mb-3 opacity-20" style="color: #667eea;"></i>
+                        <i class="fas fa-chart-line fa-4x mb-3 opacity-20" style="color: #4285f4;"></i>
                         <p class="text-muted">Portofolio Anda masih kosong.</p>
                         <div class="d-flex justify-content-center">
                             <button class="btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addAssetModal">

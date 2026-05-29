@@ -4,8 +4,9 @@ require_once '../../config/config.php';
 require_once '../../classes/Database.php';
 require_once '../../classes/Installment.php';
 require_once '../../classes/Account.php';
+require_once '../../includes/functions.php';
 
-if (!isset($_SESSION['user_id'])) {
+if (!isLoggedIn()) {
     header('Location: ../../login.php');
     exit;
 }
@@ -41,387 +42,213 @@ $accounts = $account->getAll($_SESSION['user_id']);
 $due_date = $installment->getDueDate($installmentData);
 $current_payment_number = $installmentData['current_tenor'] + 1;
 
+$page_title = 'Bayar Cicilan';
+$current_page = 'installments';
+
 include '../../includes/header.php';
+include '../../includes/sidebar.php';
 ?>
 
 <style>
-:root {
-    --glass-bg: rgba(255, 255, 255, 0.95);
-    --glass-border: rgba(255, 255, 255, 0.3);
-    --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.12);
-    --primary: #4361ee;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --info: #3b82f6;
-    --secondary: #6c757d;
-}
-
-body {
-    background: #f8f9fa;
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
-/* Cards */
-.content-card {
-    background: white;
-    border-radius: 24px;
-    border: none;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-}
-
-.content-card .card-header {
-    background: white;
-    border-bottom: 1px solid #e9ecef;
-    padding: 1.25rem 1.5rem;
-}
-
-.content-card .card-header h5 {
-    margin: 0;
-    font-weight: 600;
-    color: #1a1a2e;
-    font-size: 1.1rem;
-}
-
-.content-card .card-body {
-    padding: 1.5rem;
-}
-
-/* Info Card */
-.info-card {
-    background: linear-gradient(135deg, var(--primary), var(--info));
-    border-radius: 20px;
-    padding: 1.5rem;
-    color: white;
-    margin-bottom: 1.5rem;
-}
-
-.info-card h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-.info-card p {
-    margin-bottom: 0;
-    opacity: 0.9;
-}
-
-.info-card .label {
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Payment Card */
-.payment-card {
-    background: linear-gradient(135deg, var(--success), #059669);
-    border-radius: 20px;
-    padding: 1.5rem;
-    color: white;
-}
-
-.payment-card h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-/* Form Styles */
-.form-label {
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 0.5rem;
-    font-size: 0.875rem;
-}
-
-.form-control, .form-select {
-    border-radius: 12px;
-    border: 1px solid #e9ecef;
-    padding: 0.625rem 1rem;
-    transition: all 0.2s ease;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
-}
-
-/* Buttons */
-.btn-primary-glass {
-    background: linear-gradient(135deg, var(--primary), #3a56d4);
-    border: none;
-    border-radius: 12px;
-    padding: 0.75rem 1.5rem;
-    font-weight: 500;
-    color: white;
-    transition: all 0.2s ease;
-    width: 100%;
-}
-
-.btn-primary-glass:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
-    color: white;
-}
-
-.btn-secondary-glass {
-    background: #6c757d;
-    border: none;
-    border-radius: 12px;
-    padding: 0.75rem 1.5rem;
-    font-weight: 500;
-    color: white;
-    transition: all 0.2s ease;
-    width: 100%;
-}
-
-.btn-secondary-glass:hover {
-    background: #5a6268;
-    color: white;
-}
-
-/* Alert */
-.alert-glass {
-    border-radius: 12px;
-    border: none;
-    padding: 1rem;
-    margin-bottom: 1rem;
-}
-
-/* Badge */
-.badge-glass {
-    background: #e9ecef;
-    color: #495057;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 500;
-}
-
-/* Summary Item */
-.summary-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.summary-item:last-child {
-    border-bottom: none;
-}
-
-.summary-label {
-    color: #6c757d;
-    font-weight: 500;
-}
-
-.summary-value {
-    font-weight: 600;
-    color: #1a1a2e;
-}
-
-/* Loading Spinner */
-.spinner-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    display: none;
-}
-
-.spinner-border-custom {
-    width: 3rem;
-    height: 3rem;
-    border-width: 0.25rem;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .info-card h3 {
-        font-size: 1.25rem;
+    /* ========== PAYMENT SPECIFIC STYLES ========== */
+    .content-card { 
+        background: rgba(255, 255, 255, 0.95); 
+        border: 1px solid rgba(0, 0, 0, 0.08); 
+        border-radius: 32px; 
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04); 
+        overflow: hidden; 
+        backdrop-filter: blur(10px);
+        margin-bottom: 30px;
+        transition: var(--transition);
     }
     
-    .payment-card h2 {
-        font-size: 1.5rem;
+    .content-card .card-header { 
+        background: rgba(255, 255, 255, 0.2); 
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05); 
+        padding: 30px 35px; 
     }
     
-    .btn-primary-glass, .btn-secondary-glass {
-        padding: 0.5rem 1rem;
+    .content-card .card-header h5 { 
+        margin: 0; 
+        font-weight: 800; 
+        color: var(--fg); 
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
     }
-}
+    
+    .info-card {
+        background: var(--fg);
+        color: white;
+        border-radius: 32px;
+        padding: 35px;
+        margin-bottom: 30px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+    .info-card::after {
+        content: '\f0d0';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        right: -10px; bottom: -10px;
+        font-size: 100px;
+        opacity: 0.1;
+        color: white;
+    }
+    
+    .info-card .label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.7; margin-bottom: 10px; display: block; }
+    .info-card h3 { font-size: 28px; font-weight: 800; margin-bottom: 5px; letter-spacing: -0.02em; }
+    
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .summary-item:last-child { border-bottom: none; }
+    .summary-label { font-size: 13px; color: var(--muted); font-weight: 600; }
+    .summary-value { font-size: 14px; font-weight: 750; color: var(--fg); }
+    
+    .progress-glass { height: 8px; background: rgba(0, 0, 0, 0.04); border-radius: 10px; overflow: hidden; }
+    .progress-bar { transition: width 1s ease; }
+    
+    .spinner-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
 </style>
 
-<div class="container-fluid px-4 py-4">
-    <div class="row">
-        <?php include '../../includes/sidebar.php'; ?>
-        
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <!-- Header -->
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-4 mb-4">
-                <div>
-                    <h1 class="h2 mb-1" style="font-weight: 700; color: #1a1a2e;">
-                        <i class="fas fa-money-bill-wave me-2" style="color: var(--success);"></i>
-                        Bayar Cicilan
-                    </h1>
-                    <p class="text-muted mb-0">
-                        <a href="history.php?id=<?php echo $installment_id; ?>" class="text-decoration-none">
+<div class="main-content">
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="welcome-card animated">
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <h1 class="welcome-title">Bayar Cicilan</h1>
+                    <p class="welcome-subtitle">
+                        <a href="history.php?id=<?php echo $installment_id; ?>" class="text-decoration-none" style="color: inherit;">
                             <i class="fas fa-arrow-left me-1"></i> Kembali ke Riwayat
                         </a>
                     </p>
                 </div>
             </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Form Pembayaran -->
+                <div class="content-card animated" style="animation-delay: 0.1s">
+                    <div class="card-header">
+                        <h5><i class="fas fa-credit-card"></i> Form Pembayaran</h5>
+                    </div>
+                    <div class="card-body p-5">
+                        <form id="paymentForm">
+                            <input type="hidden" id="installment_id" name="installment_id" value="<?php echo $installment_id; ?>">
+                            
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Tanggal Pembayaran</label>
+                                <input type="date" class="form-control" id="payment_date" name="payment_date" required value="<?php echo date('Y-m-d'); ?>">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Jumlah Bayar</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0">Rp</span>
+                                    <input type="text" class="form-control border-start-0 ps-0" id="amount" name="amount" required value="<?php echo number_format($installmentData['amount_per_tenor'], 0, ',', '.'); ?>">
+                                </div>
+                                <div class="mt-2" style="font-size: 12px; font-weight: 700; color: var(--muted);">Minimal: Rp <?php echo number_format($installmentData['amount_per_tenor'], 0, ',', '.'); ?></div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Sumber Dana</label>
+                                <select class="form-select" id="account_id" name="account_id" required>
+                                    <option value="">Pilih Akun</option>
+                                    <?php foreach ($accounts as $acc): ?>
+                                    <option value="<?php echo $acc['id']; ?>" data-balance="<?php echo $acc['balance']; ?>">
+                                        <?php echo htmlspecialchars($acc['name']); ?> (Rp <?php echo number_format($acc['balance'], 0, ',', '.'); ?>)
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-5">
+                                <label class="form-label fw-bold">Catatan</label>
+                                <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Contoh: Pembayaran bulan ini"></textarea>
+                            </div>
+                            
+                            <div class="d-flex gap-3">
+                                <button type="button" class="btn btn-secondary flex-grow-1 py-3 rounded-pill fw-bold" onclick="window.location.href='history.php?id=<?php echo $installment_id; ?>'">Batal</button>
+                                <button type="submit" class="btn btn-primary-custom flex-grow-2 py-3 rounded-pill fw-bold" id="submitBtn">Bayar Sekarang</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             
-            <!-- Alert Messages -->
-            <div id="alertContainer"></div>
-            
-            <div class="row">
-                <div class="col-lg-8">
-                    <!-- Form Pembayaran -->
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h5>
-                                <i class="fas fa-credit-card me-2" style="color: var(--primary);"></i>
-                                Form Pembayaran
-                            </h5>
+            <div class="col-lg-4">
+                <!-- Info Status -->
+                <div class="info-card animated" style="animation-delay: 0.2s">
+                    <span class="label">Tenor Ke-</span>
+                    <h3><?php echo $current_payment_number; ?> / <?php echo $installmentData['tenor']; ?></h3>
+                    <div class="mt-3 d-flex align-items-center gap-2" style="font-size: 13px; font-weight: 600;">
+                        <i class="fas fa-calendar-check"></i>
+                        Jatuh Tempo: <?= date('d M Y', strtotime($due_date)) ?>
+                    </div>
+                </div>
+                
+                <!-- Ringkasan -->
+                <div class="content-card animated" style="animation-delay: 0.3s">
+                    <div class="card-header py-4">
+                        <h5><i class="fas fa-receipt"></i> Detail Cicilan</h5>
+                    </div>
+                    <div class="card-body px-5 pb-5">
+                        <div class="summary-item">
+                            <span class="summary-label">Nama</span>
+                            <span class="summary-value text-end"><?= htmlspecialchars($installmentData['name']) ?></span>
                         </div>
-                        <div class="card-body">
-                            <form id="paymentForm">
-                                <input type="hidden" id="installment_id" name="installment_id" value="<?php echo $installment_id; ?>">
-                                
-                                <div class="row">
-                                    <div class="col-md-12 mb-3">
-                                        <label for="payment_date" class="form-label">Tanggal Pembayaran *</label>
-                                        <input type="date" class="form-control" id="payment_date" name="payment_date" required value="<?php echo date('Y-m-d'); ?>">
-                                    </div>
-                                    
-                                    <div class="col-md-12 mb-3">
-                                        <label for="amount" class="form-label">Jumlah Bayar *</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">Rp</span>
-                                            <input type="text" class="form-control" id="amount" name="amount" required placeholder="0" value="<?php echo number_format($installmentData['amount_per_tenor'], 0, ',', '.'); ?>">
-                                        </div>
-                                        <small class="text-muted">Jumlah minimal: Rp <?php echo number_format($installmentData['amount_per_tenor'], 0, ',', '.'); ?></small>
-                                    </div>
-                                    
-                                    <div class="col-md-12 mb-3">
-                                        <label for="account_id" class="form-label">Akun Sumber Dana *</label>
-                                        <select class="form-select" id="account_id" name="account_id" required>
-                                            <option value="">Pilih Akun</option>
-                                            <?php foreach ($accounts as $acc): ?>
-                                            <option value="<?php echo $acc['id']; ?>" data-balance="<?php echo $acc['balance']; ?>">
-                                                <?php echo htmlspecialchars($acc['name']); ?> - Rp <?php echo number_format($acc['balance'], 0, ',', '.'); ?>
-                                            </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="col-md-12 mb-3">
-                                        <label for="notes" class="form-label">Catatan Pembayaran</label>
-                                        <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Catatan tambahan..."></textarea>
-                                    </div>
-                                </div>
-                                
-                                <div class="row mt-3">
-                                    <div class="col-md-6 mb-2">
-                                        <button type="button" class="btn btn-secondary-glass" onclick="window.location.href='history.php?id=<?php echo $installment_id; ?>'">
-                                            <i class="fas fa-times me-2"></i>Batal
-                                        </button>
-                                    </div>
-                                    <div class="col-md-6 mb-2">
-                                        <button type="submit" class="btn btn-primary-glass" id="submitBtn">
-                                            <i class="fas fa-check-circle me-2"></i>Bayar Sekarang
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+                        <div class="summary-item">
+                            <span class="summary-label">Total Pinjaman</span>
+                            <span class="summary-value text-end">Rp <?= number_format($installmentData['total_amount'], 0, ',', '.') ?></span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Sisa Hutang</span>
+                            <span class="summary-value text-end text-danger">Rp <?= number_format($installmentData['remaining_amount'], 0, ',', '.') ?></span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Progress</span>
+                            <span class="summary-value text-end">
+                                <?php 
+                                $progress = ($installmentData['total_amount'] > 0) ? ($installmentData['paid_amount'] / $installmentData['total_amount']) * 100 : 0;
+                                echo round($progress, 1); ?>%
+                            </span>
+                        </div>
+                        <div class="progress-glass mt-3">
+                            <div class="progress-bar" style="width: <?= min(100, $progress) ?>%; background: var(--info);"></div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-lg-4">
-                    <!-- Info Cicilan -->
-                    <div class="info-card">
-                        <div class="label">Pembayaran Ke-</div>
-                        <h3><?php echo $current_payment_number; ?> / <?php echo $installmentData['tenor']; ?></h3>
-                        <p class="mb-0">
-                            <i class="fas fa-calendar-alt me-1"></i> Jatuh Tempo: <?php echo date('d M Y', strtotime($due_date)); ?>
-                        </p>
-                    </div>
-                    
-                    <!-- Ringkasan Cicilan -->
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h5>
-                                <i class="fas fa-chart-line me-2" style="color: var(--primary);"></i>
-                                Ringkasan Cicilan
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="summary-item">
-                                <span class="summary-label">Nama Cicilan</span>
-                                <span class="summary-value"><?php echo htmlspecialchars($installmentData['name']); ?></span>
-                            </div>
-                            <div class="summary-item">
-                                <span class="summary-label">Total Cicilan</span>
-                                <span class="summary-value">Rp <?php echo number_format($installmentData['total_amount'], 0, ',', '.'); ?></span>
-                            </div>
-                            <div class="summary-item">
-                                <span class="summary-label">Sudah Dibayar</span>
-                                <span class="summary-value">Rp <?php echo number_format($installmentData['paid_amount'], 0, ',', '.'); ?></span>
-                            </div>
-                            <div class="summary-item">
-                                <span class="summary-label">Sisa Tagihan</span>
-                                <span class="summary-value" style="color: var(--warning);">Rp <?php echo number_format($installmentData['remaining_amount'], 0, ',', '.'); ?></span>
-                            </div>
-                            <div class="summary-item">
-                                <span class="summary-label">Cicilan per Tenor</span>
-                                <span class="summary-value">Rp <?php echo number_format($installmentData['amount_per_tenor'], 0, ',', '.'); ?></span>
-                            </div>
-                            <div class="summary-item">
-                                <span class="summary-label">Tenor</span>
-                                <span class="summary-value"><?php echo $installmentData['tenor'] . ' ' . $installmentData['tenor_type']; ?></span>
-                            </div>
-                            <div class="summary-item">
-                                <span class="summary-label">Progress</span>
-                                <span class="summary-value">
-                                    <?php 
-                                    $progress = ($installmentData['total_amount'] > 0) 
-                                        ? ($installmentData['paid_amount'] / $installmentData['total_amount']) * 100 
-                                        : 0;
-                                    echo round($progress, 1); ?>%
-                                </span>
-                            </div>
-                            <div class="progress-glass mt-2">
-                                <div class="progress-bar" style="width: <?php echo min(100, $progress); ?>%; background: linear-gradient(90deg, var(--primary), var(--info));"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Informasi Denda -->
-                    <div class="alert alert-warning alert-glass">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        <strong>Informasi Denda:</strong><br>
-                        Jika pembayaran melewati tanggal jatuh tempo, akan dikenakan denda 2% dari jumlah pembayaran.
-                    </div>
+                <div class="alert animated" style="animation-delay: 0.4s; background: rgba(251,188,5,0.08); border: 1px solid rgba(251,188,5,0.2); border-radius: 20px; padding: 25px; color: #b45309;">
+                    <div class="fw-bold mb-2"><i class="fas fa-info-circle me-2"></i> Ketentuan Denda</div>
+                    <p class="mb-0" style="font-size: 13px; line-height: 1.6; font-weight: 600;">Pembayaran lewat jatuh tempo dikenakan denda 2% dari jumlah tagihan per bulan.</p>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
 </div>
 
-<!-- Loading Spinner -->
 <div class="spinner-overlay" id="spinnerOverlay">
-    <div class="spinner-border spinner-border-custom text-primary" role="status">
+    <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
 </div>
@@ -429,111 +256,21 @@ body {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
-    // Format currency input
     $('#amount').on('input', function() {
         let value = $(this).val().replace(/[^0-9]/g, '');
-        if (value) {
-            $(this).val(formatRupiah(value));
-        }
-        validateAmount();
+        if (value) $(this).val(new Intl.NumberFormat('id-ID').format(value));
     });
     
-    function formatRupiah(angka) {
-        let number_string = angka.toString();
-        let sisa = number_string.length % 3;
-        let rupiah = number_string.substr(0, sisa);
-        let ribuan = number_string.substr(sisa).match(/\d{3}/g);
-        
-        if (ribuan) {
-            let separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
-        }
-        return rupiah;
-    }
-    
-    function validateAmount() {
-        let amount = $('#amount').val().replace(/[^0-9]/g, '');
-        let requiredAmount = <?php echo $installmentData['amount_per_tenor']; ?>;
-        
-        if (amount && parseInt(amount) < requiredAmount) {
-            $('#amount').addClass('is-invalid');
-            return false;
-        } else {
-            $('#amount').removeClass('is-invalid');
-            return true;
-        }
-    }
-    
-    // Validasi saldo akun saat dipilih
-    $('#account_id').on('change', function() {
-        let selectedOption = $(this).find('option:selected');
-        let balance = selectedOption.data('balance');
-        let amount = $('#amount').val().replace(/[^0-9]/g, '');
-        
-        if (amount && balance && parseInt(amount) > balance) {
-            showAlert('Saldo akun tidak mencukupi! Saldo tersedia: Rp ' + formatRupiah(balance.toString()), 'danger');
-            $('#submitBtn').prop('disabled', true);
-        } else {
-            $('#submitBtn').prop('disabled', false);
-        }
-    });
-    
-    // Submit form
     $('#paymentForm').on('submit', function(e) {
         e.preventDefault();
         
-        let installmentId = $('#installment_id').val();
-        let accountId = $('#account_id').val();
-        let amount = $('#amount').val().replace(/[^0-9]/g, '');
-        let paymentDate = $('#payment_date').val();
-        let notes = $('#notes').val();
-        
-        // Validasi
-        if (!accountId) {
-            showAlert('Akun sumber dana harus dipilih!', 'danger');
-            return;
-        }
-        
-        if (!amount || parseInt(amount) <= 0) {
-            showAlert('Jumlah bayar harus diisi!', 'danger');
-            return;
-        }
-        
-        let requiredAmount = <?php echo $installmentData['amount_per_tenor']; ?>;
-        if (parseInt(amount) < requiredAmount) {
-            showAlert('Jumlah bayar minimal Rp ' + formatRupiah(requiredAmount.toString()), 'danger');
-            return;
-        }
-        
-        // Tambahkan waktu sekarang ke payment_date
-        if (paymentDate) {
-            let now = new Date();
-            let timeString = now.toTimeString().split(' ')[0]; // Format HH:MM:SS
-            paymentDate = paymentDate + ' ' + timeString;
-        }
-        
-        // Cek saldo akun
-        let selectedOption = $('#account_id').find('option:selected');
-        let balance = selectedOption.data('balance');
-        if (balance && parseInt(amount) > balance) {
-            showAlert('Saldo akun tidak mencukupi!', 'danger');
-            return;
-        }
-        
-        // Siapkan data
-        let formData = new FormData();
+        let formData = new FormData(this);
         formData.append('action', 'make_payment');
-        formData.append('installment_id', installmentId);
-        formData.append('account_id', accountId);
-        formData.append('amount', amount);
-        formData.append('payment_date', paymentDate); // Kirim dengan format YYYY-MM-DD HH:MM:SS
-        formData.append('notes', notes);
+        formData.append('amount', $('#amount').val().replace(/[^0-9]/g, ''));
         
-        // Tampilkan loading
         $('#spinnerOverlay').fadeIn();
-        $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Memproses...');
+        $('#submitBtn').prop('disabled', true);
         
-        // Kirim AJAX
         $.ajax({
             url: 'process_payment.php',
             type: 'POST',
@@ -543,47 +280,22 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 $('#spinnerOverlay').fadeOut();
-                $('#submitBtn').prop('disabled', false).html('<i class="fas fa-check-circle me-2"></i>Bayar Sekarang');
-                
                 if (response.success) {
-                    showAlert(response.message, 'success');
-                    
-                    // Redirect ke history setelah 1.5 detik
-                    setTimeout(function() {
-                        window.location.href = 'history.php?id=' + installmentId;
-                    }, 1500);
+                    Swal.fire('Berhasil!', response.message, 'success').then(() => {
+                        window.location.href = 'history.php?id=' + $('#installment_id').val();
+                    });
                 } else {
-                    showAlert(response.message, 'danger');
+                    Swal.fire('Gagal!', response.message, 'error');
+                    $('#submitBtn').prop('disabled', false);
                 }
             },
-            error: function(xhr, status, error) {
+            error: function() {
                 $('#spinnerOverlay').fadeOut();
-                $('#submitBtn').prop('disabled', false).html('<i class="fas fa-check-circle me-2"></i>Bayar Sekarang');
-                showAlert('Terjadi kesalahan: ' + error, 'danger');
+                Swal.fire('Error!', 'Terjadi kesalahan sistem', 'error');
+                $('#submitBtn').prop('disabled', false);
             }
         });
     });
-    
-    function showAlert(message, type) {
-        let alertHtml = `
-            <div class="alert alert-${type} alert-glass alert-dismissible fade show" role="alert">
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `;
-        $('#alertContainer').html(alertHtml);
-        
-        // Auto hide after 3 seconds
-        setTimeout(function() {
-            $('.alert').fadeOut('slow', function() {
-                $(this).remove();
-            });
-        }, 3000);
-    }
-    
-    // Inisialisasi validasi awal
-    validateAmount();
 });
 </script>
 

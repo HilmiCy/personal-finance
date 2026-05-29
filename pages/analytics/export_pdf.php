@@ -54,10 +54,10 @@ $html = '
 <head>
     <style>
         body { font-family: sans-serif; color: #333; line-height: 1.6; }
-        .header { text-align: center; border-bottom: 2px solid #6366f1; padding-bottom: 20px; margin-bottom: 30px; }
-        .title { font-size: 24px; font-weight: bold; color: #6366f1; }
-        .subtitle { font-size: 14px; color: #667eea; }
-        .section-title { font-size: 18px; font-weight: bold; margin-top: 30px; margin-bottom: 15px; color: #1f2937; border-left: 4px solid #6366f1; padding-left: 10px; }
+        .header { text-align: center; border-bottom: 2px solid #4285f4; padding-bottom: 20px; margin-bottom: 30px; }
+        .title { font-size: 24px; font-weight: bold; color: #4285f4; }
+        .subtitle { font-size: 14px; color: #4285f4; }
+        .section-title { font-size: 18px; font-weight: bold; margin-top: 30px; margin-bottom: 15px; color: #1f2937; border-left: 4px solid #4285f4; padding-left: 10px; }
         .card { background: #f9fafb; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
         .prediction-box { text-align: center; background: #EEF2FF; padding: 25px; border-radius: 15px; border: 1px solid #C7D2FE; }
         .prediction-amount { font-size: 28px; font-weight: bold; color: #4338CA; margin: 10px 0; }
@@ -81,7 +81,7 @@ $html = '
 
     <div class="section-title">Hasil Prediksi Bulan Depan</div>
     <div class="prediction-box">
-        <div style="font-size: 12px; color: #6366f1; text-transform: uppercase;">Estimasi Pengeluaran</div>
+        <div style="font-size: 12px; color: #4285f4; text-transform: uppercase;">Estimasi Pengeluaran</div>
         <div class="prediction-amount">' . formatRupiah($prediction['amount']) . '</div>
         <div class="trend-' . $prediction['trend'] . '">
             Status Tren: ' . ($prediction['trend'] == 'up' ? 'Meningkat' : ($prediction['trend'] == 'down' ? 'Menurun' : 'Stabil')) . '

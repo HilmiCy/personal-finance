@@ -105,7 +105,7 @@ for ($i = 5; $i >= 0; $i--) {
 
 // Get category breakdown for current month
 $category_data = [];
-$category_colors = ['#6366f1', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6'];
+$category_colors = ['#4285f4', '#f59e0b', '#10b981', '#ea4335', '#5f6368'];
 try {
     $stmt = $db->prepare("
         SELECT c.name, SUM(t.amount) as total
@@ -133,145 +133,13 @@ include 'includes/sidebar.php';
 ?>
 
 <style>
-    /* ========== DASHBOARD CUSTOM STYLES ========== */
-    
-    .container-fluid {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 24px !important;
-        margin: 0 !important;
-    }
-    
-    .btn-primary-custom {
-        background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-        color: white;
-        padding: 10px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        border: none;
-    }
-    
-    .btn-primary-custom:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        color: white;
-    }
-
-    /* Prediction Card */
-    .prediction-card {
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        border-radius: 20px;
-        padding: 24px;
-        color: white;
-        position: relative;
-        overflow: hidden;
-        height: 100%;
-        border: none;
-    }
-
-    .prediction-card::after {
-        content: '\f0d0';
-        font-family: 'Font Awesome 6 Free';
-        font-weight: 900;
-        position: absolute;
-        right: -20px;
-        bottom: -20px;
-        font-size: 120px;
-        opacity: 0.05;
-        transform: rotate(-15deg);
-    }
-
-    .prediction-label {
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        opacity: 0.7;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .prediction-value {
-        font-size: 24px;
-        font-weight: 800;
-        margin-bottom: 15px;
-    }
-
-    .prediction-status {
-        font-size: 13px;
-        padding: 6px 12px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.1);
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    /* Fix Glitch on Transactions Card */
     .transactions-card {
-        background: var(--bg-card);
-        border-radius: 20px;
-        border: 1px solid var(--border-color);
-        box-shadow: var(--shadow-card);
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--card-border);
+        box-shadow: var(--card-shadow);
         overflow: hidden;
-        /* Remove backdrop-filter if it causes glitches */
-        backdrop-filter: none !important;
-    }
-    
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-        .container-fluid {
-            padding: 15px !important;
-        }
-
-        /* Mobile Table Transformation */
-        .table-custom thead {
-            display: none;
-        }
-        
-        .table-custom tbody td {
-            display: block;
-            padding: 12px 16px;
-            border-bottom: none;
-            position: relative;
-            padding-left: 40%;
-            text-align: right;
-        }
-        
-        .table-custom tbody td:before {
-            content: attr(data-label);
-            position: absolute;
-            left: 16px;
-            width: calc(40% - 20px);
-            font-weight: 600;
-            color: var(--text-muted);
-            font-size: 12px;
-            text-align: left;
-        }
-        
-        .table-custom tbody tr {
-            border-bottom: 1px solid var(--border-color);
-            display: block;
-            margin-bottom: 10px;
-            background: var(--bg-card);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: var(--shadow-card);
-        }
-        
-        .table-custom tbody tr:last-child {
-            margin-bottom: 0;
-        }
-
-        .transaction-type {
-            justify-content: flex-end;
-        }
+        backdrop-filter: blur(8px);
     }
 </style>
 
@@ -301,8 +169,8 @@ include 'includes/sidebar.php';
         <div class="row g-4 mb-4">
             <div class="col-md-3 col-sm-6">
                 <div class="stat-card animated" style="animation-delay: 0.1s">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #667eea20, #764ba220);">
-                        <i class="fas fa-wallet" style="color: #667eea;"></i>
+                    <div class="stat-icon" style="background: rgba(66,133,244,0.1);">
+                        <i class="fas fa-wallet" style="color: var(--info);"></i>
                     </div>
                     <div class="stat-title">Total Saldo</div>
                     <div class="stat-value"><?= formatRupiah($total_balance) ?></div>
@@ -314,8 +182,8 @@ include 'includes/sidebar.php';
             
             <div class="col-md-3 col-sm-6">
                 <div class="stat-card animated" style="animation-delay: 0.2s">
-                    <div class="stat-icon" style="background: #d1fae5;">
-                        <i class="fas fa-arrow-up" style="color: #10b981;"></i>
+                    <div class="stat-icon" style="background: rgba(52,168,83,0.1);">
+                        <i class="fas fa-arrow-up" style="color: var(--success);"></i>
                     </div>
                     <div class="stat-title">Pemasukan Bulan Ini</div>
                     <div class="stat-value"><?= formatRupiah($monthly_income) ?></div>
@@ -327,8 +195,8 @@ include 'includes/sidebar.php';
             
             <div class="col-md-3 col-sm-6">
                 <div class="stat-card animated" style="animation-delay: 0.3s">
-                    <div class="stat-icon" style="background: #fee2e2;">
-                        <i class="fas fa-arrow-down" style="color: #ef4444;"></i>
+                    <div class="stat-icon" style="background: rgba(234,67,53,0.1);">
+                        <i class="fas fa-arrow-down" style="color: var(--danger);"></i>
                     </div>
                     <div class="stat-title">Pengeluaran Bulan Ini</div>
                     <div class="stat-value"><?= formatRupiah($monthly_expense) ?></div>
@@ -340,8 +208,8 @@ include 'includes/sidebar.php';
             
             <div class="col-md-3 col-sm-6">
                 <div class="stat-card animated" style="animation-delay: 0.4s">
-                    <div class="stat-icon" style="background: #fef3c7;">
-                        <i class="fas fa-chart-pie" style="color: #f59e0b;"></i>
+                    <div class="stat-icon" style="background: rgba(251,188,5,0.1);">
+                        <i class="fas fa-chart-pie" style="color: var(--warning);"></i>
                     </div>
                     <div class="stat-title">Sisa Bulan Ini</div>
                     <div class="stat-value <?= $sisa >= 0 ? 'text-success' : 'text-danger' ?>">
@@ -384,7 +252,7 @@ include 'includes/sidebar.php';
                         <div class="col-md-4 text-md-end mt-3 mt-md-0">
                             <div class="small opacity-75">
                                 Analisis data <?= $prediction['count'] ?> bulan terakhir<br>
-                                <span class="badge bg-light text-dark mt-2" style="font-size: 10px; opacity: 0.8;">Powered by Python Microservice</span>
+                                <span style="font-size: 10px; opacity: 0.6;">Powered by Python Microservice</span>
                             </div>
                         </div>
                     </div>
@@ -443,7 +311,7 @@ include 'includes/sidebar.php';
                         <i class="fas fa-history"></i>
                         Transaksi Terbaru
                     </div>
-                    <a href="pages/transactions/index.php" class="btn btn-sm" style="background: var(--bg-hover); color: var(--text-muted); text-decoration: none; padding: 6px 14px; border-radius: 10px; border: 1px solid var(--border-color);">
+                    <a href="pages/transactions/index.php" class="btn-action-minimal">
                         Lihat Semua <i class="fas fa-arrow-right ms-1"></i>
                     </a>
                 </div>

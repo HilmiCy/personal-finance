@@ -42,316 +42,30 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    /* ========== CARD STYLES ========== */
-    .card {
-        border-radius: 20px !important;
-        border: none !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
-        transition: transform 0.2s, box-shadow 0.2s !important;
-        margin-bottom: 20px !important;
-        overflow: hidden !important;
-        background: white !important;
-    }
-    
-    .card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1) !important;
-    }
-    
-    /* ========== WELCOME CARD ========== */
-    .welcome-card {
-        background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
-        border-radius: 20px;
-        padding: 20px 24px;
-        margin-bottom: 24px;
-        color: #1f2937;
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    }
-    
-    .welcome-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin: 0;
-        color: #1f2937;
-    }
-    
-    .welcome-subtitle {
-        margin: 8px 0 0 0;
-        opacity: 0.7;
-        font-size: 0.9rem;
-        color: #6b7280;
-    }
-    
-    /* Button Styles */
-    .btn {
-        border-radius: 12px !important;
-        padding: 10px 20px !important;
-        font-weight: 500 !important;
-        transition: all 0.2s !important;
-    }
-    
-    .btn-primary-custom {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        padding: 10px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-        cursor: pointer;
-        border: none;
-    }
-    
-    .btn-primary-custom:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        color: white;
-        text-decoration: none;
-    }
-    
-    .btn-secondary {
-        background: rgba(107, 114, 128, 0.1);
-        border: 1px solid rgba(107, 114, 128, 0.2);
-        padding: 10px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        color: #6b7280;
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-    
-    .btn-secondary:hover {
-        background: rgba(107, 114, 128, 0.2);
-        color: #4b5563;
-    }
-    
-    /* Filter Card */
-    .filter-card {
-        background: white;
-        border-radius: 20px;
-        padding: 24px;
-        margin-bottom: 25px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    
-    .form-control, .form-select {
-        border-radius: 12px !important;
-        border: 1px solid #e0e0e0 !important;
-        padding: 12px 16px !important;
-        transition: all 0.2s !important;
-    }
-    
-    .form-control:focus, .form-select:focus {
-        border-color: #667eea !important;
-        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15) !important;
-    }
-    
-    .form-label {
-        font-weight: 600;
-        color: #4b5563;
-        margin-bottom: 8px;
-    }
-    
-    /* Stat Summary */
-    .stat-summary {
-        background: linear-gradient(135deg, #10b98120, #05966920);
-        border-radius: 20px;
-        padding: 20px 24px;
-        margin-bottom: 20px;
-        border: 1px solid rgba(16, 185, 129, 0.2);
-    }
-    
-    .stat-icon-sm {
-        width: 50px;
-        height: 50px;
-        background: rgba(255,255,255,0.9);
-        border-radius: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .stat-icon-sm i {
-        font-size: 24px;
-        color: #10b981;
-    }
-    
-    /* Table Container */
-    .table-container {
-        background: white;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    
-    .table-custom {
-        margin-bottom: 0;
-    }
-    
-    .table-custom thead th {
-        background: #f8f9fa;
-        border-bottom: 2px solid #e9ecef;
-        padding: 16px;
-        font-weight: 600;
-        color: #495057;
-        font-size: 14px;
-    }
-    
-    .table-custom tbody td {
-        padding: 16px;
-        vertical-align: middle;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    
-    .table-custom tbody tr:hover {
-        background: #f8f9fa;
-    }
-    
-    .transfer-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: #f3f4f6;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 13px;
-    }
-    
-    .amount-negative {
-        color: #dc3545;
-        font-weight: 700;
-        font-size: 15px;
-    }
-    
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    
-    .empty-state i {
-        font-size: 64px;
-        color: #667eea;
-        margin-bottom: 20px;
-    }
-    
-    .empty-state p {
-        color: #6b7280;
-        font-size: 16px;
-        margin-bottom: 20px;
-    }
-    
-    /* Pagination */
-    .pagination-custom {
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        border-top: 1px solid #e5e7eb;
-    }
-    
-    .pagination-custom .page-link {
-        border-radius: 10px;
-        padding: 8px 15px;
-        color: #667eea;
-        border: 1px solid #e0e0e0;
-        background: white;
-    }
-    
-    .pagination-custom .page-item.active .page-link {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-color: #667eea;
-        color: white;
-    }
-    
-    .pagination-custom .page-link:hover {
-        background: #f3f4f6;
-        color: #667eea;
-    }
-    
-    /* Alert Info */
-    .alert-info-custom {
-        background: #e0f2fe;
-        border: 1px solid #bae6fd;
-        border-radius: 12px;
-        padding: 12px 16px;
-        color: #0369a1;
-    }
-    
-    /* Animations */
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .animated {
-        animation: fadeInUp 0.5s ease-out forwards;
-    }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-        .container-fluid {
-            padding: 15px !important;
-        }
-        
-        .welcome-title {
-            font-size: 1.2rem !important;
-        }
-        
-        .welcome-subtitle {
-            font-size: 0.8rem !important;
-        }
-        
-        .table-custom thead th,
-        .table-custom tbody td {
-            padding: 10px;
-            font-size: 12px;
-        }
-        
-        .transfer-badge {
-            font-size: 11px;
-            padding: 4px 8px;
-        }
-        
-        .stat-summary {
-            padding: 15px;
-        }
-        
-        .stat-icon-sm {
-            width: 40px;
-            height: 40px;
-        }
-        
-        .stat-icon-sm i {
-            font-size: 18px;
-        }
-    }
+    .card { border-radius: var(--radius-lg) !important; border: 1px solid var(--border) !important; box-shadow: var(--card-shadow) !important; transition: var(--transition) !important; margin-bottom: 20px !important; overflow: hidden !important; background: var(--card-bg) !important; backdrop-filter: blur(8px) !important; }
+    .card:hover { transform: translateY(-2px); box-shadow: var(--card-shadow-hover) !important; }
+    .filter-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 25px; box-shadow: var(--card-shadow); }
+    .stat-summary { background: var(--surface); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 20px; border: 1px solid var(--border); }
+    .stat-icon-sm { width: 50px; height: 50px; background: var(--card-bg); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
+    .stat-icon-sm i { font-size: 24px; color: var(--success); }
+    .table-container { background: var(--card-bg); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--card-shadow); border: 1px solid var(--card-border); }
+    .transfer-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); padding: 6px 12px; border-radius: var(--radius-full); font-size: 13px; color: var(--fg); }
+    .amount-negative { color: var(--danger); font-weight: 700; font-size: 15px; }
+    .alert-info-custom { background: rgba(66,133,244,0.1); border: 1px solid rgba(66,133,244,0.15); border-radius: var(--radius-sm); padding: 12px 16px; color: var(--info); }
+    .btn-primary-custom { background: var(--primary); color: white; border: none; padding: 10px 24px; border-radius: var(--radius-full); font-weight: 600; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; text-decoration: none; cursor: pointer; }
+    .btn-primary-custom:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); color: white; }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); padding: 10px 24px; border-radius: var(--radius-full); font-weight: 600; color: var(--muted); transition: var(--transition); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-secondary:hover { background: var(--surface); color: var(--fg); }
 </style>
 
-<div id="content" class="main-content">
+<div class="main-content">
     <div class="container-fluid">
         <!-- Header -->
         <div class="welcome-card animated">
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <h1 class="welcome-title">
-                        <i class="fas fa-history me-3" style="color: #667eea;"></i> Riwayat Transfer
+                        <i class="fas fa-history me-3" style="color: #4285f4;"></i> Riwayat Transfer
                     </h1>
                     <p class="welcome-subtitle">Riwayat lengkap transfer antar akun Anda</p>
                 </div>
@@ -550,7 +264,7 @@ include '../../includes/sidebar.php';
         // Add styles to exported data
         let style = `
             <style>
-                th { background: #667eea; color: white; padding: 10px; }
+                th { background: #4285f4; color: white; padding: 10px; }
                 td { padding: 8px; border: 1px solid #ddd; }
             </style>
         `;
@@ -580,7 +294,7 @@ include '../../includes/sidebar.php';
             title: 'Berhasil!',
             text: 'File Excel berhasil diexport',
             icon: 'success',
-            confirmButtonColor: '#667eea',
+            confirmButtonColor: '#4285f4',
             timer: 2000,
             showConfirmButton: true
         });
@@ -592,7 +306,7 @@ include '../../includes/sidebar.php';
         title: 'Berhasil!',
         text: '<?= $_SESSION['success_message'] ?>',
         icon: 'success',
-        confirmButtonColor: '#667eea',
+        confirmButtonColor: '#4285f4',
         confirmButtonText: 'OK',
         didOpen: () => {
             canvasConfetti({
@@ -610,7 +324,7 @@ include '../../includes/sidebar.php';
         title: 'Gagal!',
         text: '<?= $_SESSION['error_message'] ?>',
         icon: 'error',
-        confirmButtonColor: '#667eea',
+        confirmButtonColor: '#4285f4',
         confirmButtonText: 'OK'
     });
     <?php unset($_SESSION['error_message']); ?>

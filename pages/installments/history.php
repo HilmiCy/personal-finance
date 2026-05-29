@@ -3,6 +3,7 @@ require_once '../../config/session.php';
 require_once '../../config/config.php';
 require_once '../../classes/Database.php';
 require_once '../../classes/Installment.php';
+require_once '../../includes/functions.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../../login.php');
@@ -28,509 +29,279 @@ if (!$installmentData) {
 // Ambil riwayat pembayaran
 $paymentHistory = $installment->getPaymentHistory($installment_id, $_SESSION['user_id']);
 
+$page_title = 'Riwayat Cicilan';
+$current_page = 'installments';
+
 include '../../includes/header.php';
+include '../../includes/sidebar.php';
 ?>
 
 <style>
-:root {
-    --glass-bg: rgba(255, 255, 255, 0.95);
-    --glass-border: rgba(255, 255, 255, 0.3);
-    --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.12);
-    --primary: #4361ee;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --info: #3b82f6;
-    --danger: #ef4444;
-    --secondary: #6c757d;
-}
-
-body {
-    background: #f8f9fa;
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
-/* Cards */
-.content-card {
-    background: white;
-    border-radius: 24px;
-    border: none;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-}
-
-.content-card .card-header {
-    background: white;
-    border-bottom: 1px solid #e9ecef;
-    padding: 1.25rem 1.5rem;
-}
-
-.content-card .card-header h5 {
-    margin: 0;
-    font-weight: 600;
-    color: #1a1a2e;
-    font-size: 1.1rem;
-}
-
-.content-card .card-body {
-    padding: 1.5rem;
-}
-
-/* Info Cards */
-.info-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 20px;
-    padding: 1.5rem;
-    color: white;
-    margin-bottom: 1.5rem;
-}
-
-.info-card h3 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-.info-card p {
-    margin-bottom: 0;
-    opacity: 0.9;
-}
-
-.info-card .label {
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Progress Bar */
-.progress-glass {
-    height: 10px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 0.5rem;
-}
-
-.progress-glass .progress-bar {
-    background: white;
-    border-radius: 10px;
-    transition: width 0.6s ease;
-}
-
-/* Table Styles */
-.table-custom {
-    margin-bottom: 0;
-}
-
-.table-custom thead th {
-    background: #f8f9fa;
-    border-bottom: 2px solid #e9ecef;
-    color: #495057;
-    font-weight: 600;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 1rem;
-}
-
-.table-custom tbody td {
-    padding: 1rem;
-    vertical-align: middle;
-    border-bottom: 1px solid #f0f0f0;
-    color: #2c3e50;
-}
-
-.table-custom tbody tr:hover {
-    background: #f8f9fa;
-}
-
-/* Badge */
-.badge-status {
-    padding: 0.35rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
-.badge-paid {
-    background: #d1fae5;
-    color: #065f46;
-}
-
-.badge-late {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-.badge-pending {
-    background: #fed7aa;
-    color: #92400e;
-}
-
-/* Buttons */
-.btn-back {
-    background: white;
-    border: 1px solid #e9ecef;
-    border-radius: 12px;
-    padding: 0.5rem 1.25rem;
-    font-weight: 500;
-    color: #495057;
-    transition: all 0.2s ease;
-}
-
-.btn-back:hover {
-    background: #f8f9fa;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.btn-pay {
-    background: linear-gradient(135deg, var(--success), #059669);
-    border: none;
-    border-radius: 12px;
-    padding: 0.5rem 1.25rem;
-    font-weight: 500;
-    color: white;
-    transition: all 0.2s ease;
-}
-
-.btn-pay:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    color: white;
-}
-
-/* Summary Cards */
-.summary-card {
-    background: white;
-    border-radius: 20px;
-    padding: 1.25rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    border: 1px solid #e9ecef;
-}
-
-.summary-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-.summary-card .card-icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
-}
-
-.summary-card .card-title {
-    color: #6c757d;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.5rem;
-}
-
-.summary-card .card-value {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #1a1a2e;
-    margin-bottom: 0;
-}
-
-.text-amount {
-    font-weight: 600;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .info-card h3 {
-        font-size: 1.5rem;
+    /* ========== HISTORY SPECIFIC STYLES ========== */
+    .summary-card { 
+        background: rgba(255, 255, 255, 0.95); 
+        border: 1px solid rgba(0, 0, 0, 0.08); 
+        border-radius: 32px; 
+        padding: 25px; 
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04); 
+        transition: var(--transition); 
+        height: 100%; 
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+    }
+    .summary-card:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06); }
+    
+    .summary-card .card-icon { 
+        width: 44px;
+        height: 44px;
+        background: var(--surface);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px; 
+        margin-bottom: 15px; 
+        color: var(--info);
+        border: 1px solid var(--border);
     }
     
+    .summary-card .card-title { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+    .summary-card .card-value { font-size: 18px; font-weight: 800; color: var(--fg); letter-spacing: -0.01em; }
+    
+    .content-card { 
+        background: rgba(255, 255, 255, 0.95); 
+        border: 1px solid rgba(0, 0, 0, 0.08); 
+        border-radius: 32px; 
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04); 
+        overflow: hidden; 
+        backdrop-filter: blur(10px);
+        margin-bottom: 30px;
+    }
+    
+    .content-card .card-header { 
+        background: rgba(255, 255, 255, 0.2); 
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05); 
+        padding: 25px 35px; 
+    }
+    
+    .content-card .card-header h5 { 
+        margin: 0; 
+        font-weight: 800; 
+        color: var(--fg); 
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .info-card {
+        background: var(--fg);
+        color: white;
+        border-radius: 32px;
+        padding: 35px;
+        margin-bottom: 30px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .status-badge-custom {
+        padding: 8px 18px;
+        border-radius: 9999px;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .badge-active { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+    .badge-completed { background: rgba(66, 133, 244, 0.1); color: #4285f4; }
+    
     .table-custom thead th {
-        font-size: 0.75rem;
-        padding: 0.75rem;
+        background: rgba(0, 0, 0, 0.01);
+        padding: 20px 25px;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
     
     .table-custom tbody td {
-        padding: 0.75rem;
-        font-size: 0.875rem;
+        padding: 22px 25px;
+        vertical-align: middle;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        font-size: 14px;
     }
     
-    .summary-card .card-value {
-        font-size: 1rem;
-    }
-}
+    .progress-glass { height: 6px; background: rgba(0, 0, 0, 0.04); border-radius: 10px; overflow: hidden; }
 </style>
 
-<div class="container-fluid px-4 py-4">
-    <div class="row">
-        <?php include '../../includes/sidebar.php'; ?>
-        
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <!-- Header -->
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-4 mb-4">
-                <div>
-                    <h1 class="h2 mb-1" style="font-weight: 700; color: #1a1a2e;">
-                        <i class="fas fa-history me-2" style="color: var(--primary);"></i>
-                        Riwayat Pembayaran
-                    </h1>
-                    <p class="text-muted mb-0">
-                        <a href="index.php" class="text-decoration-none">
+<div class="main-content">
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="welcome-card animated">
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <h1 class="welcome-title">Riwayat Pembayaran</h1>
+                    <p class="welcome-subtitle">
+                        <a href="index.php" class="text-decoration-none" style="color: inherit;">
                             <i class="fas fa-arrow-left me-1"></i> Kembali ke Daftar Cicilan
                         </a>
                     </p>
                 </div>
-                <div>
-                    <a href="pay.php?id=<?php echo $installment_id; ?>" class="btn btn-pay">
-                        <i class="fas fa-money-bill-wave me-2"></i>Bayar Cicilan
+                <div class="col-md-5 text-md-end">
+                    <?php if ($installmentData['status'] == 'active'): ?>
+                    <a href="pay.php?id=<?php echo $installment_id; ?>" class="btn-primary-custom">
+                        <i class="fas fa-money-bill-wave me-2"></i> Bayar Sekarang
                     </a>
+                    <?php endif; ?>
                 </div>
             </div>
-            
-            <!-- Info Cicilan -->
-            <div class="info-card mb-4">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <h3><?php echo htmlspecialchars($installmentData['name']); ?></h3>
-                        <p class="mb-0">
-                            <i class="fas fa-credit-card me-1"></i> 
-                            <?php echo htmlspecialchars($installmentData['account_name'] ?? 'Akun tidak ditemukan'); ?>
-                        </p>
+        </div>
+        
+        <!-- Main Info -->
+        <div class="info-card animated" style="animation-delay: 0.1s">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; opacity: 0.6; margin-bottom: 8px;">Detail Cicilan</div>
+                    <h3 style="font-size: 32px; font-weight: 800; margin-bottom: 10px;"><?php echo htmlspecialchars($installmentData['name']); ?></h3>
+                    <div class="d-flex align-items-center gap-3" style="opacity: 0.8; font-weight: 600; font-size: 14px;">
+                        <span><i class="fas fa-credit-card me-2"></i> <?php echo htmlspecialchars($installmentData['account_name'] ?? '-'); ?></span>
+                        <span>•</span>
+                        <span><i class="fas fa-calendar-alt me-2"></i> Mulai: <?= date('d M Y', strtotime($installmentData['start_date'])) ?></span>
                     </div>
-                    <div class="col-md-4 text-md-end">
-                        <p class="mb-0">
-                            <span class="label">Status</span><br>
-                            <?php if ($installmentData['status'] == 'active'): ?>
-                                <span class="badge-status" style="background: #fee2e2; color: #dc2626;">Aktif</span>
-                            <?php elseif ($installmentData['status'] == 'completed'): ?>
-                                <span class="badge-status" style="background: #d1fae5; color: #065f46;">Selesai</span>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <span class="status-badge-custom <?= $installmentData['status'] == 'active' ? 'badge-active' : 'badge-completed' ?>">
+                        <i class="fas fa-circle me-2" style="font-size: 8px;"></i>
+                        <?= $installmentData['status'] == 'active' ? 'Cicilan Aktif' : 'Cicilan Lunas' ?>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Summary Stats -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="summary-card animated" style="animation-delay: 0.2s">
+                    <div class="card-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <div class="card-title">Total Pinjaman</div>
+                    <div class="card-value">Rp <?= number_format($installmentData['total_amount'], 0, ',', '.') ?></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="summary-card animated" style="animation-delay: 0.3s">
+                    <div class="card-icon" style="color: #10b981;"><i class="fas fa-check-double"></i></div>
+                    <div class="card-title">Sudah Terbayar</div>
+                    <div class="card-value text-success">Rp <?= number_format($installmentData['paid_amount'], 0, ',', '.') ?></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="summary-card animated" style="animation-delay: 0.4s">
+                    <div class="card-icon" style="color: #ea4335;"><i class="fas fa-exclamation-circle"></i></div>
+                    <div class="card-title">Sisa Tagihan</div>
+                    <div class="card-value text-danger">Rp <?= number_format($installmentData['remaining_amount'], 0, ',', '.') ?></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="summary-card animated" style="animation-delay: 0.5s">
+                    <?php $progress = ($installmentData['total_amount'] > 0) ? ($installmentData['paid_amount'] / $installmentData['total_amount']) * 100 : 0; ?>
+                    <div class="card-icon" style="color: #4285f4;"><i class="fas fa-chart-pie"></i></div>
+                    <div class="card-title">Progress</div>
+                    <div class="card-value"><?= round($progress, 1) ?>%</div>
+                    <div class="progress-glass mt-3">
+                        <div class="progress-bar" style="width: <?= min(100, $progress) ?>%; background: #4285f4; height: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Payment Table -->
+        <div class="content-card animated" style="animation-delay: 0.6s">
+            <div class="card-header">
+                <h5><i class="fas fa-history"></i> Log Pembayaran</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-custom mb-0">
+                        <thead>
+                            <tr>
+                                <th class="ps-5">No.</th>
+                                <th>Tanggal Bayar</th>
+                                <th>Jatuh Tempo</th>
+                                <th>Jumlah</th>
+                                <th>Denda</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th class="pe-5">Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($paymentHistory)): ?>
+                            <tr>
+                                <td colspan="8" class="text-center py-5">
+                                    <div style="opacity: 0.3; margin-bottom: 15px;"><i class="fas fa-receipt fa-4x"></i></div>
+                                    <p class="text-muted mb-0 fw-bold">Belum ada riwayat pembayaran</p>
+                                </td>
+                            </tr>
                             <?php else: ?>
-                                <span class="badge-status" style="background: #fed7aa; color: #92400e;"><?php echo $installmentData['status']; ?></span>
+                            <?php foreach ($paymentHistory as $payment): ?>
+                            <tr>
+                                <td class="ps-5"><span class="fw-bold text-muted">#<?= $payment['payment_number'] ?></span></td>
+                                <td>
+                                    <div class="fw-bold"><?= date('d M Y', strtotime($payment['payment_date'])) ?></div>
+                                    <div style="font-size: 11px; color: var(--muted);"><?= date('H:i', strtotime($payment['payment_date'])) ?> WIB</div>
+                                </td>
+                                <td>
+                                    <div style="font-size: 13px;"><?= date('d M Y', strtotime($payment['due_date'])) ?></div>
+                                    <?php if (strtotime($payment['payment_date']) > strtotime($payment['due_date'])): ?>
+                                    <span class="text-danger" style="font-size: 10px; font-weight: 800;"><i class="fas fa-clock me-1"></i>TERLAMBAT</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="fw-bold">Rp <?= number_format($payment['amount'], 0, ',', '.') ?></td>
+                                <td class="text-danger fw-bold"><?= $payment['penalty_amount'] > 0 ? 'Rp '.number_format($payment['penalty_amount'], 0, ',', '.') : '-' ?></td>
+                                <td class="text-primary fw-bold">Rp <?= number_format($payment['total_paid'], 0, ',', '.') ?></td>
+                                <td>
+                                    <?php if ($payment['status'] == 'paid'): ?>
+                                        <span class="badge" style="background: rgba(16, 185, 129, 0.1); color: #10b981; border-radius: 8px; padding: 6px 12px; font-weight: 700; font-size: 11px;">LUNAS</span>
+                                    <?php else: ?>
+                                        <span class="badge" style="background: rgba(234, 67, 53, 0.1); color: #ea4335; border-radius: 8px; padding: 6px 12px; font-weight: 700; font-size: 11px;">TERLAMBAT</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="pe-5">
+                                    <span style="font-size: 12px; color: var(--muted);"><?= htmlspecialchars($payment['notes'] ?: '-') ?></span>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
                             <?php endif; ?>
-                        </p>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            
-            <!-- Summary Cards -->
-            <div class="row g-4 mb-4">
-                <div class="col-md-3">
-                    <div class="summary-card">
-                        <div class="card-icon">
-                            <i class="fas fa-chart-line" style="color: var(--primary);"></i>
-                        </div>
-                        <div class="card-title">Total Cicilan</div>
-                        <div class="card-value">
-                            Rp <?php echo number_format($installmentData['total_amount'], 0, ',', '.'); ?>
-                        </div>
-                    </div>
+        </div>
+        
+        <!-- Action Footer -->
+        <?php if ($installmentData['status'] == 'active'): ?>
+        <div class="alert animated" style="animation-delay: 0.7s; background: rgba(66, 133, 244, 0.05); border: 1px solid rgba(66, 133, 244, 0.1); border-radius: 24px; padding: 30px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+            <div class="d-flex align-items-center gap-3">
+                <div style="width: 48px; height: 48px; background: #4285f4; color: white; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    <i class="fas fa-info-circle"></i>
                 </div>
-                <div class="col-md-3">
-                    <div class="summary-card">
-                        <div class="card-icon">
-                            <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                        </div>
-                        <div class="card-title">Sudah Dibayar</div>
-                        <div class="card-value">
-                            Rp <?php echo number_format($installmentData['paid_amount'], 0, ',', '.'); ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="summary-card">
-                        <div class="card-icon">
-                            <i class="fas fa-clock" style="color: var(--warning);"></i>
-                        </div>
-                        <div class="card-title">Sisa Tagihan</div>
-                        <div class="card-value">
-                            Rp <?php echo number_format($installmentData['remaining_amount'], 0, ',', '.'); ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="summary-card">
-                        <div class="card-icon">
-                            <i class="fas fa-calendar-alt" style="color: var(--info);"></i>
-                        </div>
-                        <div class="card-title">Progress</div>
-                        <div class="card-value">
-                            <?php 
-                            $progress = ($installmentData['total_amount'] > 0) 
-                                ? ($installmentData['paid_amount'] / $installmentData['total_amount']) * 100 
-                                : 0;
-                            echo round($progress, 1); ?>%
-                        </div>
-                        <div class="progress-glass">
-                            <div class="progress-bar" style="width: <?php echo min(100, $progress); ?>%"></div>
-                        </div>
-                    </div>
+                <div>
+                    <div style="font-weight: 800; color: var(--fg);">Pembayaran Berikutnya</div>
+                    <div style="font-size: 13px; color: var(--muted);">Jatuh tempo pada <strong><?= date('d M Y', strtotime($installment->getDueDate($installmentData))) ?></strong></div>
                 </div>
             </div>
-            
-            <!-- Detail Cicilan -->
-            <div class="content-card mb-4">
-                <div class="card-header">
-                    <h5>
-                        <i class="fas fa-info-circle me-2" style="color: var(--primary);"></i>
-                        Detail Cicilan
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <small class="text-muted d-block">Tenor</small>
-                            <strong><?php echo $installmentData['tenor'] . ' ' . $installmentData['tenor_type']; ?></strong>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <small class="text-muted d-block">Cicilan per Tenor</small>
-                            <strong>Rp <?php echo number_format($installmentData['amount_per_tenor'], 0, ',', '.'); ?></strong>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <small class="text-muted d-block">Tanggal Mulai</small>
-                            <strong><?php echo date('d M Y', strtotime($installmentData['start_date'])); ?></strong>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <small class="text-muted d-block">Tanggal Selesai</small>
-                            <strong><?php echo date('d M Y', strtotime($installmentData['end_date'])); ?></strong>
-                        </div>
-                        <?php if (!empty($installmentData['interest_rate']) && $installmentData['interest_rate'] > 0): ?>
-                        <div class="col-md-3 mb-3">
-                            <small class="text-muted d-block">Bunga</small>
-                            <strong><?php echo $installmentData['interest_rate']; ?>%</strong>
-                        </div>
-                        <?php endif; ?>
-                        <?php if (!empty($installmentData['notes'])): ?>
-                        <div class="col-md-12 mb-3">
-                            <small class="text-muted d-block">Catatan</small>
-                            <strong><?php echo nl2br(htmlspecialchars($installmentData['notes'])); ?></strong>
-                        </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
+            <div style="font-size: 22px; font-weight: 800; color: #4285f4;">
+                Rp <?= number_format($installmentData['amount_per_tenor'], 0, ',', '.') ?>
             </div>
-            
-            <!-- Riwayat Pembayaran -->
-            <div class="content-card">
-                <div class="card-header">
-                    <h5>
-                        <i class="fas fa-list me-2" style="color: var(--primary);"></i>
-                        Riwayat Pembayaran
-                    </h5>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-custom">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Tanggal Bayar</th>
-                                    <th>Jatuh Tempo</th>
-                                    <th>Jumlah Bayar</th>
-                                    <th>Denda</th>
-                                    <th>Total Dibayar</th>
-                                    <th>Status</th>
-                                    <th>Catatan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (empty($paymentHistory)): ?>
-                                <tr>
-                                    <td colspan="8" class="text-center py-5">
-                                        <i class="fas fa-inbox fa-2x mb-3 text-muted"></i>
-                                        <p class="text-muted mb-0">Belum ada riwayat pembayaran</p>
-                                    </td>
-                                </tr>
-                                <?php else: ?>
-                                <?php foreach ($paymentHistory as $index => $payment): ?>
-                                <tr>
-                                    <td>
-                                        <span class="badge-status" style="background: #e9ecef; color: #495057;">
-                                            #<?php echo $payment['payment_number']; ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <strong><?php echo date('d M Y', strtotime($payment['payment_date'])); ?></strong>
-                                        <br>
-                                        <small class="text-muted"><?php echo date('H:i', strtotime($payment['payment_date'])); ?></small>
-                                    </td>
-                                    <td>
-                                        <?php echo date('d M Y', strtotime($payment['due_date'])); ?>
-                                        <?php if (strtotime($payment['payment_date']) > strtotime($payment['due_date'])): ?>
-                                        <br>
-                                        <small class="text-danger">
-                                            <i class="fas fa-exclamation-circle"></i> Terlambat
-                                        </small>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td class="text-amount">
-                                        Rp <?php echo number_format($payment['amount'], 0, ',', '.'); ?>
-                                    </td>
-                                    <td class="text-amount text-danger">
-                                        <?php if ($payment['penalty_amount'] > 0): ?>
-                                        Rp <?php echo number_format($payment['penalty_amount'], 0, ',', '.'); ?>
-                                        <?php else: ?>
-                                        -
-                                        <?php endif; ?>
-                                    </td>
-                                    <td class="text-amount fw-bold">
-                                        Rp <?php echo number_format($payment['total_paid'], 0, ',', '.'); ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($payment['status'] == 'paid'): ?>
-                                        <span class="badge-status badge-paid">
-                                            <i class="fas fa-check-circle me-1"></i> Lunas
-                                        </span>
-                                        <?php elseif ($payment['status'] == 'late'): ?>
-                                        <span class="badge-status badge-late">
-                                            <i class="fas fa-exclamation-triangle me-1"></i> Terlambat
-                                        </span>
-                                        <?php else: ?>
-                                        <span class="badge-status badge-pending">
-                                            <?php echo $payment['status']; ?>
-                                        </span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?php if (!empty($payment['notes'])): ?>
-                                        <small class="text-muted" title="<?php echo htmlspecialchars($payment['notes']); ?>">
-                                            <i class="fas fa-comment"></i> <?php echo substr(htmlspecialchars($payment['notes']), 0, 30); ?>
-                                            <?php if (strlen($payment['notes']) > 30): ?>...<?php endif; ?>
-                                        </small>
-                                        <?php else: ?>
-                                        <small class="text-muted">-</small>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Informasi Tambahan -->
-            <?php if ($installmentData['status'] == 'active'): ?>
-            <div class="alert alert-info alert-glass mt-4">
-                <i class="fas fa-info-circle me-2"></i>
-                <strong>Informasi:</strong> 
-                Cicilan ini masih aktif. 
-                <?php 
-                $next_payment = $installmentData['current_tenor'] + 1;
-                $due_date = $installment->getDueDate($installmentData);
-                ?>
-                Pembayaran selanjutnya adalah cicilan ke-<?php echo $next_payment; ?> dari <?php echo $installmentData['tenor']; ?> 
-                dengan jatuh tempo pada <strong><?php echo date('d M Y', strtotime($due_date)); ?></strong> 
-                sebesar <strong>Rp <?php echo number_format($installmentData['amount_per_tenor'], 0, ',', '.'); ?></strong>.
-            </div>
-            <?php elseif ($installmentData['status'] == 'completed'): ?>
-            <div class="alert alert-success alert-glass mt-4">
-                <i class="fas fa-check-circle me-2"></i>
-                <strong>Selamat!</strong> Cicilan ini telah lunas pada <?php echo date('d M Y', strtotime($installmentData['updated_at'] ?? date('Y-m-d'))); ?>.
-            </div>
-            <?php endif; ?>
-        </main>
+        </div>
+        <?php endif; ?>
     </div>
 </div>
 

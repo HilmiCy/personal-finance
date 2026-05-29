@@ -9,7 +9,7 @@ if (!isLoggedIn()) {
     exit;
 }
 
-$page_title = 'Monitoring Kurs Mata Uang';
+$page_title = 'Monitoring Pasar';
 $current_page = 'assets';
 
 $rates = CurrencyService::getExchangeRates();
@@ -39,126 +39,117 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    .section-title {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 20px;
+    /* ========== MONITORING SPECIFIC STYLES ========== */
+    .section-title { 
+        font-size: 11px; 
+        font-weight: 800; 
+        color: var(--muted); 
+        text-transform: uppercase; 
+        letter-spacing: 2px; 
+        margin-bottom: 30px; 
+        display: flex; 
+        align-items: center; 
+        gap: 12px; 
+        padding-bottom: 15px; 
+        border-bottom: 1px solid rgba(0,0,0,0.05); 
+    }
+    
+    .currency-card { 
+        background: rgba(255, 255, 255, 0.95); 
+        border: 1px solid rgba(0, 0, 0, 0.08); 
+        border-radius: 32px; 
+        padding: 35px; 
+        transition: var(--transition); 
+        height: 100%; 
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04); 
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         display: flex;
-        align-items: center;
-        gap: 10px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #f3f4f6;
+        flex-direction: column;
     }
-    .currency-card {
-        background: white;
-        border-radius: 20px;
-        padding: 24px;
-        border: 1px solid #f3f4f6;
-        transition: all 0.3s ease;
-        height: 100%;
+    .currency-card:hover { transform: translateY(-8px); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08); border-color: rgba(66, 133, 244, 0.3); }
+    
+    .currency-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; }
+    .currency-info { display: flex; align-items: center; gap: 15px; }
+    
+    .currency-icon { 
+        width: 48px; height: 48px; 
+        border-radius: 14px; 
+        display: flex; align-items: center; justify-content: center; 
+        font-size: 20px; color: white;
+        box-shadow: 0 8px 15px rgba(0,0,0,0.05);
     }
-    .currency-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.05);
-        border-color: #667eea;
+    
+    .currency-flag { font-size: 32px; line-height: 1; }
+    
+    .currency-code { font-weight: 800; font-size: 18px; color: var(--fg); margin: 0; letter-spacing: -0.01em; }
+    .currency-name { font-size: 12px; color: var(--muted); font-weight: 600; }
+    
+    .rate-container { 
+        background: var(--surface); 
+        border-radius: 24px; 
+        padding: 25px; 
+        text-align: center; 
+        border: 1px solid rgba(0,0,0,0.03);
+        margin-top: auto;
     }
-    .currency-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-    .currency-info {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-    .currency-flag {
-        font-size: 2rem;
-    }
-    .currency-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
+    
+    .rate-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 800; margin-bottom: 8px; }
+    .rate-value { font-size: 22px; font-weight: 800; color: var(--fg); letter-spacing: -0.02em; }
+    
+    .inverse-rate { font-size: 11px; color: var(--muted); margin-top: 8px; font-weight: 600; }
+    
+    .btn-chart {
+        margin-top: 20px;
+        width: 100%;
+        padding: 12px;
+        border-radius: 14px;
+        font-weight: 800;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: var(--transition);
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
+        gap: 8px;
+        border: 1px solid rgba(0,0,0,0.05);
+        background: var(--fg);
         color: white;
     }
-    .currency-code {
-        font-weight: 800;
-        font-size: 1.2rem;
-        color: #1f2937;
-        margin: 0;
-    }
-    .currency-name {
-        font-size: 0.85rem;
-        color: #6b7280;
-    }
-    .rate-container {
-        background: #f9fafb;
-        border-radius: 16px;
-        padding: 15px;
-        text-align: center;
-    }
-    .rate-label {
-        font-size: 0.75rem;
-        color: #6b7280;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 5px;
-    }
-    .rate-value {
-        font-size: 1.25rem;
-        font-weight: 800;
-        color: #10b981;
-    }
-    .inverse-rate {
-        font-size: 0.8rem;
-        color: #6b7280;
-        margin-top: 5px;
-    }
-    .welcome-card {
-        background: #ffffff;
-        border-radius: 20px;
-        padding: 24px;
-        margin-bottom: 24px;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
-    .btn-back {
-        background: #f3f4f6;
-        border: none;
-        padding: 10px 20px;
+    .btn-chart:hover { background: #000; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+    
+    .btn-back-custom {
+        background: var(--surface);
+        padding: 10px 24px;
         border-radius: 12px;
-        font-weight: 600;
-        color: #4b5563;
-        transition: all 0.2s ease;
-        text-decoration: none;
+        font-weight: 700;
+        font-size: 13px;
+        text-decoration: none !important;
+        color: var(--fg);
         display: inline-flex;
         align-items: center;
         gap: 8px;
+        transition: var(--transition);
+        border: 1px solid var(--border);
     }
-    .btn-back:hover {
-        background: #e5e7eb;
-        color: #1f2937;
-    }
+    .btn-back-custom:hover { background: var(--border); transform: translateX(-5px); }
+
+    .modal-tv { border-radius: 32px !important; overflow: hidden; border: 1px solid rgba(0,0,0,0.1) !important; box-shadow: 0 30px 80px rgba(0,0,0,0.2) !important; }
 </style>
 
-<div id="content" class="main-content">
+<div class="main-content">
     <div class="container-fluid">
         <!-- Header -->
         <div class="welcome-card animated">
             <div class="row align-items-center">
-                <div class="col-md-6">
-                    <h1 class="welcome-title">Monitoring Kurs</h1>
-                    <p class="welcome-subtitle">Pantau nilai tukar Rupiah (IDR) terhadap Fiat & Crypto</p>
+                <div class="col-md-7">
+                    <h1 class="welcome-title">Monitoring Pasar</h1>
+                    <p class="welcome-subtitle">Pantau pergerakan ekonomi global & lokal secara real-time</p>
                 </div>
-                <div class="col-md-6 text-md-end mt-3 mt-md-0">
-                    <a href="../assets/index.php" class="btn-back">
-                        <i class="fas fa-arrow-left"></i> Kembali ke Aset
+                <div class="col-md-5 text-md-end mt-3 mt-md-0">
+                    <a href="index.php" class="btn-back-custom">
+                        <i class="fas fa-arrow-left"></i> Kembali ke Portofolio
                     </a>
                 </div>
             </div>
@@ -166,7 +157,7 @@ include '../../includes/sidebar.php';
 
         <!-- Market Index & Commodities Section -->
         <h2 class="section-title animated" style="animation-delay: 0.1s">
-            <i class="fas fa-chart-pie text-info"></i> Indeks Pasar & Komoditas
+            <i class="fas fa-chart-pie"></i> Indeks Pasar & Komoditas
         </h2>
         <div class="row g-4 mb-5">
             <!-- IHSG -->
@@ -174,20 +165,20 @@ include '../../includes/sidebar.php';
                 $ihsg_val = $rates['IHSG'];
                 $ihsg_prev = $rates['IHSG_PREV'] ?? $ihsg_val;
                 $ihsg_diff = $ihsg_val - $ihsg_prev;
-                $ihsg_pct = ($ihsg_diff / $ihsg_prev) * 100;
-                $ihsg_color = $ihsg_diff >= 0 ? '#10b981' : '#ef4444';
+                $ihsg_pct = ($ihsg_prev > 0) ? ($ihsg_diff / $ihsg_prev) * 100 : 0;
+                $ihsg_color = $ihsg_diff >= 0 ? '#10b981' : '#ea4335';
                 $ihsg_icon = $ihsg_diff >= 0 ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down';
             ?>
             <div class="col-md-6 col-xl-4 animated" style="animation-delay: 0.2s">
                 <div class="currency-card">
                     <div class="currency-header">
                         <div class="currency-info">
-                            <div class="currency-icon" style="background: #0ea5e9">
+                            <div class="currency-icon" style="background: #4285f4">
                                 <i class="fas fa-landmark"></i>
                             </div>
                             <div>
                                 <h3 class="currency-code">IHSG</h3>
-                                <span class="currency-name">Indeks Harga Saham Gabungan</span>
+                                <span class="currency-name">Indeks Saham Gabungan</span>
                             </div>
                         </div>
                     </div>
@@ -196,13 +187,13 @@ include '../../includes/sidebar.php';
                         <div class="rate-value" style="color: <?= $ihsg_color ?>">
                             <?= number_format($ihsg_val, 2, '.', ',') ?>
                         </div>
-                        <div class="mt-1" style="color: <?= $ihsg_color ?>; font-weight: 600; font-size: 0.9rem;">
-                            <i class="fas <?= $ihsg_icon ?>"></i> 
+                        <div class="mt-2" style="color: <?= $ihsg_color ?>; font-weight: 800; font-size: 13px;">
+                            <i class="fas <?= $ihsg_icon ?> me-1"></i> 
                             <?= ($ihsg_diff >= 0 ? '+' : '') . number_format($ihsg_diff, 2, '.', ',') ?> 
                             (<?= ($ihsg_diff >= 0 ? '+' : '') . number_format($ihsg_pct, 2, '.', ',') ?>%)
                         </div>
-                        <button class="btn btn-sm btn-outline-primary mt-3 w-100 rounded-pill" onclick="showChart('IDX:COMPOSITE', 'IHSG')">
-                            <i class="fas fa-chart-area me-1"></i> Lihat Chart
+                        <button class="btn-chart" onclick="showChart('IDX:COMPOSITE', 'IHSG')">
+                            <i class="fas fa-chart-area"></i> Buka Grafik
                         </button>
                     </div>
                 </div>
@@ -215,14 +206,14 @@ include '../../includes/sidebar.php';
                 $dxy_prev = $rates['DXY_PREV'] ?? $dxy_val;
                 $dxy_diff = $dxy_val - $dxy_prev;
                 $dxy_pct = ($dxy_prev > 0) ? ($dxy_diff / $dxy_prev) * 100 : 0;
-                $dxy_color = $dxy_diff >= 0 ? '#10b981' : '#ef4444';
+                $dxy_color = $dxy_diff >= 0 ? '#10b981' : '#ea4335';
                 $dxy_icon = $dxy_diff >= 0 ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down';
             ?>
             <div class="col-md-6 col-xl-4 animated" style="animation-delay: 0.25s">
                 <div class="currency-card">
                     <div class="currency-header">
                         <div class="currency-info">
-                            <div class="currency-icon" style="background: #6366f1">
+                            <div class="currency-icon" style="background: #202124">
                                 <i class="fas fa-dollar-sign"></i>
                             </div>
                             <div>
@@ -232,17 +223,17 @@ include '../../includes/sidebar.php';
                         </div>
                     </div>
                     <div class="rate-container">
-                        <div class="rate-label">Nilai Indeks</div>
+                        <div class="rate-label">Kekuatan Dollar</div>
                         <div class="rate-value" style="color: <?= $dxy_color ?>">
                             <?= number_format($dxy_val, 3, '.', ',') ?>
                         </div>
-                        <div class="mt-1" style="color: <?= $dxy_color ?>; font-weight: 600; font-size: 0.9rem;">
-                            <i class="fas <?= $dxy_icon ?>"></i> 
+                        <div class="mt-2" style="color: <?= $dxy_color ?>; font-weight: 800; font-size: 13px;">
+                            <i class="fas <?= $dxy_icon ?> me-1"></i> 
                             <?= ($dxy_diff >= 0 ? '+' : '') . number_format($dxy_diff, 3, '.', ',') ?> 
                             (<?= ($dxy_diff >= 0 ? '+' : '') . number_format($dxy_pct, 2, '.', ',') ?>%)
                         </div>
-                        <button class="btn btn-sm btn-outline-indigo mt-3 w-100 rounded-pill" style="border-color: #6366f1; color: #6366f1;" onclick="showChart('TVC:DXY', 'US Dollar Index (DXY)')">
-                            <i class="fas fa-chart-area me-1"></i> Lihat Chart
+                        <button class="btn-chart" onclick="showChart('TVC:DXY', 'US Dollar Index (DXY)')">
+                            <i class="fas fa-chart-area"></i> Buka Grafik
                         </button>
                     </div>
                 </div>
@@ -259,7 +250,7 @@ include '../../includes/sidebar.php';
                     <div class="currency-header">
                         <div class="currency-info">
                             <div class="currency-icon" style="background: #f59e0b">
-                                <i class="fas fa-gold-bar"></i>
+                                <i class="fas fa-coins"></i>
                             </div>
                             <div>
                                 <h3 class="currency-code">EMAS</h3>
@@ -268,17 +259,15 @@ include '../../includes/sidebar.php';
                         </div>
                     </div>
                     <div class="rate-container">
-                        <div class="rate-label">Estimasi Harga (1gr)</div>
-                        <div class="rate-value">Rp <?= number_format($gram_to_idr, 0, ',', '.') ?></div>
-                        <div class="inverse-rate">1 Oz = Rp <?= number_format($xau_to_idr, 0, ',', '.') ?></div>
-                        <?php 
-                            if (isset($rates['USD']) && $rates['USD'] > 0) {
-                                $usd_price = $rates['USD'] / $rates['XAU'];
-                                echo '<div class="fw-bold text-muted mt-1" style="font-size: 0.9rem;">$ ' . number_format($usd_price, 2, '.', ',') . ' / oz</div>';
-                            }
-                        ?>
-                        <button class="btn btn-sm btn-outline-warning mt-3 w-100 rounded-pill" onclick="showChart('TVC:GOLD', 'Harga Emas (XAU/USD)')">
-                            <i class="fas fa-chart-area me-1"></i> Lihat Chart
+                        <div class="rate-label">Harga Estimasi (1gr)</div>
+                        <div class="rate-value" style="color: #f59e0b">
+                            Rp <?= number_format($gram_to_idr, 0, ',', '.') ?>
+                        </div>
+                        <div class="inverse-rate">
+                            1 Oz = Rp <?= number_format($xau_to_idr, 0, ',', '.') ?>
+                        </div>
+                        <button class="btn-chart" onclick="showChart('TVC:GOLD', 'Harga Emas (XAU/USD)')">
+                            <i class="fas fa-chart-area"></i> Buka Grafik
                         </button>
                     </div>
                 </div>
@@ -288,7 +277,7 @@ include '../../includes/sidebar.php';
 
         <!-- Fiat Currencies Section -->
         <h2 class="section-title animated" style="animation-delay: 0.4s">
-            <i class="fas fa-money-bill-wave text-primary"></i> Mata Uang Fiat
+            <i class="fas fa-money-bill-wave"></i> Mata Uang Fiat (Kurs IDR)
         </h2>
         <div class="row g-4 mb-5">
             <?php foreach ($popular_currencies as $code => $info): 
@@ -308,7 +297,7 @@ include '../../includes/sidebar.php';
                         </div>
                     </div>
                     <div class="rate-container">
-                        <div class="rate-label">1 <?= $code ?> =</div>
+                        <div class="rate-label">1 <?= $code ?> setara dengan</div>
                         <div class="rate-value">Rp <?= number_format($rate_to_idr, 2, ',', '.') ?></div>
                         <div class="inverse-rate">1 IDR = <?= number_format($idr_to_rate, 8, '.', ',') ?> <?= $code ?></div>
                     </div>
@@ -319,9 +308,9 @@ include '../../includes/sidebar.php';
 
         <!-- Crypto Assets Section -->
         <h2 class="section-title animated" style="animation-delay: 0.3s">
-            <i class="fas fa-chart-line text-warning"></i> Aset Kripto
+            <i class="fas fa-rocket"></i> Aset Kripto (Market Price)
         </h2>
-        <div class="row g-4">
+        <div class="row g-4 mb-5">
             <?php foreach ($crypto_assets as $code => $info): 
                 if (!isset($rates[$code])) continue;
                 $rate_to_idr = 1 / $rates[$code];
@@ -331,7 +320,7 @@ include '../../includes/sidebar.php';
                 <div class="currency-card">
                     <div class="currency-header">
                         <div class="currency-info">
-                            <div class="currency-icon" style="background: <?= $info['color'] ?>">
+                            <div class="currency-icon" style="background: <?= $info['color'] ?>; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                                 <i class="<?= $info['icon'] ?>"></i>
                             </div>
                             <div>
@@ -341,34 +330,28 @@ include '../../includes/sidebar.php';
                         </div>
                     </div>
                     <div class="rate-container">
-                        <div class="rate-label">1 <?= $code ?> =</div>
-                        <div class="rate-value">Rp <?= number_format($rate_to_idr, 2, ',', '.') ?></div>
+                        <div class="rate-label">Harga dalam Rupiah</div>
+                        <div class="rate-value" style="font-size: 20px;">Rp <?= number_format($rate_to_idr, 0, ',', '.') ?></div>
                         <?php 
-                            // Calculate price in USD for crypto
                             if (isset($rates['USD']) && $rates['USD'] > 0) {
                                 $usd_price = $rates['USD'] / $rates[$code];
-                                echo '<div class="fw-bold text-muted mt-1" style="font-size: 0.9rem;">$ ' . number_format($usd_price, 4, '.', ',') . '</div>';
+                                echo '<div style="font-size: 13px; font-weight: 800; color: var(--muted); margin-top: 5px;">$ ' . number_format($usd_price, $usd_price < 1 ? 4 : 2, '.', ',') . '</div>';
                             }
-
-                            // Determine Binance Symbol
-                            $binance_symbol = "BINANCE:" . $code . "USDT";
-                            // Special case for USDT itself
-                            if ($code === 'USDT') $binance_symbol = "BINANCE:USDTIDR";
+                            $binance_symbol = ($code === 'USDT') ? "BINANCE:USDTIDR" : "BINANCE:" . $code . "USDT";
                         ?>
-                        <button class="btn btn-sm btn-outline-dark mt-3 w-100 rounded-pill" onclick="showChart('<?= $binance_symbol ?>', '<?= $info['name'] ?>')">
-                            <i class="fas fa-chart-area me-1"></i> Lihat Chart
+                        <button class="btn-chart" onclick="showChart('<?= $binance_symbol ?>', '<?= $info['name'] ?>')">
+                            <i class="fas fa-chart-area"></i> Lihat Grafik
                         </button>
-                        <div class="inverse-rate">1 IDR = <?= sprintf("%.12f", $idr_to_rate) ?> <?= $code ?></div>
                     </div>
                 </div>
             </div>
             <?php endforeach; ?>
         </div>
 
-        <div class="mt-5 text-center animated" style="animation-delay: 0.5s">
-            <p class="text-muted small">
-                <i class="fas fa-info-circle"></i> Terakhir diperbarui: <strong><?= $last_updated ?></strong>. 
-                Data diperbarui setiap 15 menit menggunakan multi-source API.
+        <div class="alert animated" style="animation-delay: 0.5s; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.05); border-radius: 24px; padding: 25px; text-align: center;">
+            <p class="text-muted small mb-0 fw-bold">
+                <i class="fas fa-clock me-2"></i> Terakhir diperbarui: <?= $last_updated ?>. 
+                Data diperbarui otomatis setiap 15 menit melalui integrasi API Global.
             </p>
         </div>
     </div>
@@ -379,12 +362,12 @@ include '../../includes/sidebar.php';
 <!-- Chart Modal -->
 <div class="modal fade" id="chartModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content" style="border-radius: 20px; overflow: hidden; border: none;">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold" id="chartModalTitle">Chart</h5>
+        <div class="modal-content modal-tv">
+            <div class="modal-header border-0 pb-3 pt-4 px-4">
+                <h5 class="modal-title fw-bold" id="chartModalTitle">Market Chart</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-0" style="height: 600px;">
+            <div class="modal-body p-0" style="height: 650px;">
                 <div id="tradingview_widget" style="height: 100%; width: 100%;"></div>
             </div>
         </div>

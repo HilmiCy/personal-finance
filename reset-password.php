@@ -64,194 +64,68 @@ $page_title = 'Reset Password';
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f8fafd;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
         }
 
-        .glass-container {
-            width: 100%;
-            max-width: 450px;
-        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at top, rgba(66, 133, 244, 0.05), transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+            }
+
+        .glass-container { width: 100%; max-width: 450px; position: relative; z-index: 1; }
 
         .reset-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border-radius: 32px;
             padding: 48px 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.08);
+            border: 1px solid rgba(232,234,237,0.6);
         }
 
-        .logo-section {
-            text-align: center;
-            margin-bottom: 32px;
-        }
+        .logo-section { text-align: center; margin-bottom: 32px; }
+        .logo-icon { width: 64px; height: 64px; background: #202124; border-radius: 20px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+        .logo-icon i { font-size: 28px; color: #8ab4f8; }
 
-        .logo-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
+        .reset-card h2 { font-size: 26px; font-weight: 700; color: #202124; margin-bottom: 8px; }
+        .reset-subtitle { color: #5f6368; font-size: 14px; font-weight: 500; }
 
-        .logo-icon i {
-            font-size: 32px;
-            color: white;
-        }
+        .form-group { margin-bottom: 24px; }
+        .input-group-custom { position: relative; display: flex; align-items: center; }
+        .input-icon { position: absolute; left: 16px; color: #9aa0a6; font-size: 16px; }
+        .form-control-custom { width: 100%; padding: 14px 16px 14px 48px; font-size: 14px; border: 1.5px solid #e8eaed; border-radius: 12px; font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.3s ease; outline: none; background: #f1f3f4; }
+        .form-control-custom:focus { border-color: #4285f4; box-shadow: 0 0 0 3px rgba(66,133,244,0.12); background: white; }
+        .password-toggle { position: absolute; right: 16px; cursor: pointer; color: #9aa0a6; background: none; border: none; font-size: 16px; }
 
-        .reset-card h2 {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-        }
+        .btn-submit { width: 100%; padding: 14px; background: #202124; color: white; border: none; border-radius: 9999px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(.22,1,.36,1); margin-bottom: 16px; }
+        .btn-submit:hover { background: #2d2f33; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
 
-        .reset-subtitle {
-            color: #6b7280;
-            font-size: 14px;
-            font-weight: 500;
-        }
+        .back-link { text-align: center; color: #5f6368; font-size: 14px; font-weight: 500; }
+        .back-link a { color: #4285f4; text-decoration: none; font-weight: 700; }
 
-        .form-group {
-            margin-bottom: 24px;
-        }
+        .alert-custom { padding: 12px 16px; border-radius: 12px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 500; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .alert-success { background: #e6f4ea; border-left: 4px solid #34a853; color: #34a853; }
+        .alert-danger { background: #fce8e6; border-left: 4px solid #ea4335; color: #ea4335; }
 
-        .input-group-custom {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 16px;
-            color: #9ca3af;
-            font-size: 18px;
-        }
-
-        .form-control-custom {
-            width: 100%;
-            padding: 14px 16px 14px 48px;
-            font-size: 15px;
-            border: 2px solid #e5e7eb;
-            border-radius: 16px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .form-control-custom:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 16px;
-            cursor: pointer;
-            color: #9ca3af;
-            background: none;
-            border: none;
-            font-size: 18px;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 16px;
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(102, 126, 234, 0.4);
-        }
-
-        .back-link {
-            text-align: center;
-            color: #6b7280;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .back-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        .alert-custom {
-            padding: 12px 16px;
-            border-radius: 12px;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-10px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .alert-success {
-            background: #d1fae5;
-            border-left: 4px solid #10b981;
-            color: #065f46;
-        }
-
-        .alert-danger {
-            background: #fee2e2;
-            border-left: 4px solid #ef4444;
-            color: #dc2626;
-        }
-
-        .user-info {
-            background: #f3f4f6;
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 24px;
-            text-align: center;
-        }
-
-        .user-info i {
-            color: #667eea;
-            margin-right: 8px;
-        }
+        .user-info { background: #f1f3f4; padding: 16px; border-radius: 12px; margin-bottom: 24px; text-align: center; border: 1px solid #e8eaed; }
+        .user-info i { color: #4285f4; margin-right: 8px; }
     </style>
 </head>
 <body>

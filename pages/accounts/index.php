@@ -25,115 +25,47 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    /* ========== ACCOUNTS SPECIFIC STYLES ========== */
-    .account-card {
-        background: var(--bg-card);
-        border-radius: 20px;
-        padding: 24px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        height: 100%;
+    .account-card { 
+        background: rgba(255, 255, 255, 0.95); 
+        border: 1px solid rgba(0, 0, 0, 0.08); 
+        border-radius: 32px; 
+        padding: 35px; 
+        transition: var(--transition); 
+        height: 100%; 
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+        display: flex;
+        flex-direction: column;
         position: relative;
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-        box-shadow: var(--shadow-card);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
     }
-    
-    .account-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        border-color: var(--accent-primary);
+    .account-card:hover { 
+        transform: translateY(-5px); 
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.07);
+        border-color: rgba(66, 133, 244, 0.3);
     }
-    
-    .account-icon {
-        width: 48px;
-        height: 48px;
-        background: var(--bg-hover);
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        color: var(--accent-primary);
-        margin-bottom: 16px;
+    .account-icon { 
+        width: 56px; 
+        height: 56px; 
+        border-radius: 20px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: 24px; 
+        margin-bottom: 24px;
+        background: rgba(66, 133, 244, 0.08);
+        color: var(--info);
     }
-    
-    .account-name {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: var(--text-main);
-        margin-bottom: 4px;
-    }
-    
-    .account-balance {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: var(--text-main);
-        letter-spacing: -0.5px;
-    }
-
-    .summary-balance-card {
-        background: var(--bg-card);
-        border-radius: 20px;
-        padding: 24px;
-        border: 1px solid var(--border-color);
-        box-shadow: var(--shadow-card);
-        margin-bottom: 30px;
-    }
-
-    .history-card {
-        background: var(--bg-card);
-        border-radius: 20px;
-        overflow: hidden;
-        margin-top: 30px;
-        border: 1px solid var(--border-color);
-        box-shadow: var(--shadow-card);
-    }
-    
-    .history-header {
-        padding: 20px 24px;
-        border-bottom: 1px solid var(--border-color);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .history-item {
-        padding: 16px 24px;
-        border-bottom: 1px solid var(--border-color);
-        transition: all 0.2s ease;
-    }
-    
-    .history-item:hover {
-        background: var(--bg-hover);
-    }
-
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-        #sidebar {
-            margin-left: -250px !important;
-            position: fixed !important;
-            z-index: 1000 !important;
-            height: 100vh !important;
-        }
-        
-        #sidebar.active { margin-left: 0 !important; }
-        #content, .main-content { width: 100% !important; }
-        .container-fluid { padding: 16px !important; }
-        
-        .header-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .btn-primary-custom, .btn-action-minimal {
-            width: 100%;
-            justify-content: center;
-        }
-    }
+    .account-name { font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+    .account-balance { font-size: 28px; font-weight: 750; color: #1e293b; letter-spacing: -0.04em; }
+    .summary-balance-card { background: rgba(255, 255, 255, 0.95); border-radius: 32px; padding: 40px; border: 1px solid rgba(0, 0, 0, 0.08); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04); margin-bottom: 35px; backdrop-filter: blur(10px); }
+    .history-card { background: rgba(255, 255, 255, 0.95); border-radius: 32px; overflow: hidden; margin-top: 35px; border: 1px solid rgba(0, 0, 0, 0.08); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04); backdrop-filter: blur(10px); }
+    .history-header { padding: 25px 32px; border-bottom: 1px solid rgba(0, 0, 0, 0.05); background: rgba(255, 255, 255, 0.2); }
+    .history-item { padding: 20px 32px; border-bottom: 1px solid rgba(0, 0, 0, 0.03); transition: all 0.2s ease; }
+    .history-item:hover { background: rgba(0, 0, 0, 0.01); }
 </style>
 
-<div id="content" class="main-content">
+<div class="main-content">
     <div class="container-fluid">
         <!-- Header -->
         <div class="welcome-card animated">
@@ -164,7 +96,7 @@ include '../../includes/sidebar.php';
                 <div class="summary-balance-card animated" style="animation-delay: 0.1s">
                     <div class="d-flex align-items-center justify-content-between flex-wrap">
                         <div>
-                            <div style="font-size: 14px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Total Saldo Terkonsolidasi</div>
+                            <div style="font-size: 14px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Total Saldo Terkonsolidasi</div>
                             <div class="account-balance" style="font-size: 2.5rem; color: #10b981; margin-top: 5px;"><?= formatRupiah($total_balance) ?></div>
                         </div>
                         <div class="text-muted d-none d-md-block" style="opacity: 0.15;">
@@ -227,7 +159,7 @@ include '../../includes/sidebar.php';
         <div class="history-card animated" style="animation-delay: 0.2s">
             <div class="history-header">
                 <h6 class="mb-0 fw-bold text-uppercase" style="letter-spacing: 1px; color: #6b7280;">Aktivitas Transfer</h6>
-                <a href="historytransfer.php" class="text-decoration-none small fw-bold" style="color: #667eea;">Lihat Semua</a>
+                <a href="historytransfer.php" class="text-decoration-none small fw-bold" style="color: #4285f4;">Lihat Semua</a>
             </div>
             <div class="history-list">
                 <?php foreach ($transfer_history as $history): ?>

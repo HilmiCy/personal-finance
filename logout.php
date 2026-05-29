@@ -58,174 +58,161 @@ $user_name = $_SESSION['user_name'] ?? 'Pengguna';
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(145deg, #e0f2fe 0%, #fef3c7 50%, #fce7f3 100%);
+            background: #f8fafd;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
             position: relative;
+            overflow: hidden;
         }
 
-        /* Decorative bubbles */
-        .bg-bubble {
+        body::before {
+            content: '';
             position: fixed;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
-            filter: blur(60px);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top, rgba(66, 133, 244, 0.05), transparent 70%);
             pointer-events: none;
-        }
-
-        .bubble-1 {
-            width: 400px;
-            height: 400px;
-            top: -200px;
-            left: -200px;
-            background: #fbbf24;
-        }
-
-        .bubble-2 {
-            width: 500px;
-            height: 500px;
-            bottom: -250px;
-            right: -250px;
-            background: #34d399;
-        }
-
-        .bubble-3 {
-            width: 300px;
-            height: 300px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #60a5fa;
-            opacity: 0.3;
+            z-index: 0;
         }
 
         /* Main Container */
         .logout-container {
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             position: relative;
             z-index: 1;
         }
 
         .logout-card {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            border-radius: 48px;
-            padding: 48px 36px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 32px;
+            padding: 48px 40px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.08);
+            border: 1px solid rgba(232, 234, 237, 0.6);
+            transition: all 0.4s cubic-bezier(.22,1,.36,1);
             text-align: center;
         }
 
         .logout-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-2px);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.10);
         }
 
         /* Icon */
         .icon-badge {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-            border-radius: 30px;
+            width: 72px;
+            height: 72px;
+            background: #f1f3f4;
+            border: 1px solid #e8eaed;
+            border-radius: 20px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 24px;
-            box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.3);
         }
 
         .icon-badge i {
-            font-size: 36px;
-            color: white;
+            font-size: 28px;
+            color: #ea4335;
         }
 
-        /* User Avatar */
+        /* User Info Section */
+        .user-section {
+            background: #f8fafd;
+            border: 1px solid #e8eaed;
+            padding: 24px;
+            border-radius: 24px;
+            margin-bottom: 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .user-avatar {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            width: 64px;
+            height: 64px;
+            background: #4285f4;
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 16px;
-            border: 3px solid white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .user-avatar i {
-            font-size: 32px;
+            margin-bottom: 12px;
             color: white;
+            font-size: 28px;
+            font-weight: 700;
         }
 
         .user-name {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 4px;
+            color: #202124;
+            margin-bottom: 2px;
         }
 
         .user-email {
             font-size: 13px;
-            color: #6b7280;
-            margin-bottom: 24px;
+            color: #5f6368;
         }
 
         .logout-card h2 {
             font-size: 24px;
-            font-weight: 800;
-            color: #1f2937;
+            font-weight: 700;
+            color: #202124;
             margin-bottom: 12px;
+            letter-spacing: -0.02em;
         }
 
         .logout-message {
-            color: #6b7280;
+            color: #5f6368;
             font-size: 14px;
             margin-bottom: 32px;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         /* Button Group */
         .button-group {
             display: flex;
-            gap: 16px;
-            margin-bottom: 20px;
+            gap: 12px;
         }
 
         .btn {
             flex: 1;
             padding: 14px;
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 700;
             border: none;
-            border-radius: 40px;
+            border-radius: 9999px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(.22,1,.36,1);
             text-decoration: none;
             text-align: center;
             display: inline-block;
         }
 
         .btn-logout {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            background: #202124;
             color: white;
         }
 
         .btn-logout:hover {
+            background: #2d2f33;
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.4);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
         }
 
         .btn-cancel {
-            background: #f3f4f6;
-            color: #374151;
+            background: transparent;
+            border: 1px solid #e8eaed;
+            color: #5f6368;
         }
 
         .btn-cancel:hover {
-            background: #e5e7eb;
-            transform: translateY(-2px);
+            background: #f1f3f4;
+            color: #202124;
+            border-color: #5f6368;
         }
 
         /* Loading Animation Overlay */
@@ -235,7 +222,8 @@ $user_name = $_SESSION['user_name'] ?? 'Pengguna';
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(5, 150, 105, 0.95);
+            background: rgba(32, 33, 36, 0.95);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -256,17 +244,9 @@ $user_name = $_SESSION['user_name'] ?? 'Pengguna';
         }
 
         @keyframes bounceIn {
-            0% {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            70% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            0% { transform: scale(0.8); opacity: 0; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         .wave-spinner {
@@ -278,44 +258,19 @@ $user_name = $_SESSION['user_name'] ?? 'Pengguna';
 
         .wave-spinner i {
             position: absolute;
-            font-size: 36px;
-            color: white;
+            font-size: 32px;
+            color: #8ab4f8;
             animation: waveFloat 1s ease-in-out infinite;
         }
 
-        .wave-spinner i:nth-child(1) {
-            top: 20%;
-            left: 20%;
-            animation-delay: 0s;
-        }
-
-        .wave-spinner i:nth-child(2) {
-            top: 20%;
-            right: 20%;
-            animation-delay: 0.2s;
-        }
-
-        .wave-spinner i:nth-child(3) {
-            bottom: 20%;
-            left: 20%;
-            animation-delay: 0.4s;
-        }
-
-        .wave-spinner i:nth-child(4) {
-            bottom: 20%;
-            right: 20%;
-            animation-delay: 0.6s;
-        }
+        .wave-spinner i:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+        .wave-spinner i:nth-child(2) { top: 20%; right: 20%; animation-delay: 0.2s; }
+        .wave-spinner i:nth-child(3) { bottom: 20%; left: 20%; animation-delay: 0.4s; }
+        .wave-spinner i:nth-child(4) { bottom: 20%; right: 20%; animation-delay: 0.6s; }
 
         @keyframes waveFloat {
-            0%, 100% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-15px) scale(1.1);
-                opacity: 0.7;
-            }
+            0%, 100% { transform: translateY(0) scale(1); opacity: 1; }
+            50% { transform: translateY(-15px) scale(1.1); opacity: 0.7; }
         }
 
         .goodbye-circle {
@@ -331,17 +286,13 @@ $user_name = $_SESSION['user_name'] ?? 'Pengguna';
         }
 
         @keyframes scaleSuccess {
-            from {
-                transform: scale(0);
-            }
-            to {
-                transform: scale(1);
-            }
+            from { transform: scale(0); }
+            to { transform: scale(1); }
         }
 
         .goodbye-circle i {
             font-size: 50px;
-            color: #10b981;
+            color: #34a853;
         }
 
         .loading-card h3 {
@@ -352,7 +303,7 @@ $user_name = $_SESSION['user_name'] ?? 'Pengguna';
         }
 
         .loading-card p {
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 14px;
         }
 
@@ -366,28 +317,17 @@ $user_name = $_SESSION['user_name'] ?? 'Pengguna';
         .loading-dots span {
             width: 8px;
             height: 8px;
-            background: white;
+            background: #8ab4f8;
             border-radius: 50%;
             animation: dotPulse 1.2s ease-in-out infinite;
         }
 
-        .loading-dots span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .loading-dots span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
 
         @keyframes dotPulse {
-            0%, 100% {
-                transform: scale(0.5);
-                opacity: 0.5;
-            }
-            50% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            0%, 100% { transform: scale(0.5); opacity: 0.5; }
+            50% { transform: scale(1); opacity: 1; }
         }
 
         /* Responsive */
@@ -398,44 +338,40 @@ $user_name = $_SESSION['user_name'] ?? 'Pengguna';
 
             .button-group {
                 flex-direction: column;
-                gap: 12px;
             }
 
             .logout-card h2 {
-                font-size: 20px;
+                font-size: 22px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="bg-bubble bubble-1"></div>
-    <div class="bg-bubble bubble-2"></div>
-    <div class="bg-bubble bubble-3"></div>
-
     <div class="logout-container">
         <div class="logout-card">
             <div class="icon-badge">
                 <i class="fas fa-sign-out-alt"></i>
             </div>
 
-            <div class="user-avatar">
-                <i class="fas fa-user-circle"></i>
+            <div class="user-section">
+                <div class="user-avatar">
+                    <?= strtoupper(substr($user_name, 0, 1)) ?>
+                </div>
+                <div class="user-name"><?= htmlspecialchars($user_name) ?></div>
+                <div class="user-email"><?= htmlspecialchars($_SESSION['user_email'] ?? '') ?></div>
             </div>
-            <div class="user-name"><?= htmlspecialchars($user_name) ?></div>
-            <div class="user-email"><?= htmlspecialchars($_SESSION['user_email'] ?? '') ?></div>
 
-            <h2>Yakin ingin keluar? 😢</h2>
+            <h2>Yakin ingin keluar?</h2>
             <p class="logout-message">
-                Kamu akan keluar dari akun ini. Jangan khawatir, semua data keuanganmu tetap aman. <br>
-                Sampai jumpa kembali ya! 👋
+                Kamu akan keluar dari akun ini. Jangan khawatir, semua data keuanganmu tetap aman.
             </p>
 
             <div class="button-group">
                 <a href="?cancel=1" class="btn btn-cancel">
-                    <i class="fas fa-arrow-left"></i> Batal
+                    Batal
                 </a>
                 <a href="?confirm=yes" class="btn btn-logout" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt"></i> Keluar
+                    Keluar Sekarang
                 </a>
             </div>
         </div>

@@ -7,7 +7,6 @@ if (!isset($page_title)) {
     $page_title = APP_NAME;
 }
 
-// Set current page untuk sidebar
 if (!isset($current_page)) {
     $current_page = basename($_SERVER['PHP_SELF']);
 }
@@ -23,7 +22,6 @@ if (!isset($current_page)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= APP_URL ?>assets/css/style.css">
     <script>
-        // Check for saved theme preference
         const currentTheme = localStorage.getItem('theme');
         if (currentTheme === 'dark') {
             document.documentElement.classList.add('dark-mode');
@@ -32,17 +30,14 @@ if (!isset($current_page)) {
             });
         }
     </script>
-
 </head>
 <body>
     <div class="mobile-header">
-        <div class="logo-mobile" style="font-weight: 800; font-size: 20px; color: #667eea;">
-            <i class="fas fa-chart-line"></i> <?= APP_NAME ?>
+        <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-chart-line" style="color: var(--info); font-size: 20px;"></i>
+            <span style="font-weight: 800; font-size: 16px; color: var(--fg);"><?= APP_NAME ?></span>
         </div>
         <div class="d-flex align-items-center gap-2">
-            <button class="menu-toggle" onclick="toggleTheme(!document.body.classList.contains('dark-mode'))">
-                <i class="fas fa-moon"></i>
-            </button>
             <button class="menu-toggle" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>

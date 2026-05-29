@@ -60,11 +60,12 @@ include '../../includes/sidebar.php';
     }
     
     .current-balance {
-        background: linear-gradient(135deg, #ef444420, #dc262620);
+        background: rgba(234, 67, 53, 0.08);
         border-radius: 16px;
         padding: 20px;
         text-align: center;
         margin-bottom: 30px;
+        border: 1px solid rgba(234, 67, 53, 0.1);
     }
     
     .current-balance .label {
@@ -125,7 +126,7 @@ include '../../includes/sidebar.php';
     }
     
     .btn-submit {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        background: var(--danger);
         color: white;
         border: none;
         padding: 12px 24px;

@@ -52,36 +52,19 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    .analytics-card {
-        background: var(--bg-card);
-        border-radius: 24px;
-        padding: 30px;
-        box-shadow: var(--shadow-card);
-        border: 1px solid var(--border-color);
-        margin-bottom: 24px;
-        color: var(--text-main);
-    }
-    .ai-badge {
-        background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-        color: white;
-        padding: 5px 15px;
-        border-radius: 50px;
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    .prediction-highlight { font-size: 36px; font-weight: 800; color: var(--text-main); margin: 15px 0; }
-    .trend-indicator { display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; border-radius: 15px; font-weight: 600; }
-    .trend-up { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
-    .trend-down { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-    .trend-stable { background: var(--bg-hover); color: var(--text-muted); }
+    .analytics-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-xl); padding: 30px; box-shadow: var(--card-shadow); margin-bottom: 24px; }
+    .ai-badge { background: var(--primary); color: white; padding: 5px 15px; border-radius: var(--radius-full); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .prediction-highlight { font-size: 36px; font-weight: 800; color: var(--fg); margin: 15px 0; }
+    .trend-indicator { display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 600; }
+    .trend-up { background: rgba(234,67,53,0.1); color: var(--danger); }
+    .trend-down { background: rgba(52,168,83,0.1); color: var(--success); }
+    .trend-stable { background: var(--surface); color: var(--muted); }
     .insight-item { display: flex; gap: 15px; margin-bottom: 20px; }
-    .insight-icon { width: 40px; height: 40px; min-width: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-    .status-badge { padding: 8px 16px; border-radius: 12px; font-weight: 700; font-size: 14px; }
-    .status-healthy { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-    .status-warning { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
-    .status-critical { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+    .insight-icon { width: 40px; height: 40px; min-width: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .status-badge { padding: 8px 16px; border-radius: var(--radius-sm); font-weight: 700; font-size: 14px; }
+    .status-healthy { background: rgba(52,168,83,0.1); color: var(--success); }
+    .status-warning { background: rgba(251,188,5,0.1); color: var(--warning); }
+    .status-critical { background: rgba(234,67,53,0.1); color: var(--danger); }
 </style>
 
 <div class="main-content">
@@ -179,7 +162,7 @@ include '../../includes/sidebar.php';
                     <div class="card-title-custom"><i class="fas fa-chart-line"></i> Perubahan Kategori (Month-to-Month)</div>
                     <?php if (!empty($deep_insights)): ?>
                         <?php foreach($deep_insights as $insight): ?>
-                            <div class="insight-item p-3 rounded-4 mb-3" style="background: var(--bg-hover); border-left: 4px solid <?= $insight['type'] == 'increase' ? '#ef4444' : '#10b981' ?>;">
+                            <div class="insight-item p-3 rounded-4 mb-3" style="background: var(--surface); border-left: 4px solid <?= $insight['type'] == 'increase' ? '#ef4444' : '#10b981' ?>;">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="insight-icon" style="background: <?= $insight['type'] == 'increase' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)' ?>; color: <?= $insight['type'] == 'increase' ? '#ef4444' : '#10b981' ?>;">
                                         <i class="fas <?= $insight['type'] == 'increase' ? 'fa-arrow-up' : 'fa-arrow-down' ?>"></i>
@@ -246,8 +229,8 @@ include '../../includes/sidebar.php';
             datasets: [{
                 label: 'Pengeluaran',
                 data: <?= json_encode(array_column($history_data, 'expense')) ?>,
-                borderColor: '#6366f1',
-                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                borderColor: '#4285f4',
+                backgroundColor: 'rgba(66, 133, 244, 0.1)',
                 fill: true, tension: 0.4, pointRadius: 5
             }]
         },

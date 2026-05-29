@@ -45,369 +45,130 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    /* ========== WELCOME CARD ========== */
-    .welcome-card {
-        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-        border-radius: 20px;
-        padding: 30px;
-        margin-bottom: 24px;
-        color: white;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
-    }
-    
-    .welcome-title {
-        font-size: 1.75rem;
-        font-weight: 700;
-        margin: 0;
-    }
-    
-    .welcome-subtitle {
-        margin: 8px 0 0 0;
-        opacity: 0.9;
-        font-size: 0.95rem;
-    }
-    
-    /* ========== PROFILE HEADER ========== */
-    .profile-header {
-        background: white;
-        border-radius: 24px;
-        padding: 40px;
+    /* ========== PROFILE SPECIFIC STYLES ========== */
+    .profile-header-card { 
+        background: rgba(255, 255, 255, 0.95); 
+        border: 1px solid rgba(0, 0, 0, 0.08); 
+        border-radius: 32px; 
+        padding: 45px; 
+        text-align: center; 
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04); 
+        transition: var(--transition);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         margin-bottom: 30px;
-        text-align: center;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        border: 1px solid #f3f4f6;
     }
     
-    .profile-avatar {
-        width: 130px;
-        height: 130px;
-        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 24px;
-        color: white;
-        font-size: 52px;
-        font-weight: 700;
-        box-shadow: 0 15px 35px rgba(99, 102, 241, 0.25);
+    .avatar-wrapper {
+        width: 140px;
+        height: 140px;
+        margin: 0 auto 30px;
+        position: relative;
     }
     
-    .profile-name {
-        font-size: 28px;
-        font-weight: 800;
-        color: #1f2937;
-        margin-bottom: 8px;
+    .profile-avatar-custom { 
+        width: 100%; 
+        height: 100%; 
+        background: var(--fg); 
+        border-radius: 50px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        color: white; 
+        font-size: 60px; 
+        font-weight: 800; 
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        transform: rotate(-5deg);
+        transition: var(--transition);
     }
+    .profile-header-card:hover .profile-avatar-custom { transform: rotate(0deg) scale(1.05); }
     
-    .profile-email {
-        font-size: 16px;
-        color: #6b7280;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-    }
+    .profile-name { font-size: 32px; font-weight: 850; color: var(--fg); margin-bottom: 8px; letter-spacing: -0.03em; }
+    .profile-email { font-size: 15px; color: var(--muted); font-weight: 600; }
     
-    .profile-email i {
-        color: #6366f1;
-    }
-    
-    /* Profile Stats */
-    .profile-stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 24px;
-        margin-top: 32px;
-        padding-top: 32px;
-        border-top: 1px solid #f3f4f6;
-    }
-    
-    .stat-item {
-        text-align: center;
-        padding: 15px;
-        border-radius: 16px;
-        background: #f8fafc;
-        border: 1px solid #f1f5f9;
-        transition: transform 0.2s;
-    }
-
-    .stat-item:hover {
-        transform: translateY(-3px);
-    }
-    
-    .stat-number {
-        font-size: 22px;
-        font-weight: 800;
-        color: #1f2937;
-        margin-bottom: 4px;
-    }
-    
-    .stat-label {
-        font-size: 11px;
-        color: #64748b;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        font-weight: 600;
-    }
-    
-    /* Profile Cards */
-    .profile-card {
-        background: white;
-        border-radius: 24px;
-        padding: 28px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    .profile-info-card { 
+        background: rgba(255, 255, 255, 0.95); 
+        border: 1px solid rgba(0, 0, 0, 0.08); 
+        border-radius: 32px; 
+        padding: 40px; 
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04); 
         height: 100%;
-        border: 1px solid #f3f4f6;
+        backdrop-filter: blur(10px);
     }
     
-    .card-title {
-        font-size: 18px;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 24px;
+    .info-section-title {
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--muted);
+        margin-bottom: 30px;
         display: flex;
         align-items: center;
         gap: 12px;
     }
+    .info-section-title i { color: var(--info); font-size: 16px; }
     
-    .card-title i {
-        width: 36px;
-        height: 36px;
-        background: #f1f5ff;
-        color: #6366f1;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
+    .info-grid-row { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        padding: 18px 0; 
+        border-bottom: 1px solid rgba(0,0,0,0.04); 
     }
+    .info-grid-row:last-child { border-bottom: none; }
     
-    /* Info Rows */
-    .info-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 0;
-        border-bottom: 1px solid #f3f4f6;
+    .info-label { font-size: 13px; font-weight: 700; color: var(--muted); }
+    .info-value { font-size: 14px; font-weight: 800; color: var(--fg); }
+    
+    .stat-pill-group { display: flex; gap: 15px; margin-top: 35px; justify-content: center; }
+    .stat-pill-item { 
+        background: var(--surface); 
+        padding: 15px 25px; 
+        border-radius: 20px; 
+        text-align: center; 
+        border: 1px solid rgba(0,0,0,0.03);
+        min-width: 120px;
     }
-    
-    .info-row:last-child {
-        border-bottom: none;
-    }
-    
-    .info-label {
-        font-weight: 600;
-        color: #64748b;
+    .stat-pill-number { font-size: 20px; font-weight: 850; color: var(--fg); display: block; }
+    .stat-pill-label { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+    .btn-profile {
+        padding: 16px 30px;
+        border-radius: 18px;
+        font-weight: 800;
         font-size: 14px;
-    }
-    
-    .info-value {
-        color: #1f2937;
-        font-weight: 600;
-        font-size: 14px;
-    }
-    
-    /* Badge Styles */
-    .status-badge {
-        padding: 6px 14px;
-        border-radius: 10px;
-        font-size: 12px;
-        font-weight: 700;
+        transition: var(--transition);
         display: inline-flex;
-        align-items: center;
-        gap: 6px;
-    }
-    
-    .status-badge.active {
-        background: #ecfdf5;
-        color: #059669;
-    }
-    
-    .status-badge.inactive {
-        background: #f9fafb;
-        color: #6b7280;
-    }
-    
-    /* Member Since */
-    .member-since {
-        background: #f0fdf4;
-        border-radius: 16px;
-        padding: 20px;
-        text-align: center;
-        margin: 24px 0;
-        border: 1px solid #dcfce7;
-        color: #166534;
-        font-weight: 500;
-        font-size: 14px;
-    }
-    
-    .member-since i {
-        color: #10b981;
-        font-size: 18px;
-        margin-bottom: 8px;
-        display: block;
-    }
-    
-    /* Buttons */
-    .btn-profile-action {
-        width: 100%;
-        padding: 14px;
-        border-radius: 14px;
-        font-weight: 700;
-        font-size: 14px;
-        transition: all 0.2s;
-        display: flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
         border: none;
-        cursor: pointer;
+        width: 100%;
     }
+    .btn-edit-main { background: var(--fg); color: white; }
+    .btn-edit-main:hover { background: #000; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
     
-    .btn-edit {
-        background: #6366f1;
-        color: white;
-    }
-    
-    .btn-edit:hover {
-        background: #4f46e5;
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
-    }
-    
-    .btn-password {
-        background: #f1f5f9;
-        color: #475569;
-    }
-    
-    .btn-password:hover {
-        background: #e2e8f0;
-        color: #1e293b;
-    }
+    .btn-pass-alt { background: var(--surface); color: var(--fg); margin-top: 15px; border: 1px solid rgba(0,0,0,0.05); }
+    .btn-pass-alt:hover { background: var(--border); transform: translateY(-2px); }
 
-    /* ========== CUSTOM MODAL STYLES ========== */
-    .modal-content-custom {
-        border-radius: 28px !important;
-        border: none !important;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+    .efficiency-card {
+        background: var(--fg);
+        border-radius: 24px;
+        padding: 30px;
+        color: white;
+        margin-top: 35px;
+        position: relative;
         overflow: hidden;
     }
-
-    .modal-header-custom {
-        padding: 25px 30px 15px !important;
-        border-bottom: 1px solid #f1f5f9 !important;
-        background: #fff;
-    }
-
-    .modal-body-custom {
-        padding: 20px 30px 30px !important;
-    }
-
-    .modal-footer-custom {
-        padding: 20px 30px 25px !important;
-        border-top: 1px solid #f1f5f9 !important;
-        background: #f8fafc;
-        gap: 12px;
-    }
-
-    .form-control {
-        border-radius: 12px !important;
-        padding: 12px 16px !important;
-        border: 1px solid #e2e8f0 !important;
-        font-size: 14px !important;
-        transition: all 0.2s !important;
-    }
-
-    .form-control:focus {
-        border-color: #6366f1 !important;
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1) !important;
-    }
-
-    .btn-secondary-custom {
-        background: #ffffff !important;
-        color: #64748b !important;
-        border: 1px solid #e2e8f0 !important;
-        padding: 12px 24px !important;
-        border-radius: 14px !important;
-        font-weight: 700 !important;
-        font-size: 14px !important;
-        transition: all 0.2s !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        cursor: pointer !important;
-    }
-
-    .btn-secondary-custom:hover {
-        background: #f1f5f9 !important;
-        color: #1e293b !important;
-        border-color: #cbd5e1 !important;
-        transform: translateY(-1px);
-    }
-
-    .btn-primary-custom {
-        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
-        color: white !important;
-        border: none !important;
-        padding: 12px 24px !important;
-        border-radius: 14px !important;
-        font-weight: 700 !important;
-        font-size: 14px !important;
-        transition: all 0.2s !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2) !important;
-    }
-
-    .btn-primary-custom:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3) !important;
-        opacity: 0.95;
-    }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-        .profile-header {
-            padding: 30px 20px;
-        }
-        
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            font-size: 40px;
-        }
-        
-        .profile-name {
-            font-size: 24px;
-        }
-        
-        .profile-stats {
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        
-        .stat-item {
-            padding: 12px;
-        }
-        
-        .stat-number {
-            font-size: 18px;
-        }
-        
-        .info-row {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 4px;
-        }
-        
-        .info-value {
-            width: 100%;
-            text-align: left;
-        }
+    .efficiency-card::after {
+        content: '\f201';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        right: -10px; bottom: -10px;
+        font-size: 80px;
+        opacity: 0.1;
     }
 </style>
 
@@ -417,137 +178,106 @@ include '../../includes/sidebar.php';
         <div class="welcome-card animated">
             <div class="row align-items-center">
                 <div class="col-12">
-                    <h1 class="welcome-title text-white">Profil Saya</h1>
-                    <p class="welcome-subtitle text-white">Kelola informasi akun dan pantau aktivitas Anda</p>
+                    <h1 class="welcome-title">Profil Pengguna</h1>
+                    <p class="welcome-subtitle">Atur preferensi akun dan pantau ringkasan performa finansial Anda</p>
                 </div>
             </div>
         </div>
 
         <div class="row g-4">
-            <!-- Left Column: Avatar & Main Info -->
-            <div class="col-lg-4">
-                <div class="profile-header animated" style="animation-delay: 0.1s">
-                    <div class="profile-avatar">
-                        <?= strtoupper(substr($_SESSION['user_name'], 0, 1)) ?>
-                    </div>
-                    <h2 class="profile-name"><?= htmlspecialchars($_SESSION['user_name']) ?></h2>
-                    <div class="profile-email">
-                        <i class="fas fa-envelope"></i> <?= htmlspecialchars($_SESSION['user_email']) ?>
+            <!-- Left Column: Primary Card -->
+            <div class="col-lg-5">
+                <div class="profile-header-card animated" style="animation-delay: 0.1s">
+                    <div class="avatar-wrapper">
+                        <div class="profile-avatar-custom" style="background: #1e293b; color: #ffffff;">
+                            <?= strtoupper(substr($user_data['name'] ?? 'U', 0, 1)) ?>
+                        </div>
                     </div>
                     
-                    <div class="profile-stats">
-                        <div class="stat-item">
-                            <div class="stat-number text-primary"><?= number_format($total_transactions) ?></div>
-                            <div class="stat-label">Transaksi</div>
+                    <h2 class="profile-name"><?= htmlspecialchars($user_data['name']) ?></h2>
+                    <p class="profile-email"><?= htmlspecialchars($user_data['email']) ?></p>
+                    
+                    <div class="stat-pill-group">
+                        <div class="stat-pill-item">
+                            <span class="stat-pill-number text-primary"><?= number_format($total_transactions) ?></span>
+                            <span class="stat-pill-label">Transaksi</span>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-number text-success"><?= formatRupiah($balance) ?></div>
-                            <div class="stat-label">Saldo Bersih</div>
-                        </div>
-                    </div>
-
-                    <div class="member-since">
-                        <i class="fas fa-calendar-check"></i>
-                        Member sejak <?= formatDate($user_data['created_at']) ?>
-                        <div class="mt-1 small opacity-75">
-                            (Sudah 
-                            <?php 
-                            $created = new DateTime($user_data['created_at']);
-                            $now = new DateTime();
-                            $diff = $created->diff($now);
-                            echo ($diff->y > 0 ? $diff->y . ' th ' : '') . $diff->m . ' bln';
-                            ?>)
+                        <div class="stat-pill-item">
+                            <span class="stat-pill-number text-success"><?= number_format($stats['total_accounts'] ?? 0) ?></span>
+                            <span class="stat-pill-label">Akun</span>
                         </div>
                     </div>
 
-                    <div class="d-grid gap-3">
-                        <button class="btn-profile-action btn-edit" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                            <i class="fas fa-user-edit"></i> Edit Profil
-                        </button>
-                        <button class="btn-profile-action btn-password" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                            <i class="fas fa-key"></i> Ganti Password
-                        </button>
+                    <div style="margin: 35px 0; padding: 20px; background: var(--surface); border-radius: 20px; font-size: 13px; font-weight: 700; color: var(--muted);">
+                        <i class="fas fa-shield-alt me-2 text-success"></i>
+                        Bergabung sejak <?= date('d M Y', strtotime($user_data['created_at'])) ?>
                     </div>
+
+                    <button class="btn-profile btn-edit-main" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <i class="fas fa-pen-nib"></i> Edit Informasi Profil
+                    </button>
+                    <button class="btn-profile btn-pass-alt" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                        <i class="fas fa-lock"></i> Keamanan & Password
+                    </button>
                 </div>
             </div>
 
-            <!-- Right Column: Details & Stats -->
-            <div class="col-lg-8">
-                <div class="row g-4">
-                    <!-- Detail Info -->
-                    <div class="col-12">
-                        <div class="profile-card animated" style="animation-delay: 0.2s">
-                            <div class="card-title">
-                                <i class="fas fa-id-card"></i>
-                                Informasi Detail Akun
+            <!-- Right Column: Details -->
+            <div class="col-lg-7">
+                <div class="profile-info-card animated" style="animation-delay: 0.2s">
+                    <div class="info-section-title">
+                        <i class="fas fa-user-shield"></i> Validitas Akun
+                    </div>
+                    
+                    <div class="info-grid-row">
+                        <span class="info-label">User ID Internal</span>
+                        <span class="info-value">#<?= str_pad($user_data['id'], 5, '0', STR_PAD_LEFT) ?></span>
+                    </div>
+                    <div class="info-grid-row">
+                        <span class="info-label">Status Akun</span>
+                        <span class="info-value text-success">
+                            <i class="fas fa-check-circle me-1"></i> AKTIF & TERVERIFIKASI
+                        </span>
+                    </div>
+                    <div class="info-grid-row">
+                        <span class="info-label">Email Utama</span>
+                        <span class="info-value"><?= htmlspecialchars($user_data['email']) ?></span>
+                    </div>
+
+                    <div class="info-section-title" style="margin-top: 50px;">
+                        <i class="fas fa-chart-line"></i> Ringkasan Kumulatif
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-sm-6">
+                            <div class="info-grid-row">
+                                <span class="info-label">Total Pemasukan</span>
+                                <span class="info-value text-success"><?= formatRupiah($total_income) ?></span>
                             </div>
-                            
-                            <div class="info-row">
-                                <span class="info-label">ID Pengguna</span>
-                                <span class="info-value text-muted">#<?= str_pad($_SESSION['user_id'], 5, '0', STR_PAD_LEFT) ?></span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Status Verifikasi</span>
-                                <span class="info-value">
-                                    <span class="status-badge active">
-                                        <i class="fas fa-check-circle"></i> Terverifikasi
-                                    </span>
-                                </span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Email Pemulihan</span>
-                                <span class="info-value"><?= htmlspecialchars($user_data['email']) ?></span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Terakhir Login</span>
-                                <span class="info-value"><?= date('d M Y, H:i') ?></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="info-grid-row">
+                                <span class="info-label">Total Pengeluaran</span>
+                                <span class="info-value text-danger"><?= formatRupiah($total_expense) ?></span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Financial Summary -->
-                    <div class="col-12">
-                        <div class="profile-card animated" style="animation-delay: 0.3s">
-                            <div class="card-title">
-                                <i class="fas fa-chart-pie"></i>
-                                Ringkasan Aktivitas Finansial
+                    <div class="efficiency-card">
+                        <div class="d-flex justify-content-between align-items-end mb-3">
+                            <div>
+                                <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.7; margin-bottom: 5px;">Rasio Efisiensi</div>
+                                <div style="font-size: 24px; font-weight: 850;">Tabungan Bersih</div>
                             </div>
-                            
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <div class="info-row">
-                                        <span class="info-label">Total Akun Terdaftar</span>
-                                        <span class="info-value"><?= number_format($stats['total_accounts'] ?? 0) ?> Akun</span>
-                                    </div>
-                                    <div class="info-row">
-                                        <span class="info-label">Total Kategori</span>
-                                        <span class="info-value"><?= number_format($stats['total_categories'] ?? 0) ?> Kategori</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="info-row">
-                                        <span class="info-label">Pemasukan (Total)</span>
-                                        <span class="info-value text-success"><?= formatRupiah($total_income) ?></span>
-                                    </div>
-                                    <div class="info-row">
-                                        <span class="info-label">Pengeluaran (Total)</span>
-                                        <span class="info-value text-danger"><?= formatRupiah($total_expense) ?></span>
-                                    </div>
-                                </div>
+                            <div style="font-size: 28px; font-weight: 900;">
+                                <?= $total_income > 0 ? round(($balance / $total_income) * 100, 1) : 0 ?>%
                             </div>
-                            
-                            <div class="mt-4 p-3 bg-light rounded-3">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span class="small fw-bold text-muted">Efisiensi Tabungan</span>
-                                    <span class="small fw-bold <?= $total_income > 0 ? 'text-primary' : '' ?>">
-                                        <?= $total_income > 0 ? round(($balance / $total_income) * 100, 1) : 0 ?>%
-                                    </span>
-                                </div>
-                                <div class="progress" style="height: 8px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" 
-                                         style="width: <?= $total_income > 0 ? max(0, min(100, ($balance / $total_income) * 100)) : 0 ?>%"></div>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="progress" style="height: 10px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                            <div class="progress-bar bg-white" style="width: <?= $total_income > 0 ? max(0, min(100, ($balance / $total_income) * 100)) : 0 ?>%; border-radius: 10px;"></div>
+                        </div>
+                        <div style="font-size: 12px; margin-top: 15px; font-weight: 600; opacity: 0.8;">
+                            Akumulasi saldo mengendap: <?= formatRupiah($balance) ?>
                         </div>
                     </div>
                 </div>
@@ -650,7 +380,7 @@ include '../../includes/sidebar.php';
             text: 'Apakah Anda yakin ingin mengupdate informasi profil?',
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#667eea',
+            confirmButtonColor: '#4285f4',
             cancelButtonColor: '#6c757d',
             confirmButtonText: '<i class="fas fa-save"></i> Ya, Update!',
             cancelButtonText: '<i class="fas fa-times"></i> Batal'
@@ -746,7 +476,7 @@ include '../../includes/sidebar.php';
             text: 'Apakah Anda yakin ingin mengganti password?',
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#667eea',
+            confirmButtonColor: '#4285f4',
             cancelButtonColor: '#6c757d',
             confirmButtonText: '<i class="fas fa-key"></i> Ya, Ganti!',
             cancelButtonText: '<i class="fas fa-times"></i> Batal'
@@ -812,7 +542,7 @@ include '../../includes/sidebar.php';
         title: 'Berhasil!',
         text: '<?= $_SESSION['success'] ?>',
         icon: 'success',
-        confirmButtonColor: '#667eea',
+        confirmButtonColor: '#4285f4',
         confirmButtonText: 'OK',
         didOpen: () => {
             canvasConfetti({
@@ -832,7 +562,7 @@ include '../../includes/sidebar.php';
         title: 'Gagal!',
         text: '<?= $_SESSION['error'] ?>',
         icon: 'error',
-        confirmButtonColor: '#667eea',
+        confirmButtonColor: '#4285f4',
         confirmButtonText: 'OK'
     });
     <?php unset($_SESSION['error']); ?>
